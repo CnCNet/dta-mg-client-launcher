@@ -86,6 +86,12 @@
     <Compile Include="IncompatibleGPUMessageForm.Designer.cs">
       <DependentUpon>IncompatibleGPUMessageForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="NETFramework45MissingMessageForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NETFramework45MissingMessageForm.Designer.cs">
+      <DependentUpon>NETFramework45MissingMessageForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="XNAFrameworkMissingMessageForm.cs">
@@ -110,6 +116,9 @@
   <ItemGroup>
     <EmbeddedResource Include="IncompatibleGPUMessageForm.resx">
       <DependentUpon>IncompatibleGPUMessageForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NETFramework45MissingMessageForm.resx">
+      <DependentUpon>NETFramework45MissingMessageForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="XNAFrameworkMissingMessageForm.resx">
       <DependentUpon>XNAFrameworkMissingMessageForm.cs</DependentUpon>

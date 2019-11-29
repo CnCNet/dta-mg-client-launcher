@@ -11,6 +11,7 @@ namespace DTALauncherStub
     {
         private const string RESOURCES = "Resources";
         private const int ERROR_CANCELLED_CODE = 1223;
+        private const int NET_FRAMEWORK_45_RELEASE_KEY = 378389;
 
         private static void Main(string[] args)
         {
@@ -81,6 +82,15 @@ namespace DTALauncherStub
 
         private static void RunDX()
         {
+            if (GetOperatingSystemVersion() == OSVersion.WIN7)
+            {
+                if (!IsNetFramework45Installed())
+                {
+                    Application.Run(new NETFramework45MissingMessageForm());
+                    return;
+                }
+            }
+
             StartProcess(RESOURCES + Path.DirectorySeparatorChar + "clientdx.exe");
         }
 
@@ -197,13 +207,33 @@ namespace DTALauncherStub
             return false;
         }
 
+        private static bool IsNetFramework45Installed()
+        {
+            try
+            {
+                RegistryKey ndpKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\NET Framework Setup\\NDP\\v4\\Full");
+
+                string installValue = ndpKey.GetValue("Release").ToString();
+
+                // https://docs.microsoft.com/en-us/dotnet/framework/migration-guide/how-to-determine-which-versions-are-installed#net_d
+                if (Convert.ToInt32(installValue) >= NET_FRAMEWORK_45_RELEASE_KEY)
+                    return true;
+            }
+            catch
+            {
+
+            }
+
+            return false;
+        }
+
         private static bool IsXNAFramework4Installed()
         {
             try
             {
-                RegistryKey ndpKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\XNA\\Framework\\v4.0");
+                RegistryKey xnaKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\XNA\\Framework\\v4.0");
 
-                string installValue = ndpKey.GetValue("Installed").ToString();
+                string installValue = xnaKey.GetValue("Installed").ToString();
 
                 if (installValue == "1")
                     return true;
