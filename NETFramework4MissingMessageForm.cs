@@ -4,9 +4,9 @@ using System.Windows.Forms;
 
 namespace DTALauncherStub
 {
-    public partial class NETFramework4MissingMessageForm : Form
+    public partial class NETFramework45MissingMessageForm : Form
     {
-        public NETFramework4MissingMessageForm()
+        public NETFramework45MissingMessageForm()
         {
             InitializeComponent();
         }
@@ -18,12 +18,7 @@ namespace DTALauncherStub
 
         private void lblLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("https://www.microsoft.com/en-us/download/details.aspx?id=17718");
-        }
-
-        private void lblXNALink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Process.Start("https://www.microsoft.com/en-us/download/details.aspx?id=27598");
+            Process.Start("https://www.microsoft.com/en-us/download/details.aspx?id=30653");
         }
     }
 }

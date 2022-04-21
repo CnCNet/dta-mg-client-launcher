@@ -118,9 +118,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="lblDescription.Text" xml:space="preserve">
-    <value>Your system is missing the full version of .NET Framework 4.0.
+    <value>Your system is missing the full version of .NET Framework 4.5.
 
-To run the client, you need to have the full version of .NET Framework 4.0 installed.
-You can download the .NET Framework 4.0 installer from the following link:</value>
+To run the client, you need to have the full version of .NET Framework 4.5 installed.
+You can download the .NET Framework 4.5 installer from the following link:</value>
   </data>
 </root>

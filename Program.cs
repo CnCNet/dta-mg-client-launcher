@@ -11,7 +11,6 @@ namespace DTALauncherStub
     {
         private const string RESOURCES = "Resources";
         private const int ERROR_CANCELLED_CODE = 1223;
-        private const int NET_FRAMEWORK_45_RELEASE_KEY = 378389;
 
         private static void Main(string[] args)
         {
@@ -43,17 +42,19 @@ namespace DTALauncherStub
 
             switch (osVersion)
             {
+                case OSVersion.WINE:
                 case OSVersion.WINXP:
                 case OSVersion.WINVISTA:
-                    if (!IsNetFramework4Installed())
-                    {
-                        Application.Run(new NETFramework4MissingMessageForm());
-                        break;
-                    }
-
                     RunXNA();
                     break;
                 case OSVersion.WIN7:
+                    if (!IsNetFramework45Installed())
+                    {
+                        Application.Run(new NETFramework45MissingMessageForm());
+                        break;
+                    }
+                    W7And10Autorun();
+                    break;
                 case OSVersion.WIN810:
                     W7And10Autorun();
                     break;
@@ -82,15 +83,6 @@ namespace DTALauncherStub
 
         private static void RunDX()
         {
-            if (GetOperatingSystemVersion() == OSVersion.WIN7)
-            {
-                if (!IsNetFramework45Installed())
-                {
-                    Application.Run(new NETFramework45MissingMessageForm());
-                    return;
-                }
-            }
-
             StartProcess(RESOURCES + Path.DirectorySeparatorChar + "clientdx.exe");
         }
 
@@ -157,6 +149,17 @@ namespace DTALauncherStub
 
         private static OSVersion GetOperatingSystemVersion()
         {
+            try
+            {
+                bool RunsOnWine =
+                    NativeMethods.GetProcAddress(
+                        NativeMethods.GetModuleHandle("kernel32"), "wine_get_unix_file_name") != (IntPtr)0;
+
+                if (RunsOnWine)
+                    return OSVersion.WINE;
+            }
+            catch { }
+
             Version osVersion = Environment.OSVersion.Version;
 
             if (Environment.OSVersion.Platform == PlatformID.Win32Windows)
@@ -188,25 +191,6 @@ namespace DTALauncherStub
             return OSVersion.UNKNOWN;
         }
 
-        private static bool IsNetFramework4Installed()
-        {
-            try
-            {
-                RegistryKey ndpKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\NET Framework Setup\\NDP\\v4\\Full");
-
-                string installValue = ndpKey.GetValue("Install").ToString();
-
-                if (installValue == "1")
-                    return true;
-            }
-            catch
-            {
-                
-            }
-
-            return false;
-        }
-
         private static bool IsNetFramework45Installed()
         {
             try
@@ -215,8 +199,7 @@ namespace DTALauncherStub
 
                 string installValue = ndpKey.GetValue("Release").ToString();
 
-                // https://docs.microsoft.com/en-us/dotnet/framework/migration-guide/how-to-determine-which-versions-are-installed#net_d
-                if (Convert.ToInt32(installValue) >= NET_FRAMEWORK_45_RELEASE_KEY)
+                if (Convert.ToInt32(installValue) >= 378389)
                     return true;
             }
             catch
@@ -231,9 +214,11 @@ namespace DTALauncherStub
         {
             try
             {
-                RegistryKey xnaKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\XNA\\Framework\\v4.0");
+                var reg32 = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32);
 
-                string installValue = xnaKey.GetValue("Installed").ToString();
+                RegistryKey ndpKey = reg32.OpenSubKey("SOFTWARE\\Microsoft\\XNA\\Framework\\v4.0");
+
+                string installValue = ndpKey.GetValue("Installed").ToString();
 
                 if (installValue == "1")
                     return true;
@@ -255,6 +240,7 @@ namespace DTALauncherStub
         WINVISTA,
         WIN7,
         WIN810,
-        UNIX
+        UNIX,
+        WINE
     }
 }
