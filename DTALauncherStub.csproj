@@ -1,145 +1,39 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7477EAC1-2302-4311-9F7D-2D65C016C857}</ProjectGuid>
+    <TargetFrameworks>net48;net6.0-windows10.0.22000.0</TargetFrameworks>
+    <TargetPlatformMinVersion>7.0</TargetPlatformMinVersion>
     <OutputType>WinExe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Title>DTA Launcher</Title>
+    <Description>Launcher for Dawn of the Tiberium Age CnCNet Client</Description>
+    <Company>CnCNet</Company>
+    <Product>Dawn of the Tiberium Age</Product>
+    <Copyright>Copyright © CnCNet, Rampastring 2011-2022</Copyright>
+    <Trademark></Trademark>
+    <Version>2.0.0.1</Version>
+    <FileVersion>2.0.0.1</FileVersion>
+    <InformationalVersion>2.0.0.1</InformationalVersion>
+    <AssemblyName>DTALauncherStub</AssemblyName>
     <RootNamespace>DTALauncherStub</RootNamespace>
-    <AssemblyName>DTA</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <TargetFrameworkProfile />
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject>DTALauncherStub.Program</StartupObject>
-  </PropertyGroup>
-  <PropertyGroup>
+    <ComVisible>false</ComVisible>
+    <CLSCompliant>false</CLSCompliant>
+    <AnalysisLevel>preview-all</AnalysisLevel>
+    <LangVersion>preview</LangVersion>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <ComVisible>false</ComVisible>
+    <CLSCompliant>false</CLSCompliant>
+    <Platforms>AnyCPU</Platforms>
+    <RuntimeIdentifiers>win-x64;win-arm64;win-x86</RuntimeIdentifiers>
     <ApplicationIcon>mainclienticon.ico</ApplicationIcon>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="IncompatibleGPUMessageForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="IncompatibleGPUMessageForm.Designer.cs">
-      <DependentUpon>IncompatibleGPUMessageForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="NETFramework45MissingMessageForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="NETFramework45MissingMessageForm.Designer.cs">
-      <DependentUpon>NETFramework45MissingMessageForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="XNAFrameworkMissingMessageForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="XNAFrameworkMissingMessageForm.Designer.cs">
-      <DependentUpon>XNAFrameworkMissingMessageForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="NETFramework4MissingMessageForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="NETFramework4MissingMessageForm.Designer.cs">
-      <DependentUpon>NETFramework4MissingMessageForm.cs</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
   <ItemGroup>
     <Content Include="mainclienticon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="IncompatibleGPUMessageForm.resx">
-      <DependentUpon>IncompatibleGPUMessageForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="NETFramework45MissingMessageForm.resx">
-      <DependentUpon>NETFramework45MissingMessageForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XNAFrameworkMissingMessageForm.resx">
-      <DependentUpon>XNAFrameworkMissingMessageForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="NETFramework4MissingMessageForm.resx">
-      <DependentUpon>NETFramework4MissingMessageForm.cs</DependentUpon>
-    </EmbeddedResource>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

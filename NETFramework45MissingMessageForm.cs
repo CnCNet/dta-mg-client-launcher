@@ -18,7 +18,11 @@ namespace DTALauncherStub
 
         private void lblLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("https://www.microsoft.com/en-US/download/details.aspx?id=30653");
+            using var _ = Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://www.microsoft.com/en-US/download/details.aspx?id=30653",
+                UseShellExecute = true
+            });
         }
     }
 }

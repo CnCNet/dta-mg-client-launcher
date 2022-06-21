@@ -157,13 +157,14 @@ namespace DTALauncherStub
 
         private static OSVersion GetOperatingSystemVersion()
         {
-            Version osVersion = Environment.OSVersion.Version;
-
             if (Environment.OSVersion.Platform == PlatformID.Win32Windows)
                 return OSVersion.WIN9X;
 
             if (Environment.OSVersion.Platform == PlatformID.Win32NT)
             {
+#if NETFRAMEWORK
+                Version osVersion = Environment.OSVersion.Version;
+
                 if (osVersion.Major < 5)
                     return OSVersion.UNKNOWN;
 
@@ -176,6 +177,15 @@ namespace DTALauncherStub
                     return OSVersion.WINVISTA;
 
                 return OSVersion.WIN7;
+#else
+                if (OperatingSystem.IsWindowsVersionAtLeast(6, 3))
+                    return OSVersion.WIN810;
+
+                if (OperatingSystem.IsWindowsVersionAtLeast(6, 1))
+                    return OSVersion.WIN7;
+
+                return OSVersion.UNKNOWN;
+#endif
             }
 
             int p = (int)Environment.OSVersion.Platform;
@@ -201,7 +211,7 @@ namespace DTALauncherStub
             }
             catch
             {
-                
+
             }
 
             return false;
