@@ -43,7 +43,7 @@
             this.btnExit.TabIndex = 9;
             this.btnExit.Text = "Exit";
             this.btnExit.UseVisualStyleBackColor = true;
-            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
+            this.btnExit.Click += new System.EventHandler(this.BtnExit_Click);
             // 
             // lblXNALink
             // 
@@ -54,7 +54,7 @@
             this.lblXNALink.TabIndex = 8;
             this.lblXNALink.TabStop = true;
             this.lblXNALink.Text = "https://www.microsoft.com/en-us/download/details.aspx?id=20914";
-            this.lblXNALink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblLink_LinkClicked);
+            this.lblXNALink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LblLink_LinkClicked);
             // 
             // lblXNADescription
             // 

@@ -48,7 +48,7 @@
             this.btnRunDX.TabIndex = 5;
             this.btnRunDX.Text = "Launch DirectX11 version";
             this.btnRunDX.UseVisualStyleBackColor = true;
-            this.btnRunDX.Click += new System.EventHandler(this.btnExit_Click);
+            this.btnRunDX.Click += new System.EventHandler(this.BtnExit_Click);
             // 
             // lblDescription
             // 
@@ -69,7 +69,7 @@
             this.lblXNALink.TabIndex = 10;
             this.lblXNALink.TabStop = true;
             this.lblXNALink.Text = "https://www.microsoft.com/en-us/download/details.aspx?id=20914";
-            this.lblXNALink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblXNALink_LinkClicked);
+            this.lblXNALink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LblXNALink_LinkClicked);
             // 
             // lblXNADescription
             // 

@@ -1,28 +1,27 @@
-﻿using System;
+﻿namespace DTALauncherStub;
+
+using System;
 using System.Diagnostics;
 using System.Windows.Forms;
 
-namespace DTALauncherStub
+internal sealed partial class XNAFrameworkMissingMessageForm : Form
 {
-    public partial class XNAFrameworkMissingMessageForm : Form
+    public XNAFrameworkMissingMessageForm()
     {
-        public XNAFrameworkMissingMessageForm()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+    }
 
-        private void lblLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+    private void LblLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+    {
+        using var _ = Process.Start(new ProcessStartInfo
         {
-            using var _ = Process.Start(new ProcessStartInfo
-            {
-                FileName = "https://www.microsoft.com/en-us/download/details.aspx?id=27598",
-                UseShellExecute = true
-            });
-        }
+            FileName = "https://www.microsoft.com/en-us/download/details.aspx?id=27598",
+            UseShellExecute = true
+        });
+    }
 
-        private void btnExit_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
+    private void BtnExit_Click(object sender, EventArgs e)
+    {
+        Close();
     }
 }
