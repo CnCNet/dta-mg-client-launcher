@@ -7,33 +7,34 @@ using System.Windows.Forms;
 
 namespace DTALauncherStub
 {
-    class Program
+    internal sealed class Program
     {
         private const string RESOURCES = "Resources";
         private const int ERROR_CANCELLED_CODE = 1223;
-        private const int NET_FRAMEWORK_45_RELEASE_KEY = 378389;
 
         private static void Main(string[] args)
         {
-            var osVersion = GetOperatingSystemVersion();
+            ApplicationConfiguration.Initialize();
 
-            char dsc = Path.DirectorySeparatorChar;
+            OSVersion osVersion = GetOperatingSystemVersion();
 
             if (args != null)
             {
                 foreach (string arg in args)
                 {
-                    if (arg.ToUpper() == "-XNA")
+                    if ("-XNA".Equals(arg, StringComparison.OrdinalIgnoreCase))
                     {
                         RunXNA();
                         return;
                     }
-                    else if (arg.ToUpper() == "-OGL")
+
+                    if ("-OGL".Equals(arg, StringComparison.OrdinalIgnoreCase))
                     {
                         RunOGL();
                         return;
                     }
-                    else if (arg.ToUpper() == "-DX")
+
+                    if ("-DX".Equals(arg, StringComparison.OrdinalIgnoreCase))
                     {
                         RunDX();
                         return;
@@ -43,22 +44,10 @@ namespace DTALauncherStub
 
             switch (osVersion)
             {
-                case OSVersion.WINXP:
-                case OSVersion.WINVISTA:
-                    if (!IsNetFramework4Installed())
-                    {
-                        Application.Run(new NETFramework4MissingMessageForm());
-                        break;
-                    }
-
-                    RunXNA();
-                    break;
-                case OSVersion.WIN7:
-                case OSVersion.WIN810:
+                case OSVersion.WIN:
                     W7And10Autorun();
                     break;
-                case OSVersion.UNIX:
-                case OSVersion.UNKNOWN:
+                default:
                     RunOGL();
                     break;
             }
@@ -66,32 +55,23 @@ namespace DTALauncherStub
 
         private static void RunXNA()
         {
-            if (!IsXNAFramework4Installed())
+            if (!IsXNAFramework4RefreshInstalled())
             {
                 Application.Run(new XNAFrameworkMissingMessageForm());
                 return;
             }
 
-            StartProcess(RESOURCES + Path.DirectorySeparatorChar + "clientxna.exe");
+            StartProcess(RESOURCES + Path.DirectorySeparatorChar + "Binaries" + Path.DirectorySeparatorChar + "XNA" + Path.DirectorySeparatorChar + "clientxna.dll");
         }
 
         private static void RunOGL()
         {
-            StartProcess(RESOURCES + Path.DirectorySeparatorChar + "clientogl.exe");
+            StartProcess(RESOURCES + Path.DirectorySeparatorChar + "Binaries" + Path.DirectorySeparatorChar + "OpenGL" + Path.DirectorySeparatorChar + "clientogl.dll");
         }
 
         private static void RunDX()
         {
-            if (GetOperatingSystemVersion() == OSVersion.WIN7)
-            {
-                if (!IsNetFramework45Installed())
-                {
-                    Application.Run(new NETFramework45MissingMessageForm());
-                    return;
-                }
-            }
-
-            StartProcess(RESOURCES + Path.DirectorySeparatorChar + "clientdx.exe");
+            StartProcess(RESOURCES + Path.DirectorySeparatorChar + "Binaries" + Path.DirectorySeparatorChar + "Windows" + Path.DirectorySeparatorChar + "clientdx.dll");
         }
 
         private static void W7And10Autorun()
@@ -102,7 +82,7 @@ namespace DTALauncherStub
 
             if (File.Exists(dxFailFilePath))
             {
-                if (IsXNAFramework4Installed())
+                if (IsXNAFramework4RefreshInstalled())
                 {
                     RunXNA();
                     return;
@@ -138,7 +118,7 @@ namespace DTALauncherStub
 
             try
             {
-                Process.Start(completeFilePath);
+                Process.Start("dotnet", completeFilePath);
             }
             catch (Win32Exception ex)
             {
@@ -150,107 +130,44 @@ namespace DTALauncherStub
                         + Environment.NewLine + Environment.NewLine +
                         "If the client still doesn't run, please contact the mod's authors for support.",
                         "Client Launcher Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
                 }
             }
         }
 
         private static OSVersion GetOperatingSystemVersion()
         {
-            if (Environment.OSVersion.Platform == PlatformID.Win32Windows)
-                return OSVersion.WIN9X;
-
             if (Environment.OSVersion.Platform == PlatformID.Win32NT)
-            {
-#if NETFRAMEWORK
-                Version osVersion = Environment.OSVersion.Version;
-
-                if (osVersion.Major < 5)
-                    return OSVersion.UNKNOWN;
-
-                if (osVersion.Major == 5)
-                    return OSVersion.WINXP;
-
-                if (osVersion.Minor > 1)
-                    return OSVersion.WIN810;
-                else if (osVersion.Minor == 0)
-                    return OSVersion.WINVISTA;
-
-                return OSVersion.WIN7;
-#else
-                if (OperatingSystem.IsWindowsVersionAtLeast(6, 3))
-                    return OSVersion.WIN810;
-
-                if (OperatingSystem.IsWindowsVersionAtLeast(6, 1))
-                    return OSVersion.WIN7;
-
-                return OSVersion.UNKNOWN;
-#endif
-            }
-
-            int p = (int)Environment.OSVersion.Platform;
-
-            if ((p == 4) || (p == 6) || (p == 128))
-            {
-                return OSVersion.UNIX;
-            }
+                return OSVersion.WIN;
 
             return OSVersion.UNKNOWN;
         }
 
-        private static bool IsNetFramework4Installed()
-        {
-            try
-            {
-                RegistryKey ndpKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\NET Framework Setup\\NDP\\v4\\Full");
-
-                string installValue = ndpKey.GetValue("Install").ToString();
-
-                if (installValue == "1")
-                    return true;
-            }
-            catch
-            {
-
-            }
-
-            return false;
-        }
-
-        private static bool IsNetFramework45Installed()
-        {
-            try
-            {
-                RegistryKey ndpKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\NET Framework Setup\\NDP\\v4\\Full");
-
-                string installValue = ndpKey.GetValue("Release").ToString();
-
-                // https://docs.microsoft.com/en-us/dotnet/framework/migration-guide/how-to-determine-which-versions-are-installed#net_d
-                if (Convert.ToInt32(installValue) >= NET_FRAMEWORK_45_RELEASE_KEY)
-                    return true;
-            }
-            catch
-            {
-
-            }
-
-            return false;
-        }
-
-        private static bool IsXNAFramework4Installed()
+        private static bool IsXNAFramework4RefreshInstalled()
         {
             try
             {
                 RegistryKey xnaKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\XNA\\Framework\\v4.0");
 
-                string installValue = xnaKey.GetValue("Installed").ToString();
+                string installValue = xnaKey?.GetValue("Refresh1Installed").ToString();
 
                 if (installValue == "1")
                     return true;
             }
             catch
             {
+            }
 
+            try
+            {
+                RegistryKey xnaKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\\WOW6432Node\\Microsoft\\XNA\\Framework\\v4.0");
+
+                string installValue = xnaKey.GetValue("Refresh1Installed").ToString();
+
+                if (installValue == "1")
+                    return true;
+            }
+            catch
+            {
             }
 
             return false;
@@ -260,11 +177,6 @@ namespace DTALauncherStub
     enum OSVersion
     {
         UNKNOWN,
-        WIN9X,
-        WINXP,
-        WINVISTA,
-        WIN7,
-        WIN810,
-        UNIX
+        WIN
     }
 }

@@ -16,14 +16,13 @@ namespace DTALauncherStub
             Close();
         }
 
-        private void lblLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Process.Start("https://www.microsoft.com/en-us/download/details.aspx?id=17718");
-        }
-
         private void lblXNALink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("https://www.microsoft.com/en-us/download/details.aspx?id=27598");
+            using var _ = Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://www.microsoft.com/en-us/download/details.aspx?id=27598",
+                UseShellExecute = true
+            });
         }
     }
 }

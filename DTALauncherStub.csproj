@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net48;net6.0-windows10.0.22000.0</TargetFrameworks>
-    <TargetPlatformMinVersion>7.0</TargetPlatformMinVersion>
+    <TargetFramework>net7.0-windows</TargetFramework>
     <OutputType>WinExe</OutputType>
     <UseWindowsForms>true</UseWindowsForms>
     <Title>DTA Launcher</Title>
@@ -26,6 +25,9 @@
     <Platforms>AnyCPU</Platforms>
     <RuntimeIdentifiers>win-x64;win-arm64;win-x86</RuntimeIdentifiers>
     <ApplicationIcon>mainclienticon.ico</ApplicationIcon>
+    <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <AppHostRuntimeIdentifier>win-x86</AppHostRuntimeIdentifier>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="mainclienticon.ico" />
