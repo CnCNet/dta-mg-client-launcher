@@ -28,7 +28,6 @@
     <ApplicationIcon>mainclienticon.ico</ApplicationIcon>
     <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <AppHostRuntimeIdentifier>win-x86</AppHostRuntimeIdentifier>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="mainclienticon.ico" />
