@@ -15,30 +15,39 @@ internal sealed class Program
 
     private static void Main(string[] args)
     {
-        ApplicationConfiguration.Initialize();
-
-        foreach (string arg in args)
+        try
         {
-            if ("-XNA".Equals(arg, StringComparison.OrdinalIgnoreCase))
+            ApplicationConfiguration.Initialize();
+
+            foreach (string arg in args)
             {
-                RunXna();
-                return;
+                if ("-XNA".Equals(arg, StringComparison.OrdinalIgnoreCase))
+                {
+                    RunXna();
+                    return;
+                }
+
+                if ("-OGL".Equals(arg, StringComparison.OrdinalIgnoreCase))
+                {
+                    RunOgl();
+                    return;
+                }
+
+                if ("-DX".Equals(arg, StringComparison.OrdinalIgnoreCase))
+                {
+                    RunDx();
+                    return;
+                }
             }
 
-            if ("-OGL".Equals(arg, StringComparison.OrdinalIgnoreCase))
-            {
-                RunOgl();
-                return;
-            }
-
-            if ("-DX".Equals(arg, StringComparison.OrdinalIgnoreCase))
-            {
-                RunDx();
-                return;
-            }
+            AutoRun();
         }
-
-        AutoRun();
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            Console.ReadKey();
+            Environment.Exit(1);
+        }
     }
 
     private static void RunXna()
@@ -49,17 +58,22 @@ internal sealed class Program
             return;
         }
 
-        StartProcess(RESOURCES + Path.DirectorySeparatorChar + BINARIES + Path.DirectorySeparatorChar + "XNA" + Path.DirectorySeparatorChar + "clientxna.dll");
+        StartProcess(
+            RESOURCES + Path.DirectorySeparatorChar + BINARIES
+            + Path.DirectorySeparatorChar + "XNA" + Path.DirectorySeparatorChar + "clientxna.dll",
+            true);
     }
 
     private static void RunOgl()
     {
-        StartProcess(RESOURCES + Path.DirectorySeparatorChar + BINARIES + Path.DirectorySeparatorChar + "OpenGL" + Path.DirectorySeparatorChar + "clientogl.dll");
+        StartProcess(RESOURCES + Path.DirectorySeparatorChar + BINARIES
+            + Path.DirectorySeparatorChar + "OpenGL" + Path.DirectorySeparatorChar + "clientogl.dll");
     }
 
     private static void RunDx()
     {
-        StartProcess(RESOURCES + Path.DirectorySeparatorChar + BINARIES + Path.DirectorySeparatorChar + "Windows" + Path.DirectorySeparatorChar + "clientdx.dll");
+        StartProcess(RESOURCES + Path.DirectorySeparatorChar + BINARIES
+            + Path.DirectorySeparatorChar + "Windows" + Path.DirectorySeparatorChar + "clientdx.dll");
     }
 
     private static void AutoRun()
@@ -93,9 +107,30 @@ internal sealed class Program
         RunDx();
     }
 
-    private static void StartProcess(string relativePath)
+    private static void StartProcess(string relativePath, bool run32Bit = false)
     {
         string completeFilePath = Environment.CurrentDirectory + Path.DirectorySeparatorChar + relativePath;
+        FileInfo? runtime64Bit = new FileInfo("C:\\Program Files\\dotnet\\dotnet.exe");
+        var runtime32Bit = new FileInfo("C:\\Program Files (x86)\\dotnet\\dotnet.exe");
+
+        if (!Environment.Is64BitOperatingSystem)
+        {
+            runtime32Bit = runtime64Bit;
+            runtime64Bit = null;
+            run32Bit = true;
+        }
+
+        if (Environment.Is64BitOperatingSystem && !runtime64Bit!.Exists)
+        {
+            Application.Run(new DotNet64BitRuntimeMissingMessageForm());
+            return;
+        }
+
+        if (run32Bit && !runtime32Bit.Exists)
+        {
+            Application.Run(new DotNet32BitRuntimeMissingMessageForm());
+            return;
+        }
 
         if (!File.Exists(completeFilePath))
         {
@@ -109,7 +144,12 @@ internal sealed class Program
 
         try
         {
-            Process.Start("dotnet", completeFilePath);
+            using var _ = Process.Start(new ProcessStartInfo
+            {
+                FileName = run32Bit ? runtime32Bit.FullName : runtime64Bit!.FullName,
+                Arguments = "\"" + completeFilePath + "\"",
+                CreateNoWindow = true
+            });
         }
         catch (Win32Exception ex) when (ex.NativeErrorCode == ERROR_CANCELLED_CODE)
         {
