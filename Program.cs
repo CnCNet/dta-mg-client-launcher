@@ -81,27 +81,35 @@ internal sealed class Program
         string basePath = Environment.CurrentDirectory +
             Path.DirectorySeparatorChar + "Client" + Path.DirectorySeparatorChar;
         string dxFailFilePath = basePath + ".dxfail";
+        string oglFailFilePath = basePath + ".oglfail";
 
         if (File.Exists(dxFailFilePath))
         {
-            if (IsXnaFramework4RefreshInstalled())
+            if (File.Exists(oglFailFilePath))
             {
-                RunXna();
+                if (IsXnaFramework4RefreshInstalled())
+                {
+                    RunXna();
+                    return;
+                }
+
+                DialogResult dr = new IncompatibleGPUMessageForm().ShowDialog();
+
+                if (dr == DialogResult.No)
+                {
+                    File.Delete(dxFailFilePath);
+                    File.Delete(oglFailFilePath);
+                    AutoRun();
+                }
+                else if (dr == DialogResult.Yes)
+                {
+                    RunXna();
+                }
+
                 return;
             }
 
-            DialogResult dr = new IncompatibleGPUMessageForm().ShowDialog();
-            if (dr == DialogResult.No)
-            {
-                File.Delete(dxFailFilePath);
-                RunDx();
-            }
-            else if (dr == DialogResult.Yes)
-            {
-                RunXna();
-            }
-
-            return;
+            RunOgl();
         }
 
         RunDx();

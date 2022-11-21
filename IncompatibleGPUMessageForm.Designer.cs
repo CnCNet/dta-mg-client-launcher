@@ -59,7 +59,7 @@
             this.lblDescription.Size = new System.Drawing.Size(376, 30);
             this.lblDescription.TabIndex = 0;
             this.lblDescription.Text = "The client has detected an incompatibility between your graphics card\r\nand the Di" +
-    "rectX11 version of the CnCNet client.";
+    "rectX11 and OpenGL versions of the CnCNet client.";
             // 
             // lblXNALink
             // 
