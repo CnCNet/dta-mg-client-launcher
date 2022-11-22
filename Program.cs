@@ -9,9 +9,9 @@ using Microsoft.Win32;
 
 internal sealed class Program
 {
-    private const string RESOURCES = "Resources";
-    private const string BINARIES = "Binaries";
-    private const int ERROR_CANCELLED_CODE = 1223;
+    private const string Resources = "Resources";
+    private const string Binaries = "Binaries";
+    private const int ErrorCancelled = 1223;
 
     private static void Main(string[] args)
     {
@@ -38,6 +38,12 @@ internal sealed class Program
                     RunDx();
                     return;
                 }
+
+                if ("-UGL".Equals(arg, StringComparison.OrdinalIgnoreCase))
+                {
+                    RunUgl();
+                    return;
+                }
             }
 
             AutoRun();
@@ -59,21 +65,27 @@ internal sealed class Program
         }
 
         StartProcess(
-            RESOURCES + Path.DirectorySeparatorChar + BINARIES
+            Resources + Path.DirectorySeparatorChar + Binaries
             + Path.DirectorySeparatorChar + "XNA" + Path.DirectorySeparatorChar + "clientxna.dll",
             true);
     }
 
     private static void RunOgl()
     {
-        StartProcess(RESOURCES + Path.DirectorySeparatorChar + BINARIES
+        StartProcess(Resources + Path.DirectorySeparatorChar + Binaries
             + Path.DirectorySeparatorChar + "OpenGL" + Path.DirectorySeparatorChar + "clientogl.dll");
     }
 
     private static void RunDx()
     {
-        StartProcess(RESOURCES + Path.DirectorySeparatorChar + BINARIES
+        StartProcess(Resources + Path.DirectorySeparatorChar + Binaries
             + Path.DirectorySeparatorChar + "Windows" + Path.DirectorySeparatorChar + "clientdx.dll");
+    }
+
+    private static void RunUgl()
+    {
+        StartProcess(Resources + Path.DirectorySeparatorChar + Binaries
+            + Path.DirectorySeparatorChar + "UniversalGL" + Path.DirectorySeparatorChar + "clientogl.dll");
     }
 
     private static void AutoRun()
@@ -118,7 +130,7 @@ internal sealed class Program
     private static void StartProcess(string relativePath, bool run32Bit = false)
     {
         string completeFilePath = Environment.CurrentDirectory + Path.DirectorySeparatorChar + relativePath;
-        FileInfo? runtime64Bit = new FileInfo("C:\\Program Files\\dotnet\\dotnet.exe");
+        var runtime64Bit = new FileInfo("C:\\Program Files\\dotnet\\dotnet.exe");
         var runtime32Bit = new FileInfo("C:\\Program Files (x86)\\dotnet\\dotnet.exe");
 
         if (!Environment.Is64BitOperatingSystem)
@@ -152,14 +164,16 @@ internal sealed class Program
 
         try
         {
+#pragma warning disable SA1312 // Variable names should begin with lower-case letter
             using var _ = Process.Start(new ProcessStartInfo
             {
                 FileName = run32Bit ? runtime32Bit.FullName : runtime64Bit!.FullName,
                 Arguments = "\"" + completeFilePath + "\"",
                 CreateNoWindow = true
             });
+#pragma warning restore SA1312 // Variable names should begin with lower-case letter
         }
-        catch (Win32Exception ex) when (ex.NativeErrorCode == ERROR_CANCELLED_CODE)
+        catch (Win32Exception ex) when (ex.NativeErrorCode == ErrorCancelled)
         {
             MessageBox.Show(
                 "Unable to launch the main client. It could be blocked by Windows SmartScreen."
