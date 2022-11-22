@@ -1,9 +1,10 @@
 ﻿namespace DTALauncherStub;
 
 using System;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Microsoft.Win32;
 
@@ -11,7 +12,7 @@ internal sealed class Program
 {
     private const string Resources = "Resources";
     private const string Binaries = "Binaries";
-    private const int ErrorCancelled = 1223;
+    private const int DotNetMajorVersion = 7;
 
     private static void Main(string[] args)
     {
@@ -48,10 +49,9 @@ internal sealed class Program
 
             AutoRun();
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            Console.WriteLine(e);
-            Console.ReadKey();
+            MessageBox.Show(ex.ToString(), "Client Launcher Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             Environment.Exit(1);
         }
     }
@@ -61,7 +61,7 @@ internal sealed class Program
         if (!IsXnaFramework4RefreshInstalled())
         {
             Application.Run(new XNAFrameworkMissingMessageForm());
-            return;
+            Environment.Exit(2);
         }
 
         StartProcess(
@@ -129,77 +129,83 @@ internal sealed class Program
 
     private static void StartProcess(string relativePath, bool run32Bit = false)
     {
-        string completeFilePath = Environment.CurrentDirectory + Path.DirectorySeparatorChar + relativePath;
-        var runtime64Bit = new FileInfo("C:\\Program Files\\dotnet\\dotnet.exe");
-        var runtime32Bit = new FileInfo("C:\\Program Files (x86)\\dotnet\\dotnet.exe");
-
         if (!Environment.Is64BitOperatingSystem)
-        {
-            runtime32Bit = runtime64Bit;
-            runtime64Bit = null;
             run32Bit = true;
-        }
 
-        if (Environment.Is64BitOperatingSystem && !runtime64Bit!.Exists)
-        {
-            Application.Run(new DotNet64BitRuntimeMissingMessageForm());
-            return;
-        }
+        FileInfo? runtime64Bit = null;
+        FileInfo? runtime32Bit = GetDotNetHost(Architecture.X86);
 
-        if (run32Bit && !runtime32Bit.Exists)
+        if (run32Bit)
         {
-            Application.Run(new DotNet32BitRuntimeMissingMessageForm());
-            return;
-        }
-
-        if (!File.Exists(completeFilePath))
-        {
-            MessageBox.Show(
-                "Main client executable (" + relativePath + ") not found!",
-                "Client Launcher Error",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Error);
-            return;
-        }
-
-        try
-        {
-#pragma warning disable SA1312 // Variable names should begin with lower-case letter
-            using var _ = Process.Start(new ProcessStartInfo
+            if (!(runtime32Bit?.Exists ?? false))
             {
-                FileName = run32Bit ? runtime32Bit.FullName : runtime64Bit!.FullName,
-                Arguments = "\"" + completeFilePath + "\"",
-                CreateNoWindow = true
-            });
-#pragma warning restore SA1312 // Variable names should begin with lower-case letter
+                Application.Run(new DotNet32BitRuntimeMissingMessageForm());
+                Environment.Exit(2);
+            }
         }
-        catch (Win32Exception ex) when (ex.NativeErrorCode == ErrorCancelled)
+        else if (Environment.Is64BitOperatingSystem)
+        {
+            runtime64Bit = GetDotNetHost(RuntimeInformation.OSArchitecture);
+
+            if (!(runtime64Bit?.Exists ?? false))
+            {
+                Application.Run(new DotNet64BitRuntimeMissingMessageForm());
+                Environment.Exit(2);
+            }
+        }
+
+        string absolutePath = FormattableString.Invariant($"{Environment.CurrentDirectory}{Path.DirectorySeparatorChar}{relativePath}");
+
+        if (!File.Exists(absolutePath))
         {
             MessageBox.Show(
-                "Unable to launch the main client. It could be blocked by Windows SmartScreen."
-                + Environment.NewLine + Environment.NewLine +
-                "Please contact the mod's authors for support.",
+                FormattableString.CurrentCulture($"Main client library ({relativePath}) not found!"),
                 "Client Launcher Error",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error);
+            Environment.Exit(3);
         }
+
+#pragma warning disable SA1312 // Variable names should begin with lower-case letter
+        using var _ = Process.Start(new ProcessStartInfo
+        {
+            FileName = run32Bit ? runtime32Bit!.FullName : runtime64Bit!.FullName,
+            Arguments = "\"" + absolutePath + "\"",
+            CreateNoWindow = true
+        });
+#pragma warning restore SA1312 // Variable names should begin with lower-case letter
     }
 
     private static bool IsXnaFramework4RefreshInstalled()
     {
-        try
-        {
-            var localMachine32BitRegistryKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32);
-            RegistryKey? xnaKey = localMachine32BitRegistryKey.OpenSubKey("SOFTWARE\\Microsoft\\XNA\\Framework\\v4.0");
-            string? installValue = xnaKey?.GetValue("Refresh1Installed")?.ToString();
+        var localMachine32BitRegistryKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32);
+        using RegistryKey? xnaKey = localMachine32BitRegistryKey.OpenSubKey("SOFTWARE\\Microsoft\\XNA\\Framework\\v4.0");
 
-            if (installValue == "1")
-                return true;
-        }
-        catch
-        {
-        }
+        return "1".Equals(xnaKey?.GetValue("Refresh1Installed")?.ToString(), StringComparison.OrdinalIgnoreCase);
+    }
 
-        return false;
+    private static FileInfo? GetDotNetHost(Architecture architecture)
+    {
+        if (!IsDotNetDesktopInstalled(architecture))
+            return null;
+
+        var localMachineRegistryKey = RegistryKey.OpenBaseKey(
+            RegistryHive.LocalMachine, architecture is Architecture.X86 ? RegistryView.Registry32 : RegistryView.Registry64);
+        using RegistryKey? dotnetKey = localMachineRegistryKey.OpenSubKey(
+            FormattableString.Invariant($"SOFTWARE\\dotnet\\Setup\\InstalledVersions\\{architecture}\\sharedhost"));
+        string? installLocation = dotnetKey?.GetValue("Path")?.ToString();
+
+        return installLocation is null ? null : new FileInfo(FormattableString.Invariant($"{installLocation}\\dotnet.exe"));
+    }
+
+    private static bool IsDotNetDesktopInstalled(Architecture architecture)
+    {
+        var localMachine32BitRegistryKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32);
+        using RegistryKey? dotnetKey = localMachine32BitRegistryKey.OpenSubKey(
+            FormattableString.Invariant($"SOFTWARE\\dotnet\\Setup\\InstalledVersions\\{architecture}\\sharedfx\\Microsoft.WindowsDesktop.App"));
+
+        return dotnetKey?.GetValueNames().Any(q =>
+            q.StartsWith(FormattableString.Invariant($"{DotNetMajorVersion}."), StringComparison.OrdinalIgnoreCase)
+            && "1".Equals(dotnetKey.GetValue(q)?.ToString(), StringComparison.OrdinalIgnoreCase)) ?? false;
     }
 }

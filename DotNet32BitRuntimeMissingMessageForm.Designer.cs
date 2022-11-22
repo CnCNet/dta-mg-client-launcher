@@ -39,10 +39,10 @@ partial class DotNet32BitRuntimeMissingMessageForm
             this.lblDotNetDescription.Location = new System.Drawing.Point(12, 14);
             this.lblDotNetDescription.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblDotNetDescription.Name = "lblDotNetDescription";
-            this.lblDotNetDescription.Size = new System.Drawing.Size(296, 45);
+            this.lblDotNetDescription.Size = new System.Drawing.Size(299, 45);
             this.lblDotNetDescription.TabIndex = 0;
-            this.lblDotNetDescription.Text = "Your system is missing .NET 32bit Runtime Desktop.\r\n\r\nYou can download the instal" +
-    "ler from the following link:\r\n";
+            this.lblDotNetDescription.Text = "Your system is missing the 32bit .NET Desktop Runtime.\r\n\r\nYou can download the in" +
+    "staller from the following link:\r\n";
             // 
             // lblDotNetLink
             // 
@@ -85,7 +85,7 @@ partial class DotNet32BitRuntimeMissingMessageForm
             this.Name = "DotNet32BitRuntimeMissingMessageForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = ".NET 32bit Runtime Missing";
+            this.Text = "32bit .NET Desktop Runtime Missing";
             this.ResumeLayout(false);
             this.PerformLayout();
 
