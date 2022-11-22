@@ -64,40 +64,30 @@ internal sealed class Program
             Environment.Exit(2);
         }
 
-        StartProcess(
-            Resources + Path.DirectorySeparatorChar + Binaries
-            + Path.DirectorySeparatorChar + "XNA" + Path.DirectorySeparatorChar + "clientxna.dll",
-            true);
+        StartProcess(GetClientProcessPath("XNA", "clientxna.dll"), true);
     }
 
     private static void RunOgl()
-    {
-        StartProcess(Resources + Path.DirectorySeparatorChar + Binaries
-            + Path.DirectorySeparatorChar + "OpenGL" + Path.DirectorySeparatorChar + "clientogl.dll");
-    }
+        => StartProcess(GetClientProcessPath("OpenGL", "clientogl.dll"));
 
     private static void RunDx()
-    {
-        StartProcess(Resources + Path.DirectorySeparatorChar + Binaries
-            + Path.DirectorySeparatorChar + "Windows" + Path.DirectorySeparatorChar + "clientdx.dll");
-    }
+        => StartProcess(GetClientProcessPath("Windows", "clientdx.dll"));
 
     private static void RunUgl()
-    {
-        StartProcess(Resources + Path.DirectorySeparatorChar + Binaries
-            + Path.DirectorySeparatorChar + "UniversalGL" + Path.DirectorySeparatorChar + "clientogl.dll");
-    }
+        => StartProcess(GetClientProcessPath("UniversalGL", "clientogl.dll"), false, false);
+
+    private static string GetClientProcessPath(string directory, string file)
+        => FormattableString.Invariant($"{Resources}\\{Binaries}\\{directory}\\{file}");
 
     private static void AutoRun()
     {
-        string basePath = Environment.CurrentDirectory +
-            Path.DirectorySeparatorChar + "Client" + Path.DirectorySeparatorChar;
-        string dxFailFilePath = basePath + ".dxfail";
-        string oglFailFilePath = basePath + ".oglfail";
+        string basePath = FormattableString.Invariant($"{Environment.CurrentDirectory}\\Client\\");
+        var dxFailFile = new FileInfo(FormattableString.Invariant($"{basePath}.dxfail"));
+        var oglFailFile = new FileInfo(FormattableString.Invariant($"{basePath}.oglfail"));
 
-        if (File.Exists(dxFailFilePath))
+        if (dxFailFile.Exists)
         {
-            if (File.Exists(oglFailFilePath))
+            if (oglFailFile.Exists)
             {
                 if (IsXnaFramework4RefreshInstalled())
                 {
@@ -105,20 +95,21 @@ internal sealed class Program
                     return;
                 }
 
-                DialogResult dr = new IncompatibleGPUMessageForm().ShowDialog();
+                DialogResult dialogResult = new IncompatibleGPUMessageForm().ShowDialog();
 
-                if (dr == DialogResult.No)
+                switch (dialogResult)
                 {
-                    File.Delete(dxFailFilePath);
-                    File.Delete(oglFailFilePath);
-                    AutoRun();
+                    case DialogResult.No:
+                        dxFailFile.Delete();
+                        oglFailFile.Delete();
+                        AutoRun();
+                        break;
+                    case DialogResult.Yes:
+                        RunXna();
+                        break;
+                    case DialogResult.Cancel:
+                        return;
                 }
-                else if (dr == DialogResult.Yes)
-                {
-                    RunXna();
-                }
-
-                return;
             }
 
             RunOgl();
@@ -127,34 +118,35 @@ internal sealed class Program
         RunDx();
     }
 
-    private static void StartProcess(string relativePath, bool run32Bit = false)
+    private static void StartProcess(string relativePath, bool run32Bit = false, bool runDesktop = true)
     {
         if (!Environment.Is64BitOperatingSystem)
             run32Bit = true;
 
-        FileInfo? runtime64Bit = null;
-        FileInfo? runtime32Bit = GetDotNetHost(Architecture.X86);
+        FileInfo? dotnetHost;
 
         if (run32Bit)
         {
-            if (!(runtime32Bit?.Exists ?? false))
+            dotnetHost = GetDotNetHost(Architecture.X86, runDesktop);
+
+            if (!(dotnetHost?.Exists ?? false))
             {
                 Application.Run(new DotNet32BitRuntimeMissingMessageForm());
                 Environment.Exit(2);
             }
         }
-        else if (Environment.Is64BitOperatingSystem)
+        else
         {
-            runtime64Bit = GetDotNetHost(RuntimeInformation.OSArchitecture);
+            dotnetHost = GetDotNetHost(RuntimeInformation.OSArchitecture, runDesktop);
 
-            if (!(runtime64Bit?.Exists ?? false))
+            if (!(dotnetHost?.Exists ?? false))
             {
                 Application.Run(new DotNet64BitRuntimeMissingMessageForm());
                 Environment.Exit(2);
             }
         }
 
-        string absolutePath = FormattableString.Invariant($"{Environment.CurrentDirectory}{Path.DirectorySeparatorChar}{relativePath}");
+        string absolutePath = FormattableString.Invariant($"{Environment.CurrentDirectory}\\{relativePath}");
 
         if (!File.Exists(absolutePath))
         {
@@ -169,7 +161,7 @@ internal sealed class Program
 #pragma warning disable SA1312 // Variable names should begin with lower-case letter
         using var _ = Process.Start(new ProcessStartInfo
         {
-            FileName = run32Bit ? runtime32Bit!.FullName : runtime64Bit!.FullName,
+            FileName = dotnetHost.FullName,
             Arguments = "\"" + absolutePath + "\"",
             CreateNoWindow = true
         });
@@ -184,9 +176,9 @@ internal sealed class Program
         return "1".Equals(xnaKey?.GetValue("Refresh1Installed")?.ToString(), StringComparison.OrdinalIgnoreCase);
     }
 
-    private static FileInfo? GetDotNetHost(Architecture architecture)
+    private static FileInfo? GetDotNetHost(Architecture architecture, bool runDesktop)
     {
-        if (!IsDotNetDesktopInstalled(architecture))
+        if (runDesktop && !IsDotNetDesktopInstalled(architecture))
             return null;
 
         var localMachineRegistryKey = RegistryKey.OpenBaseKey(
