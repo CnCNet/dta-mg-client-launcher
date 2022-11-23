@@ -4,19 +4,19 @@ using System;
 using System.Diagnostics;
 using System.Windows.Forms;
 
-internal sealed partial class XNAFrameworkMissingMessageForm : Form
+internal sealed partial class ComponentMissingMessageForm : Form
 {
-    public XNAFrameworkMissingMessageForm()
+    public ComponentMissingMessageForm()
     {
         InitializeComponent();
     }
 
-    private void LblLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+    private void LblDotNetLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
     {
 #pragma warning disable SA1312 // Variable names should begin with lower-case letter
         using var _ = Process.Start(new ProcessStartInfo
         {
-            FileName = "https://www.microsoft.com/en-us/download/details.aspx?id=27598",
+            FileName = e.Link!.LinkData as string,
             UseShellExecute = true
         });
 #pragma warning restore SA1312 // Variable names should begin with lower-case letter

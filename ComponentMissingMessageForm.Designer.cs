@@ -1,6 +1,6 @@
 ﻿namespace DTALauncherStub;
 
-partial class DotNetComponentMissingMessageForm
+partial class ComponentMissingMessageForm
 {
     /// <summary>
     /// Required designer variable.
@@ -78,7 +78,7 @@ partial class DotNetComponentMissingMessageForm
             this.lblDownload.TabIndex = 1;
             this.lblDownload.Text = "You can download the installer from the following link:\r\n";
             // 
-            // DotNetComponentMissingMessageForm
+            // ComponentMissingMessageForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -93,7 +93,7 @@ partial class DotNetComponentMissingMessageForm
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "DotNetComponentMissingMessageForm";
+            this.Name = "ComponentMissingMessageForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "{0} Missing";

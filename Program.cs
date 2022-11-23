@@ -14,7 +14,8 @@ internal sealed class Program
     private const string Resources = "Resources";
     private const string Binaries = "Binaries";
     private const int DotNetMajorVersion = 7;
-    private const string DotNetDownloadLink = "https://dotnet.microsoft.com/en-us/download/dotnet/7.0/runtime";
+    private const string DotNetDownloadLink = "https://dotnet.microsoft.com/download/dotnet/7.0/runtime";
+    private const string XnaDownloadLink = "https://www.microsoft.com/download/details.aspx?id=27598";
 
     [STAThread]
     private static void Main(string[] args)
@@ -62,10 +63,7 @@ internal sealed class Program
     private static void RunXna()
     {
         if (!IsXnaFramework4RefreshInstalled())
-        {
-            Application.Run(new XNAFrameworkMissingMessageForm());
-            Environment.Exit(2);
-        }
+            ShowMissingComponentForm("Microsoft XNA Framework 4.0 Refresh", XnaDownloadLink);
 
         StartProcess(GetClientProcessPath("XNA", "clientxna.dll"), true);
     }
@@ -153,31 +151,31 @@ internal sealed class Program
     {
         if (runDesktop && !IsDotNetDesktopInstalled(architecture))
         {
-            string missingDotNetComponent = FormattableString.Invariant($"{architecture} .NET Desktop Runtime {DotNetMajorVersion}");
+            string missingComponent = FormattableString.Invariant($"{architecture} .NET Desktop Runtime {DotNetMajorVersion}");
 
-            ShowMissingDotNetComponentForm(missingDotNetComponent);
+            ShowMissingComponentForm(missingComponent, DotNetDownloadLink);
         }
 
         FileInfo? dotnetHost = GetDotNetHost(architecture);
 
         if (!(dotnetHost?.Exists ?? false))
         {
-            string missingDotNetComponent = FormattableString.Invariant($"{architecture} .NET Runtime {DotNetMajorVersion}");
+            string missingComponent = FormattableString.Invariant($"{architecture} .NET Runtime {DotNetMajorVersion}");
 
-            ShowMissingDotNetComponentForm(missingDotNetComponent);
+            ShowMissingComponentForm(missingComponent, DotNetDownloadLink);
         }
 
         return dotnetHost!;
     }
 
-    private static void ShowMissingDotNetComponentForm(string missingDotNetComponent)
+    private static void ShowMissingComponentForm(string missingComponent, string downloadLink)
     {
-        var messageForm = new DotNetComponentMissingMessageForm();
+        var messageForm = new ComponentMissingMessageForm();
 
-        messageForm.Text = string.Format(CultureInfo.CurrentCulture, messageForm.Text, missingDotNetComponent);
-        messageForm.lblDotNetDescription.Text = string.Format(CultureInfo.CurrentCulture, messageForm.lblDotNetDescription.Text, missingDotNetComponent);
-        messageForm.lblDotNetLink.Text = DotNetDownloadLink;
-        messageForm.lblDotNetLink.Links[0].LinkData = DotNetDownloadLink;
+        messageForm.Text = string.Format(CultureInfo.CurrentCulture, messageForm.Text, missingComponent);
+        messageForm.lblDotNetDescription.Text = string.Format(CultureInfo.CurrentCulture, messageForm.lblDotNetDescription.Text, missingComponent);
+        messageForm.lblDotNetLink.Text = downloadLink;
+        messageForm.lblDotNetLink.Links[0].LinkData = downloadLink;
 
         Application.Run(messageForm);
         Environment.Exit(2);
