@@ -2,6 +2,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -13,7 +14,9 @@ internal sealed class Program
     private const string Resources = "Resources";
     private const string Binaries = "Binaries";
     private const int DotNetMajorVersion = 7;
+    private const string DotNetDownloadLink = "https://dotnet.microsoft.com/en-us/download/dotnet/7.0/runtime";
 
+    [STAThread]
     private static void Main(string[] args)
     {
         try
@@ -123,29 +126,7 @@ internal sealed class Program
         if (!Environment.Is64BitOperatingSystem)
             run32Bit = true;
 
-        FileInfo? dotnetHost;
-
-        if (run32Bit)
-        {
-            dotnetHost = GetDotNetHost(Architecture.X86, runDesktop);
-
-            if (!(dotnetHost?.Exists ?? false))
-            {
-                Application.Run(new DotNet32BitRuntimeMissingMessageForm());
-                Environment.Exit(2);
-            }
-        }
-        else
-        {
-            dotnetHost = GetDotNetHost(RuntimeInformation.OSArchitecture, runDesktop);
-
-            if (!(dotnetHost?.Exists ?? false))
-            {
-                Application.Run(new DotNet64BitRuntimeMissingMessageForm());
-                Environment.Exit(2);
-            }
-        }
-
+        FileInfo dotnetHost = CheckAndRetrieveDotNetHost(run32Bit ? Architecture.X86 : RuntimeInformation.OSArchitecture, runDesktop);
         string absolutePath = FormattableString.Invariant($"{Environment.CurrentDirectory}\\{relativePath}");
 
         if (!File.Exists(absolutePath))
@@ -168,36 +149,76 @@ internal sealed class Program
 #pragma warning restore SA1312 // Variable names should begin with lower-case letter
     }
 
+    private static FileInfo CheckAndRetrieveDotNetHost(Architecture architecture, bool runDesktop)
+    {
+        if (runDesktop && !IsDotNetDesktopInstalled(architecture))
+        {
+            string missingDotNetComponent = FormattableString.Invariant($"{architecture} .NET Desktop Runtime {DotNetMajorVersion}");
+
+            ShowMissingDotNetComponentForm(missingDotNetComponent);
+        }
+
+        FileInfo? dotnetHost = GetDotNetHost(architecture);
+
+        if (!(dotnetHost?.Exists ?? false))
+        {
+            string missingDotNetComponent = FormattableString.Invariant($"{architecture} .NET Runtime {DotNetMajorVersion}");
+
+            ShowMissingDotNetComponentForm(missingDotNetComponent);
+        }
+
+        return dotnetHost!;
+    }
+
+    private static void ShowMissingDotNetComponentForm(string missingDotNetComponent)
+    {
+        var messageForm = new DotNetComponentMissingMessageForm();
+
+        messageForm.Text = string.Format(CultureInfo.CurrentCulture, messageForm.Text, missingDotNetComponent);
+        messageForm.lblDotNetDescription.Text = string.Format(CultureInfo.CurrentCulture, messageForm.lblDotNetDescription.Text, missingDotNetComponent);
+        messageForm.lblDotNetLink.Text = DotNetDownloadLink;
+        messageForm.lblDotNetLink.Links[0].LinkData = DotNetDownloadLink;
+
+        Application.Run(messageForm);
+        Environment.Exit(2);
+    }
+
     private static bool IsXnaFramework4RefreshInstalled()
     {
-        var localMachine32BitRegistryKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32);
+        using var localMachine32BitRegistryKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32);
         using RegistryKey? xnaKey = localMachine32BitRegistryKey.OpenSubKey("SOFTWARE\\Microsoft\\XNA\\Framework\\v4.0");
 
         return "1".Equals(xnaKey?.GetValue("Refresh1Installed")?.ToString(), StringComparison.OrdinalIgnoreCase);
     }
 
-    private static FileInfo? GetDotNetHost(Architecture architecture, bool runDesktop)
+    private static FileInfo? GetDotNetHost(Architecture architecture)
     {
-        if (runDesktop && !IsDotNetDesktopInstalled(architecture))
+        if (!IsDotNetCoreInstalled(architecture))
             return null;
 
-        var localMachineRegistryKey = RegistryKey.OpenBaseKey(
-            RegistryHive.LocalMachine, architecture is Architecture.X86 ? RegistryView.Registry32 : RegistryView.Registry64);
-        using RegistryKey? dotnetKey = localMachineRegistryKey.OpenSubKey(
-            FormattableString.Invariant($"SOFTWARE\\dotnet\\Setup\\InstalledVersions\\{architecture}\\sharedhost"));
-        string? installLocation = dotnetKey?.GetValue("Path")?.ToString();
+        using var localMachine32BitRegistryKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32);
+        using RegistryKey? dotnetArchitectureKey = localMachine32BitRegistryKey.OpenSubKey(
+            FormattableString.Invariant($"SOFTWARE\\dotnet\\Setup\\InstalledVersions\\{architecture}"));
+        string? installLocation = dotnetArchitectureKey?.GetValue("InstallLocation")?.ToString();
 
         return installLocation is null ? null : new FileInfo(FormattableString.Invariant($"{installLocation}\\dotnet.exe"));
     }
 
-    private static bool IsDotNetDesktopInstalled(Architecture architecture)
-    {
-        var localMachine32BitRegistryKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32);
-        using RegistryKey? dotnetKey = localMachine32BitRegistryKey.OpenSubKey(
-            FormattableString.Invariant($"SOFTWARE\\dotnet\\Setup\\InstalledVersions\\{architecture}\\sharedfx\\Microsoft.WindowsDesktop.App"));
+    private static bool IsDotNetCoreInstalled(Architecture architecture)
+        => IsDotNetInstalled(architecture, "Microsoft.NETCore.App");
 
-        return dotnetKey?.GetValueNames().Any(q =>
+    private static bool IsDotNetDesktopInstalled(Architecture architecture)
+        => IsDotNetInstalled(architecture, "Microsoft.WindowsDesktop.App");
+
+    private static bool IsDotNetInstalled(Architecture architecture, string sharedFrameworkName)
+    {
+        using var localMachine32BitRegistryKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32);
+        using RegistryKey? dotnetSharedFrameworkKey = localMachine32BitRegistryKey.OpenSubKey(
+            FormattableString.Invariant($"SOFTWARE\\dotnet\\Setup\\InstalledVersions\\{architecture}\\sharedfx\\{sharedFrameworkName}"));
+
+        return dotnetSharedFrameworkKey?.GetValueNames().Any(q =>
             q.StartsWith(FormattableString.Invariant($"{DotNetMajorVersion}."), StringComparison.OrdinalIgnoreCase)
-            && "1".Equals(dotnetKey.GetValue(q)?.ToString(), StringComparison.OrdinalIgnoreCase)) ?? false;
+            && !q.Contains('-', StringComparison.OrdinalIgnoreCase)
+            && "1".Equals(dotnetSharedFrameworkKey.GetValue(q)?.ToString(), StringComparison.OrdinalIgnoreCase)) ?? false;
     }
 }
