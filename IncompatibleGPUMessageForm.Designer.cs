@@ -67,10 +67,9 @@
             this.lblXNALink.Location = new System.Drawing.Point(12, 145);
             this.lblXNALink.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblXNALink.Name = "lblXNALink";
-            this.lblXNALink.Size = new System.Drawing.Size(367, 15);
+            this.lblXNALink.Size = new System.Drawing.Size(0, 15);
             this.lblXNALink.TabIndex = 2;
             this.lblXNALink.TabStop = true;
-            this.lblXNALink.Text = "https://www.microsoft.com/en-us/download/details.aspx?id=20914";
             this.lblXNALink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LblXNALink_LinkClicked);
             // 
             // lblXNADescription
@@ -150,7 +149,7 @@
 
         private System.Windows.Forms.Button btnRunDX;
         private System.Windows.Forms.Label lblDescription;
-        private System.Windows.Forms.LinkLabel lblXNALink;
+        internal System.Windows.Forms.LinkLabel lblXNALink;
         private System.Windows.Forms.Label lblXNADescription;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnRunXNAOnce;

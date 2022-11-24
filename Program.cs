@@ -63,7 +63,7 @@ internal sealed class Program
     private static void RunXna()
     {
         if (!IsXnaFramework4RefreshInstalled())
-            ShowMissingComponentForm("Microsoft XNA Framework 4.0 Refresh", XnaDownloadLink);
+            ShowMissingComponentForm("'Microsoft XNA Framework 4.0 Refresh'", XnaDownloadLink);
 
         StartProcess(GetClientProcessPath("XNA", "clientxna.dll"), true);
     }
@@ -96,9 +96,11 @@ internal sealed class Program
                     return;
                 }
 
-                DialogResult dialogResult = new IncompatibleGPUMessageForm().ShowDialog();
+                var incompatibleGpuForm = new IncompatibleGPUMessageForm();
 
-                switch (dialogResult)
+                SetLinkLabelUrl(incompatibleGpuForm.lblXNALink, XnaDownloadLink);
+
+                switch (incompatibleGpuForm.ShowDialog())
                 {
                     case DialogResult.No:
                         dxFailFile.Delete();
@@ -117,6 +119,12 @@ internal sealed class Program
         }
 
         RunDx();
+    }
+
+    private static void SetLinkLabelUrl(LinkLabel linkLabel, string url)
+    {
+        linkLabel.Text = url;
+        linkLabel.Links[0].LinkData = url;
     }
 
     private static void StartProcess(string relativePath, bool run32Bit = false, bool runDesktop = true)
@@ -151,7 +159,7 @@ internal sealed class Program
     {
         if (runDesktop && !IsDotNetDesktopInstalled(architecture))
         {
-            string missingComponent = FormattableString.Invariant($"{architecture} .NET Desktop Runtime {DotNetMajorVersion}");
+            string missingComponent = FormattableString.Invariant($"'.NET Desktop Runtime' version {DotNetMajorVersion} for platform {architecture}");
 
             ShowMissingComponentForm(missingComponent, DotNetDownloadLink);
         }
@@ -160,7 +168,7 @@ internal sealed class Program
 
         if (!(dotnetHost?.Exists ?? false))
         {
-            string missingComponent = FormattableString.Invariant($"{architecture} .NET Runtime {DotNetMajorVersion}");
+            string missingComponent = FormattableString.Invariant($"'.NET Runtime' version {DotNetMajorVersion} for platform {architecture}");
 
             ShowMissingComponentForm(missingComponent, DotNetDownloadLink);
         }
@@ -172,11 +180,9 @@ internal sealed class Program
     {
         var messageForm = new ComponentMissingMessageForm();
 
-        messageForm.Text = string.Format(CultureInfo.CurrentCulture, messageForm.Text, missingComponent);
-        messageForm.lblDotNetDescription.Text = string.Format(CultureInfo.CurrentCulture, messageForm.lblDotNetDescription.Text, missingComponent);
-        messageForm.lblDotNetLink.Text = downloadLink;
-        messageForm.lblDotNetLink.Links[0].LinkData = downloadLink;
+        messageForm.lblDescription.Text = FormattableString.CurrentCulture($"The component {missingComponent} is missing.");
 
+        SetLinkLabelUrl(messageForm.lblLink, downloadLink);
         Application.Run(messageForm);
         Environment.Exit(2);
     }

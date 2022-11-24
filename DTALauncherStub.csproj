@@ -23,7 +23,6 @@
     <ComVisible>false</ComVisible>
     <CLSCompliant>false</CLSCompliant>
     <Platform>AnyCPU</Platform>
-    <RuntimeIdentifier>win-x86</RuntimeIdentifier>
     <ApplicationIcon>mainclienticon.ico</ApplicationIcon>
     <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
     <ApplicationManifest>app.manifest</ApplicationManifest>
