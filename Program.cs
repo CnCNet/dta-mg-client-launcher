@@ -2,7 +2,6 @@
 
 using System;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -28,25 +27,25 @@ internal sealed class Program
             {
                 if ("-XNA".Equals(arg, StringComparison.OrdinalIgnoreCase))
                 {
-                    RunXna();
+                    RunXNA();
                     return;
                 }
 
                 if ("-OGL".Equals(arg, StringComparison.OrdinalIgnoreCase))
                 {
-                    RunOgl();
+                    RunOGL();
                     return;
                 }
 
                 if ("-DX".Equals(arg, StringComparison.OrdinalIgnoreCase))
                 {
-                    RunDx();
+                    RunDX();
                     return;
                 }
 
                 if ("-UGL".Equals(arg, StringComparison.OrdinalIgnoreCase))
                 {
-                    RunUgl();
+                    RunUGL();
                     return;
                 }
             }
@@ -60,21 +59,21 @@ internal sealed class Program
         }
     }
 
-    private static void RunXna()
+    private static void RunXNA()
     {
-        if (!IsXnaFramework4RefreshInstalled())
+        if (!IsXNAFramework4RefreshInstalled())
             ShowMissingComponentForm("'Microsoft XNA Framework 4.0 Refresh'", XnaDownloadLink);
 
         StartProcess(GetClientProcessPath("XNA", "clientxna.dll"), true);
     }
 
-    private static void RunOgl()
+    private static void RunOGL()
         => StartProcess(GetClientProcessPath("OpenGL", "clientogl.dll"));
 
-    private static void RunDx()
+    private static void RunDX()
         => StartProcess(GetClientProcessPath("Windows", "clientdx.dll"));
 
-    private static void RunUgl()
+    private static void RunUGL()
         => StartProcess(GetClientProcessPath("UniversalGL", "clientogl.dll"), false, false);
 
     private static string GetClientProcessPath(string directory, string file)
@@ -90,9 +89,9 @@ internal sealed class Program
         {
             if (oglFailFile.Exists)
             {
-                if (IsXnaFramework4RefreshInstalled())
+                if (IsXNAFramework4RefreshInstalled())
                 {
-                    RunXna();
+                    RunXNA();
                     return;
                 }
 
@@ -108,17 +107,17 @@ internal sealed class Program
                         AutoRun();
                         break;
                     case DialogResult.Yes:
-                        RunXna();
+                        RunXNA();
                         break;
                     case DialogResult.Cancel:
                         return;
                 }
             }
 
-            RunOgl();
+            RunOGL();
         }
 
-        RunDx();
+        RunDX();
     }
 
     private static void SetLinkLabelUrl(LinkLabel linkLabel, string url)
@@ -142,17 +141,16 @@ internal sealed class Program
                 "Client Launcher Error",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error);
+
             Environment.Exit(3);
         }
 
-#pragma warning disable SA1312 // Variable names should begin with lower-case letter
         using var _ = Process.Start(new ProcessStartInfo
         {
             FileName = dotnetHost.FullName,
             Arguments = "\"" + absolutePath + "\"",
             CreateNoWindow = true
         });
-#pragma warning restore SA1312 // Variable names should begin with lower-case letter
     }
 
     private static FileInfo CheckAndRetrieveDotNetHost(Architecture architecture, bool runDesktop)
@@ -187,7 +185,7 @@ internal sealed class Program
         Environment.Exit(2);
     }
 
-    private static bool IsXnaFramework4RefreshInstalled()
+    private static bool IsXNAFramework4RefreshInstalled()
     {
         using var localMachine32BitRegistryKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32);
         using RegistryKey? xnaKey = localMachine32BitRegistryKey.OpenSubKey("SOFTWARE\\Microsoft\\XNA\\Framework\\v4.0");

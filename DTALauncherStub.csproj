@@ -9,15 +9,11 @@
     <Product>Dawn of the Tiberium Age</Product>
     <Copyright>Copyright © CnCNet, Rampastring 2011-2022</Copyright>
     <Trademark></Trademark>
-    <Version>2.0.0.1</Version>
-    <FileVersion>2.0.0.1</FileVersion>
-    <InformationalVersion>2.0.0.1</InformationalVersion>
     <AssemblyName>DTALauncherStub</AssemblyName>
     <RootNamespace>DTALauncherStub</RootNamespace>
     <ComVisible>false</ComVisible>
     <CLSCompliant>false</CLSCompliant>
-    <AnalysisLevel>preview-all</AnalysisLevel>
-    <LangVersion>preview</LangVersion>
+    <AnalysisLevel>latest-all</AnalysisLevel>
     <Nullable>enable</Nullable>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <ComVisible>false</ComVisible>
