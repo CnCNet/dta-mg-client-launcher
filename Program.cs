@@ -1,260 +1,226 @@
-﻿using Microsoft.Win32;
+﻿namespace DTALauncherStub;
+
 using System;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using Microsoft.Win32;
 
-namespace DTALauncherStub
+internal sealed class Program
 {
-    class Program
+    private const string Resources = "Resources";
+    private const string Binaries = "Binaries";
+    private const int DotNetMajorVersion = 7;
+    private const string DotNetDownloadLink = "https://dotnet.microsoft.com/download/dotnet/7.0/runtime";
+    private const string XnaDownloadLink = "https://www.microsoft.com/download/details.aspx?id=27598";
+
+    [STAThread]
+    private static void Main(string[] args)
     {
-        private const string RESOURCES = "Resources";
-        private const int ERROR_CANCELLED_CODE = 1223;
-        private const int NET_FRAMEWORK_45_RELEASE_KEY = 378389;
-
-        private static void Main(string[] args)
+        try
         {
-            var osVersion = GetOperatingSystemVersion();
+            ApplicationConfiguration.Initialize();
 
-            char dsc = Path.DirectorySeparatorChar;
-
-            if (args != null)
+            foreach (string arg in args)
             {
-                foreach (string arg in args)
+                if ("-XNA".Equals(arg, StringComparison.OrdinalIgnoreCase))
                 {
-                    if (arg.ToUpper() == "-XNA")
-                    {
-                        RunXNA();
-                        return;
-                    }
-                    else if (arg.ToUpper() == "-OGL")
-                    {
-                        RunOGL();
-                        return;
-                    }
-                    else if (arg.ToUpper() == "-DX")
-                    {
-                        RunDX();
-                        return;
-                    }
-                }
-            }
-
-            switch (osVersion)
-            {
-                case OSVersion.WINXP:
-                case OSVersion.WINVISTA:
-                    if (!IsNetFramework4Installed())
-                    {
-                        Application.Run(new NETFramework4MissingMessageForm());
-                        break;
-                    }
-
                     RunXNA();
-                    break;
-                case OSVersion.WIN7:
-                case OSVersion.WIN810:
-                    W7And10Autorun();
-                    break;
-                case OSVersion.UNIX:
-                case OSVersion.UNKNOWN:
+                    return;
+                }
+
+                if ("-OGL".Equals(arg, StringComparison.OrdinalIgnoreCase))
+                {
                     RunOGL();
-                    break;
-            }
-        }
-
-        private static void RunXNA()
-        {
-            if (!IsXNAFramework4Installed())
-            {
-                Application.Run(new XNAFrameworkMissingMessageForm());
-                return;
-            }
-
-            StartProcess(RESOURCES + Path.DirectorySeparatorChar + "clientxna.exe");
-        }
-
-        private static void RunOGL()
-        {
-            StartProcess(RESOURCES + Path.DirectorySeparatorChar + "clientogl.exe");
-        }
-
-        private static void RunDX()
-        {
-            if (GetOperatingSystemVersion() == OSVersion.WIN7)
-            {
-                if (!IsNetFramework45Installed())
-                {
-                    Application.Run(new NETFramework45MissingMessageForm());
-                    return;
-                }
-            }
-
-            StartProcess(RESOURCES + Path.DirectorySeparatorChar + "clientdx.exe");
-        }
-
-        private static void W7And10Autorun()
-        {
-            string basePath = Environment.CurrentDirectory +
-                Path.DirectorySeparatorChar + "Client" + Path.DirectorySeparatorChar;
-            string dxFailFilePath = basePath + ".dxfail";
-
-            if (File.Exists(dxFailFilePath))
-            {
-                if (IsXNAFramework4Installed())
-                {
-                    RunXNA();
                     return;
                 }
 
-                DialogResult dr = new IncompatibleGPUMessageForm().ShowDialog();
-                if (dr == DialogResult.No)
+                if ("-DX".Equals(arg, StringComparison.OrdinalIgnoreCase))
                 {
-                    File.Delete(dxFailFilePath);
                     RunDX();
-                }
-                else if (dr == DialogResult.Yes)
-                {
-                    RunXNA();
+                    return;
                 }
 
-                return;
-            }
-
-            RunDX();
-        }
-
-        private static void StartProcess(string relativePath)
-        {
-            string completeFilePath = Environment.CurrentDirectory + Path.DirectorySeparatorChar + relativePath;
-
-            if (!File.Exists(completeFilePath))
-            {
-                MessageBox.Show("Main client executable (" + relativePath + ") not found!",
-                    "Client Launcher Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            try
-            {
-                Process.Start(completeFilePath);
-            }
-            catch (Win32Exception ex)
-            {
-                if (ex.NativeErrorCode == ERROR_CANCELLED_CODE)
+                if ("-UGL".Equals(arg, StringComparison.OrdinalIgnoreCase))
                 {
-                    MessageBox.Show("Unable to launch the main client. It could be blocked by Windows SmartScreen."
-                        + Environment.NewLine + Environment.NewLine +
-                        "Please try to launch the following file manually: " + relativePath
-                        + Environment.NewLine + Environment.NewLine +
-                        "If the client still doesn't run, please contact the mod's authors for support.",
-                        "Client Launcher Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    RunUGL();
                     return;
                 }
             }
+
+            AutoRun();
         }
-
-        private static OSVersion GetOperatingSystemVersion()
+        catch (Exception ex)
         {
-            Version osVersion = Environment.OSVersion.Version;
-
-            if (Environment.OSVersion.Platform == PlatformID.Win32Windows)
-                return OSVersion.WIN9X;
-
-            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
-            {
-                if (osVersion.Major < 5)
-                    return OSVersion.UNKNOWN;
-
-                if (osVersion.Major == 5)
-                    return OSVersion.WINXP;
-
-                if (osVersion.Minor > 1)
-                    return OSVersion.WIN810;
-                else if (osVersion.Minor == 0)
-                    return OSVersion.WINVISTA;
-
-                return OSVersion.WIN7;
-            }
-
-            int p = (int)Environment.OSVersion.Platform;
-
-            if ((p == 4) || (p == 6) || (p == 128))
-            {
-                return OSVersion.UNIX;
-            }
-
-            return OSVersion.UNKNOWN;
-        }
-
-        private static bool IsNetFramework4Installed()
-        {
-            try
-            {
-                RegistryKey ndpKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\NET Framework Setup\\NDP\\v4\\Full");
-
-                string installValue = ndpKey.GetValue("Install").ToString();
-
-                if (installValue == "1")
-                    return true;
-            }
-            catch
-            {
-                
-            }
-
-            return false;
-        }
-
-        private static bool IsNetFramework45Installed()
-        {
-            try
-            {
-                RegistryKey ndpKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\NET Framework Setup\\NDP\\v4\\Full");
-
-                string installValue = ndpKey.GetValue("Release").ToString();
-
-                // https://docs.microsoft.com/en-us/dotnet/framework/migration-guide/how-to-determine-which-versions-are-installed#net_d
-                if (Convert.ToInt32(installValue) >= NET_FRAMEWORK_45_RELEASE_KEY)
-                    return true;
-            }
-            catch
-            {
-
-            }
-
-            return false;
-        }
-
-        private static bool IsXNAFramework4Installed()
-        {
-            try
-            {
-                RegistryKey xnaKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\XNA\\Framework\\v4.0");
-
-                string installValue = xnaKey.GetValue("Installed").ToString();
-
-                if (installValue == "1")
-                    return true;
-            }
-            catch
-            {
-
-            }
-
-            return false;
+            MessageBox.Show(ex.ToString(), "Client Launcher Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            Environment.Exit(1);
         }
     }
 
-    enum OSVersion
+    private static void RunXNA()
     {
-        UNKNOWN,
-        WIN9X,
-        WINXP,
-        WINVISTA,
-        WIN7,
-        WIN810,
-        UNIX
+        if (!IsXNAFramework4RefreshInstalled())
+            ShowMissingComponentForm("'Microsoft XNA Framework 4.0 Refresh'", XnaDownloadLink);
+
+        StartProcess(GetClientProcessPath("XNA", "clientxna.dll"), true);
+    }
+
+    private static void RunOGL()
+        => StartProcess(GetClientProcessPath("OpenGL", "clientogl.dll"));
+
+    private static void RunDX()
+        => StartProcess(GetClientProcessPath("Windows", "clientdx.dll"));
+
+    private static void RunUGL()
+        => StartProcess(GetClientProcessPath("UniversalGL", "clientogl.dll"), false, false);
+
+    private static string GetClientProcessPath(string directory, string file)
+        => FormattableString.Invariant($"{Resources}\\{Binaries}\\{directory}\\{file}");
+
+    private static void AutoRun()
+    {
+        string basePath = FormattableString.Invariant($"{Environment.CurrentDirectory}\\Client\\");
+        var dxFailFile = new FileInfo(FormattableString.Invariant($"{basePath}.dxfail"));
+        var oglFailFile = new FileInfo(FormattableString.Invariant($"{basePath}.oglfail"));
+
+        if (dxFailFile.Exists)
+        {
+            if (oglFailFile.Exists)
+            {
+                if (IsXNAFramework4RefreshInstalled())
+                {
+                    RunXNA();
+                    return;
+                }
+
+                var incompatibleGpuForm = new IncompatibleGPUMessageForm();
+
+                SetLinkLabelUrl(incompatibleGpuForm.lblXNALink, XnaDownloadLink);
+
+                switch (incompatibleGpuForm.ShowDialog())
+                {
+                    case DialogResult.No:
+                        dxFailFile.Delete();
+                        oglFailFile.Delete();
+                        AutoRun();
+                        break;
+                    case DialogResult.Yes:
+                        RunXNA();
+                        break;
+                    case DialogResult.Cancel:
+                        return;
+                }
+            }
+
+            RunOGL();
+        }
+
+        RunDX();
+    }
+
+    private static void SetLinkLabelUrl(LinkLabel linkLabel, string url)
+    {
+        linkLabel.Text = url;
+        linkLabel.Links[0].LinkData = url;
+    }
+
+    private static void StartProcess(string relativePath, bool run32Bit = false, bool runDesktop = true)
+    {
+        if (!Environment.Is64BitOperatingSystem)
+            run32Bit = true;
+
+        FileInfo dotnetHost = CheckAndRetrieveDotNetHost(run32Bit ? Architecture.X86 : RuntimeInformation.OSArchitecture, runDesktop);
+        string absolutePath = FormattableString.Invariant($"{Environment.CurrentDirectory}\\{relativePath}");
+
+        if (!File.Exists(absolutePath))
+        {
+            MessageBox.Show(
+                FormattableString.CurrentCulture($"Main client library ({relativePath}) not found!"),
+                "Client Launcher Error",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
+
+            Environment.Exit(3);
+        }
+
+        using var _ = Process.Start(new ProcessStartInfo
+        {
+            FileName = dotnetHost.FullName,
+            Arguments = "\"" + absolutePath + "\"",
+            CreateNoWindow = true
+        });
+    }
+
+    private static FileInfo CheckAndRetrieveDotNetHost(Architecture architecture, bool runDesktop)
+    {
+        if (runDesktop && !IsDotNetDesktopInstalled(architecture))
+        {
+            string missingComponent = FormattableString.Invariant($"'.NET Desktop Runtime' version {DotNetMajorVersion} for platform {architecture}");
+
+            ShowMissingComponentForm(missingComponent, DotNetDownloadLink);
+        }
+
+        FileInfo? dotnetHost = GetDotNetHost(architecture);
+
+        if (!(dotnetHost?.Exists ?? false))
+        {
+            string missingComponent = FormattableString.Invariant($"'.NET Runtime' version {DotNetMajorVersion} for platform {architecture}");
+
+            ShowMissingComponentForm(missingComponent, DotNetDownloadLink);
+        }
+
+        return dotnetHost!;
+    }
+
+    private static void ShowMissingComponentForm(string missingComponent, string downloadLink)
+    {
+        var messageForm = new ComponentMissingMessageForm();
+
+        messageForm.lblDescription.Text = FormattableString.CurrentCulture($"The component {missingComponent} is missing.");
+
+        SetLinkLabelUrl(messageForm.lblLink, downloadLink);
+        Application.Run(messageForm);
+        Environment.Exit(2);
+    }
+
+    private static bool IsXNAFramework4RefreshInstalled()
+    {
+        using var localMachine32BitRegistryKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32);
+        using RegistryKey? xnaKey = localMachine32BitRegistryKey.OpenSubKey("SOFTWARE\\Microsoft\\XNA\\Framework\\v4.0");
+
+        return "1".Equals(xnaKey?.GetValue("Refresh1Installed")?.ToString(), StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static FileInfo? GetDotNetHost(Architecture architecture)
+    {
+        if (!IsDotNetCoreInstalled(architecture))
+            return null;
+
+        using var localMachine32BitRegistryKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32);
+        using RegistryKey? dotnetArchitectureKey = localMachine32BitRegistryKey.OpenSubKey(
+            FormattableString.Invariant($"SOFTWARE\\dotnet\\Setup\\InstalledVersions\\{architecture}"));
+        string? installLocation = dotnetArchitectureKey?.GetValue("InstallLocation")?.ToString();
+
+        return installLocation is null ? null : new FileInfo(FormattableString.Invariant($"{installLocation}\\dotnet.exe"));
+    }
+
+    private static bool IsDotNetCoreInstalled(Architecture architecture)
+        => IsDotNetInstalled(architecture, "Microsoft.NETCore.App");
+
+    private static bool IsDotNetDesktopInstalled(Architecture architecture)
+        => IsDotNetInstalled(architecture, "Microsoft.WindowsDesktop.App");
+
+    private static bool IsDotNetInstalled(Architecture architecture, string sharedFrameworkName)
+    {
+        using var localMachine32BitRegistryKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32);
+        using RegistryKey? dotnetSharedFrameworkKey = localMachine32BitRegistryKey.OpenSubKey(
+            FormattableString.Invariant($"SOFTWARE\\dotnet\\Setup\\InstalledVersions\\{architecture}\\sharedfx\\{sharedFrameworkName}"));
+
+        return dotnetSharedFrameworkKey?.GetValueNames().Any(q =>
+            q.StartsWith(FormattableString.Invariant($"{DotNetMajorVersion}."), StringComparison.OrdinalIgnoreCase)
+            && !q.Contains('-', StringComparison.OrdinalIgnoreCase)
+            && "1".Equals(dotnetSharedFrameworkKey.GetValue(q)?.ToString(), StringComparison.OrdinalIgnoreCase)) ?? false;
     }
 }

@@ -4,17 +4,14 @@ using System;
 using System.Diagnostics;
 using System.Windows.Forms;
 
-internal sealed partial class IncompatibleGPUMessageForm : Form
+internal sealed partial class ComponentMissingMessageForm : Form
 {
-    public IncompatibleGPUMessageForm()
+    public ComponentMissingMessageForm()
     {
         InitializeComponent();
     }
 
-    private void BtnExit_Click(object sender, EventArgs e)
-        => Close();
-
-    private void LblXNALink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+    private void LblDotNetLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
     {
         using var _ = Process.Start(new ProcessStartInfo
         {
@@ -22,4 +19,7 @@ internal sealed partial class IncompatibleGPUMessageForm : Form
             UseShellExecute = true
         });
     }
+
+    private void BtnExit_Click(object sender, EventArgs e)
+        => Close();
 }
