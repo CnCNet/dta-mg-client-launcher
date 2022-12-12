@@ -6,20 +6,20 @@ on:
       iconurl:
         description: 'Icon URL'
         required: true
-        default: 'https://github.com/CnCNet/dta-mg-client-launcher/raw/master/mainclienticon.ico' 
+        default: 'https://raw.githubusercontent.com/CnCNet/dta-mg-client-launcher/master/mainclienticon.ico' 
         type: string
 
 jobs:
   publish:
     runs-on: windows-latest
     steps:
-    - name: Set Icon
-      run: curl ${{ github.event.inputs.iconurl }} -o mainclienticon.ico
-
     - name: Checkout
       uses: actions/checkout@main
       with:
         fetch-depth: 0
+
+    - name: Set Icon
+      run: curl ${{ github.event.inputs.iconurl }} -o mainclienticon.ico
 
     - name: Setup .NET Core SDK
       uses: actions/setup-dotnet@main
