@@ -1,0 +1,44 @@
+name: Publish with custom icon
+
+on:
+  workflow_dispatch:
+    inputs:
+      iconurl:
+        description: 'Icon URL'
+        required: true
+        default: 'https://github.com/CnCNet/dta-mg-client-launcher/raw/master/mainclienticon.ico' 
+        type: string
+
+jobs:
+  publish:
+    runs-on: windows-latest
+    steps:
+    - name: Set Icon
+      run: curl ${{ github.event.inputs.iconurl }} -o mainclienticon.ico
+
+    - name: Checkout
+      uses: actions/checkout@main
+      with:
+        fetch-depth: 0
+
+    - name: Setup .NET Core SDK
+      uses: actions/setup-dotnet@main
+      with:
+        dotnet-version: '7.x.x'
+
+    - name: Install GitVersion
+      uses: gittools/actions/gitversion/setup@main
+      with:
+        versionSpec: '5.x'
+
+    - name: Determine Version
+      uses: gittools/actions/gitversion/execute@main
+
+    - name: Publish
+      run: dotnet publish DTALauncherStub.csproj --configuration Release --no-self-contained -p:PublishSingleFile=true -r win-x86 -p:DebugType=embedded -p:AssemblyVersion=$env:GitVersion_AssemblySemVer -p:FileVersion=$env:GitVersion_AssemblySemFileVer -p:InformationalVersion=$env:GitVersion_InformationalVersion
+
+    - uses: actions/upload-artifact@main
+      name: Upload Artifacts
+      with:
+        name: artifacts
+        path: ./bin/Release/net7.0-windows/win-x86/publish
