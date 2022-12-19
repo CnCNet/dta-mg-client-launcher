@@ -1,4 +1,4 @@
-﻿namespace DTALauncherStub;
+﻿namespace CnCNet.LauncherStub;
 
 using System;
 using System.Diagnostics;

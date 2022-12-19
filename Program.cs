@@ -1,4 +1,4 @@
-﻿namespace DTALauncherStub;
+﻿namespace CnCNet.LauncherStub;
 
 using System;
 using System.Diagnostics;
@@ -95,7 +95,7 @@ internal sealed class Program
                     return;
                 }
 
-                var incompatibleGpuForm = new IncompatibleGPUMessageForm();
+                using var incompatibleGpuForm = new IncompatibleGPUMessageForm();
 
                 SetLinkLabelUrl(incompatibleGpuForm.lblXNALink, XnaDownloadLink);
 
@@ -176,7 +176,7 @@ internal sealed class Program
 
     private static void ShowMissingComponentForm(string missingComponent, string downloadLink)
     {
-        var messageForm = new ComponentMissingMessageForm();
+        using var messageForm = new ComponentMissingMessageForm();
 
         messageForm.lblDescription.Text = FormattableString.CurrentCulture($"The component {missingComponent} is missing.");
 

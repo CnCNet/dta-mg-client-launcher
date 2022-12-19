@@ -1,4 +1,4 @@
-﻿namespace DTALauncherStub;
+﻿namespace CnCNet.LauncherStub;
 
 partial class ComponentMissingMessageForm
 {

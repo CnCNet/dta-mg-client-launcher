@@ -3,14 +3,14 @@
     <TargetFramework>net7.0-windows</TargetFramework>
     <OutputType>WinExe</OutputType>
     <UseWindowsForms>true</UseWindowsForms>
-    <Title>DTA Launcher</Title>
-    <Description>Launcher for Dawn of the Tiberium Age CnCNet Client</Description>
+    <Title>CnCNet Launcher</Title>
+    <Description>Launcher for CnCNet Client</Description>
     <Company>CnCNet</Company>
-    <Product>Dawn of the Tiberium Age</Product>
+    <Product>CnCNet</Product>
     <Copyright>Copyright © CnCNet, Rampastring 2011-2022</Copyright>
     <Trademark></Trademark>
-    <AssemblyName>DTALauncherStub</AssemblyName>
-    <RootNamespace>DTALauncherStub</RootNamespace>
+    <AssemblyName>CnCNet.LauncherStub</AssemblyName>
+    <RootNamespace>CnCNet.LauncherStub</RootNamespace>
     <ComVisible>false</ComVisible>
     <CLSCompliant>false</CLSCompliant>
     <AnalysisLevel>latest-all</AnalysisLevel>
@@ -19,13 +19,10 @@
     <ComVisible>false</ComVisible>
     <CLSCompliant>false</CLSCompliant>
     <Platform>AnyCPU</Platform>
-    <ApplicationIcon>mainclienticon.ico</ApplicationIcon>
     <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <UseAppHost>false</UseAppHost>
   </PropertyGroup>
-  <ItemGroup>
-    <Content Include="mainclienticon.ico" />
-  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435">
       <PrivateAssets>all</PrivateAssets>
