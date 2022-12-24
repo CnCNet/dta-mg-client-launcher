@@ -26,10 +26,10 @@ jobs:
       uses: gittools/actions/gitversion/execute@main
 
     - name: Publish
-      run: dotnet publish DTALauncherStub.csproj --configuration Release --no-self-contained -p:PublishSingleFile=true -r win-x86 -p:DebugType=embedded -p:AssemblyVersion=$env:GitVersion_AssemblySemVer -p:FileVersion=$env:GitVersion_AssemblySemFileVer -p:InformationalVersion=$env:GitVersion_InformationalVersion
+      run: dotnet publish --configuration Release --no-self-contained -p:PublishSingleFile=true -r win-x86 -p:DebugType=embedded -p:AssemblyVersion=$env:GitVersion_AssemblySemVer -p:FileVersion=$env:GitVersion_AssemblySemFileVer -p:InformationalVersion=$env:GitVersion_InformationalVersion
 
     - name: Zip
-      run: 7z a -r ${{ format('DTALauncherStub-v{0}-net7.0-windows-x86.zip', env.GitVersion_SemVer) }} ./bin/Release/net7.0-windows/win-x86/publish/*.*
+      run: 7z a -r ${{ format('CnCNet.LauncherStub-v{0}-net7.0-windows-x86.zip', env.GitVersion_SemVer) }} ./bin/Release/net7.0-windows/win-x86/publish/*.*
 
     - name: Prerelease
       if: ${{ env.GitVersion_PreReleaseTag != '' }}

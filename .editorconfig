@@ -462,5 +462,4 @@ dotnet_style_qualification_for_method = false:warning
 dotnet_style_qualification_for_event = false:warning
 dotnet_diagnostic.CA1036.severity = warning
 dotnet_diagnostic.CA1727.severity = warning
-[*.vb]
-dotnet_diagnostic.CA1047.severity = warning
+dotnet_diagnostic.CA1031.severity = suggestion

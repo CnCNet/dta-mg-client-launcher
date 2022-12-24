@@ -1,4 +1,4 @@
-﻿namespace DTALauncherStub;
+﻿namespace CnCNet.LauncherStub;
 
 using System;
 using System.Diagnostics;
@@ -16,6 +16,8 @@ internal sealed class Program
     private const string DotNetDownloadLink = "https://dotnet.microsoft.com/download/dotnet/7.0/runtime";
     private const string XnaDownloadLink = "https://www.microsoft.com/download/details.aspx?id=27598";
 
+    private static bool automaticX86Fallback;
+
     [STAThread]
     private static void Main(string[] args)
     {
@@ -23,31 +25,30 @@ internal sealed class Program
         {
             ApplicationConfiguration.Initialize();
 
-            foreach (string arg in args)
+            automaticX86Fallback = !args.Any(q => q.Equals("-64Bit", StringComparison.OrdinalIgnoreCase));
+
+            if (args.Any(q => q.Equals("-XNA", StringComparison.OrdinalIgnoreCase)))
             {
-                if ("-XNA".Equals(arg, StringComparison.OrdinalIgnoreCase))
-                {
-                    RunXNA();
-                    return;
-                }
+                RunXNA();
+                return;
+            }
 
-                if ("-OGL".Equals(arg, StringComparison.OrdinalIgnoreCase))
-                {
-                    RunOGL();
-                    return;
-                }
+            if (args.Any(q => q.Equals("-OGL", StringComparison.OrdinalIgnoreCase)))
+            {
+                RunOGL();
+                return;
+            }
 
-                if ("-DX".Equals(arg, StringComparison.OrdinalIgnoreCase))
-                {
-                    RunDX();
-                    return;
-                }
+            if (args.Any(q => q.Equals("-DX", StringComparison.OrdinalIgnoreCase)))
+            {
+                RunDX();
+                return;
+            }
 
-                if ("-UGL".Equals(arg, StringComparison.OrdinalIgnoreCase))
-                {
-                    RunUGL();
-                    return;
-                }
+            if (args.Any(q => q.Equals("-UGL", StringComparison.OrdinalIgnoreCase)))
+            {
+                RunUGL();
+                return;
             }
 
             AutoRun();
@@ -95,7 +96,7 @@ internal sealed class Program
                     return;
                 }
 
-                var incompatibleGpuForm = new IncompatibleGPUMessageForm();
+                using var incompatibleGpuForm = new IncompatibleGPUMessageForm();
 
                 SetLinkLabelUrl(incompatibleGpuForm.lblXNALink, XnaDownloadLink);
 
@@ -155,6 +156,12 @@ internal sealed class Program
 
     private static FileInfo CheckAndRetrieveDotNetHost(Architecture architecture, bool runDesktop)
     {
+        if (architecture is not Architecture.X86 && automaticX86Fallback
+            && ((runDesktop && !IsDotNetDesktopInstalled(architecture)) || !IsDotNetCoreInstalled(architecture)))
+        {
+            architecture = Architecture.X86;
+        }
+
         if (runDesktop && !IsDotNetDesktopInstalled(architecture))
         {
             string missingComponent = FormattableString.Invariant($"'.NET Desktop Runtime' version {DotNetMajorVersion} for platform {architecture}");
@@ -176,7 +183,7 @@ internal sealed class Program
 
     private static void ShowMissingComponentForm(string missingComponent, string downloadLink)
     {
-        var messageForm = new ComponentMissingMessageForm();
+        using var messageForm = new ComponentMissingMessageForm();
 
         messageForm.lblDescription.Text = FormattableString.CurrentCulture($"The component {missingComponent} is missing.");
 
