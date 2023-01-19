@@ -1,6 +1,7 @@
 ﻿namespace CnCNet.LauncherStub;
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -13,8 +14,23 @@ internal sealed class Program
     private const string Resources = "Resources";
     private const string Binaries = "Binaries";
     private const int DotNetMajorVersion = 7;
-    private const string DotNetDownloadLink = "https://dotnet.microsoft.com/download/dotnet/7.0/runtime";
-    private const string XnaDownloadLink = "https://www.microsoft.com/download/details.aspx?id=27598";
+
+    private static readonly Uri XnaDownloadLink = new("https://www.microsoft.com/download/details.aspx?id=27598");
+    private static readonly Uri DotNetX64RuntimeDownloadLink = new(FormattableString.Invariant($"https://aka.ms/dotnet/{DotNetMajorVersion}.0/dotnet-runtime-win-x64.exe"));
+    private static readonly Uri DotNetX64DesktopRuntimeDownloadLink = new(FormattableString.Invariant($"https://aka.ms/dotnet/{DotNetMajorVersion}.0/windowsdesktop-runtime-win-x64.exe"));
+    private static readonly Uri DotNetX86RuntimeDownloadLink = new(FormattableString.Invariant($"https://aka.ms/dotnet/{DotNetMajorVersion}.0/dotnet-runtime-win-x86.exe"));
+    private static readonly Uri DotNetX86DesktopRuntimeDownloadLink = new(FormattableString.Invariant($"https://aka.ms/dotnet/{DotNetMajorVersion}.0/windowsdesktop-runtime-win-x86.exe"));
+    private static readonly Uri DotNetArm64RuntimeDownloadLink = new(FormattableString.Invariant($"https://aka.ms/dotnet/{DotNetMajorVersion}.0/dotnet-runtime-win-arm64.exe"));
+    private static readonly Uri DotNetArm64DesktopRuntimeDownloadLink = new(FormattableString.Invariant($"https://aka.ms/dotnet/{DotNetMajorVersion}.0/windowsdesktop-runtime-win-arm64.exe"));
+    private static readonly IReadOnlyDictionary<(Architecture Architecture, bool Desktop), Uri> DotNetDownloadLinks = new Dictionary<(Architecture Architecture, bool Desktop), Uri>
+    {
+        { (Architecture.X64, false), DotNetX64RuntimeDownloadLink },
+        { (Architecture.X64, true), DotNetX64DesktopRuntimeDownloadLink },
+        { (Architecture.X86, false), DotNetX86RuntimeDownloadLink },
+        { (Architecture.X86, true), DotNetX86DesktopRuntimeDownloadLink },
+        { (Architecture.Arm64, false), DotNetArm64RuntimeDownloadLink },
+        { (Architecture.Arm64, true), DotNetArm64DesktopRuntimeDownloadLink }
+    }.AsReadOnly();
 
     private static bool automaticX86Fallback;
 
@@ -121,10 +137,10 @@ internal sealed class Program
         RunDX();
     }
 
-    private static void SetLinkLabelUrl(LinkLabel linkLabel, string url)
+    private static void SetLinkLabelUrl(LinkLabel linkLabel, Uri uri)
     {
-        linkLabel.Text = url;
-        linkLabel.Links[0].LinkData = url;
+        linkLabel.Text = uri.ToString();
+        linkLabel.Links[0].LinkData = uri;
     }
 
     private static void StartProcess(string relativePath, bool run32Bit = false, bool runDesktop = true)
@@ -166,7 +182,7 @@ internal sealed class Program
         {
             string missingComponent = FormattableString.Invariant($"'.NET Desktop Runtime' version {DotNetMajorVersion} for platform {architecture}");
 
-            ShowMissingComponentForm(missingComponent, DotNetDownloadLink);
+            ShowMissingComponentForm(missingComponent, DotNetDownloadLinks[(architecture, true)]);
         }
 
         FileInfo? dotnetHost = GetDotNetHost(architecture);
@@ -175,13 +191,13 @@ internal sealed class Program
         {
             string missingComponent = FormattableString.Invariant($"'.NET Runtime' version {DotNetMajorVersion} for platform {architecture}");
 
-            ShowMissingComponentForm(missingComponent, DotNetDownloadLink);
+            ShowMissingComponentForm(missingComponent, DotNetDownloadLinks[(architecture, false)]);
         }
 
         return dotnetHost!;
     }
 
-    private static void ShowMissingComponentForm(string missingComponent, string downloadLink)
+    private static void ShowMissingComponentForm(string missingComponent, Uri downloadLink)
     {
         using var messageForm = new ComponentMissingMessageForm();
 
