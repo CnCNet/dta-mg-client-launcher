@@ -39,7 +39,9 @@ internal sealed class Program
     {
         try
         {
-            ApplicationConfiguration.Initialize();
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            // Application.SetHighDpiMode(HighDpiMode.SystemAware);
 
             automaticX86Fallback = !args.Any(q => q.Equals("-64Bit", StringComparison.OrdinalIgnoreCase));
 
@@ -94,13 +96,13 @@ internal sealed class Program
         => StartProcess(GetClientProcessPath("UniversalGL", "clientogl.dll"), false, false);
 
     private static string GetClientProcessPath(string directory, string file)
-        => FormattableString.Invariant($"{Resources}\\{Binaries}\\{directory}\\{file}");
+        => $"{Resources}\\{Binaries}\\{directory}\\{file}";
 
     private static void AutoRun()
     {
-        string basePath = FormattableString.Invariant($"{Environment.CurrentDirectory}\\Client\\");
-        var dxFailFile = new FileInfo(FormattableString.Invariant($"{basePath}.dxfail"));
-        var oglFailFile = new FileInfo(FormattableString.Invariant($"{basePath}.oglfail"));
+        string basePath = $"{Environment.CurrentDirectory}\\Client\\";
+        var dxFailFile = new FileInfo($"{basePath}.dxfail");
+        var oglFailFile = new FileInfo($"{basePath}.oglfail");
 
         if (dxFailFile.Exists)
         {
@@ -149,12 +151,12 @@ internal sealed class Program
             run32Bit = true;
 
         FileInfo dotnetHost = CheckAndRetrieveDotNetHost(run32Bit ? Architecture.X86 : RuntimeInformation.OSArchitecture, runDesktop);
-        string absolutePath = FormattableString.Invariant($"{Environment.CurrentDirectory}\\{relativePath}");
+        string absolutePath = $"{Environment.CurrentDirectory}\\{relativePath}";
 
         if (!File.Exists(absolutePath))
         {
             MessageBox.Show(
-                FormattableString.CurrentCulture($"Main client library ({relativePath}) not found!"),
+                $"Main client library ({relativePath}) not found!",
                 "Client Launcher Error",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error);
@@ -166,7 +168,8 @@ internal sealed class Program
         {
             FileName = dotnetHost.FullName,
             Arguments = "\"" + absolutePath + "\"",
-            CreateNoWindow = true
+            CreateNoWindow = true,
+            UseShellExecute = false,
         });
     }
 
@@ -180,7 +183,7 @@ internal sealed class Program
 
         if (runDesktop && !IsDotNetDesktopInstalled(architecture))
         {
-            string missingComponent = FormattableString.Invariant($"'.NET Desktop Runtime' version {DotNetMajorVersion} for platform {architecture}");
+            string missingComponent = $"'.NET Desktop Runtime' version {DotNetMajorVersion} for platform {architecture}";
 
             ShowMissingComponentForm(missingComponent, DotNetDownloadLinks[(architecture, true)]);
         }
@@ -189,7 +192,7 @@ internal sealed class Program
 
         if (!(dotnetHost?.Exists ?? false))
         {
-            string missingComponent = FormattableString.Invariant($"'.NET Runtime' version {DotNetMajorVersion} for platform {architecture}");
+            string missingComponent = $"'.NET Runtime' version {DotNetMajorVersion} for platform {architecture}";
 
             ShowMissingComponentForm(missingComponent, DotNetDownloadLinks[(architecture, false)]);
         }
@@ -201,7 +204,7 @@ internal sealed class Program
     {
         using var messageForm = new ComponentMissingMessageForm();
 
-        messageForm.lblDescription.Text = FormattableString.CurrentCulture($"The component {missingComponent} is missing.");
+        messageForm.lblDescription.Text = $"The component {missingComponent} is missing.";
 
         SetLinkLabelUrl(messageForm.lblLink, downloadLink);
         Application.Run(messageForm);
@@ -223,10 +226,10 @@ internal sealed class Program
 
         using var localMachine32BitRegistryKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32);
         using RegistryKey? dotnetArchitectureKey = localMachine32BitRegistryKey.OpenSubKey(
-            FormattableString.Invariant($"SOFTWARE\\dotnet\\Setup\\InstalledVersions\\{architecture}"));
+            $"SOFTWARE\\dotnet\\Setup\\InstalledVersions\\{architecture}");
         string? installLocation = dotnetArchitectureKey?.GetValue("InstallLocation")?.ToString();
 
-        return installLocation is null ? null : new FileInfo(FormattableString.Invariant($"{installLocation}\\dotnet.exe"));
+        return installLocation is null ? null : new FileInfo($"{installLocation}\\dotnet.exe");
     }
 
     private static bool IsDotNetCoreInstalled(Architecture architecture)
@@ -239,11 +242,11 @@ internal sealed class Program
     {
         using var localMachine32BitRegistryKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32);
         using RegistryKey? dotnetSharedFrameworkKey = localMachine32BitRegistryKey.OpenSubKey(
-            FormattableString.Invariant($"SOFTWARE\\dotnet\\Setup\\InstalledVersions\\{architecture}\\sharedfx\\{sharedFrameworkName}"));
+            $"SOFTWARE\\dotnet\\Setup\\InstalledVersions\\{architecture}\\sharedfx\\{sharedFrameworkName}");
 
         return dotnetSharedFrameworkKey?.GetValueNames().Any(q =>
-            q.StartsWith(FormattableString.Invariant($"{DotNetMajorVersion}."), StringComparison.OrdinalIgnoreCase)
-            && !q.Contains('-', StringComparison.OrdinalIgnoreCase)
+            q.StartsWith($"{DotNetMajorVersion}.", StringComparison.OrdinalIgnoreCase)
+            && !q.Contains('-')
             && "1".Equals(dotnetSharedFrameworkKey.GetValue(q)?.ToString(), StringComparison.OrdinalIgnoreCase)) ?? false;
     }
 }
