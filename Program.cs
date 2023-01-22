@@ -30,7 +30,7 @@ internal sealed class Program
         { (Architecture.X86, true), DotNetX86DesktopRuntimeDownloadLink },
         { (Architecture.Arm64, false), DotNetArm64RuntimeDownloadLink },
         { (Architecture.Arm64, true), DotNetArm64DesktopRuntimeDownloadLink }
-    }.AsReadOnly();
+    };
 
     private static bool automaticX86Fallback;
 
