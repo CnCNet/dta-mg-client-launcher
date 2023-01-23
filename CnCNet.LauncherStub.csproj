@@ -17,9 +17,13 @@
     <Nullable>enable</Nullable>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <Platform>AnyCPU</Platform>
+    <ApplicationIcon>mainclienticon.ico</ApplicationIcon>
     <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
+  <ItemGroup>
+    <Content Include="mainclienticon.ico" />
+  </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
