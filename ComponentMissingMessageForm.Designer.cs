@@ -58,9 +58,10 @@ partial class ComponentMissingMessageForm
             // 
             // btnExit
             // 
-            this.btnExit.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.btnExit.Location = new System.Drawing.Point(90, 89);
             this.btnExit.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.btnExit.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(114, 27);
             this.btnExit.TabIndex = 3;

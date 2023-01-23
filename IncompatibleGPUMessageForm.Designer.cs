@@ -39,7 +39,8 @@
             // 
             // btnRunDX
             // 
-            this.btnRunDX.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRunDX.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRunDX.DialogResult = System.Windows.Forms.DialogResult.No;
             this.btnRunDX.Location = new System.Drawing.Point(99, 299);
             this.btnRunDX.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
@@ -97,7 +98,8 @@
             // 
             // btnRunXNAOnce
             // 
-            this.btnRunXNAOnce.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRunXNAOnce.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRunXNAOnce.DialogResult = System.Windows.Forms.DialogResult.Yes;
             this.btnRunXNAOnce.Location = new System.Drawing.Point(99, 265);
             this.btnRunXNAOnce.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
@@ -109,7 +111,8 @@
             // 
             // button1
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.button1.Location = new System.Drawing.Point(99, 332);
             this.button1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
