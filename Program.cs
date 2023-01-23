@@ -69,6 +69,12 @@ internal sealed class Program
                 return;
             }
 
+            if (args.Any(q => q.Equals("-DialogTest", StringComparison.OrdinalIgnoreCase)))
+            {
+                RunDialogTest();
+                return;
+            }
+
             AutoRun();
         }
         catch (Exception ex)
@@ -76,6 +82,23 @@ internal sealed class Program
             MessageBox.Show(ex.ToString(), "Client Launcher Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             Environment.Exit(1);
         }
+    }
+
+    private static void RunDialogTest()
+    {
+        MessageBox.Show(
+            "Message text here",
+            "Message caption here",
+            MessageBoxButtons.OK,
+            MessageBoxIcon.Error);
+
+        using var incompatibleGpuForm = new IncompatibleGPUMessageForm();
+        SetLinkLabelUrl(incompatibleGpuForm.lblXNALink, new Uri("https://example.com"));
+        incompatibleGpuForm.ShowDialog();
+
+        using var messageForm = new ComponentMissingMessageForm();
+        SetLinkLabelUrl(messageForm.lblLink, new Uri("https://example.com"));
+        messageForm.ShowDialog();
     }
 
     private static void RunXNA()
