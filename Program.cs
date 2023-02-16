@@ -41,7 +41,6 @@ internal sealed class Program
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            // Application.SetHighDpiMode(HighDpiMode.SystemAware);
 
             automaticX86Fallback = !args.Any(q => q.Equals("-64Bit", StringComparison.OrdinalIgnoreCase));
 
