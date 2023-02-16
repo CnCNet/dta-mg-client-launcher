@@ -195,31 +195,40 @@ internal sealed class Program
         });
     }
 
-    private static FileInfo CheckAndRetrieveDotNetHost(Architecture architecture, bool runDesktop)
+    private static FileInfo CheckAndRetrieveDotNetHost(Architecture machineArchitecture, bool runDesktop)
     {
-        if (architecture is not Architecture.X86 && automaticX86Fallback
-            && ((runDesktop && !IsDotNetDesktopInstalled(architecture)) || !IsDotNetCoreInstalled(architecture)))
+        // Architectures to be searched for
+        List<Architecture> architectures = new() { machineArchitecture };
+        if (automaticX86Fallback)
+            architectures.Add(Architecture.X86);
+
+        // Search for installed dotnet architectures
+        Architecture? availableArchitecture = null;
+        foreach (Architecture architecture in architectures)
         {
-            architecture = Architecture.X86;
+            if (IsDotNetCoreInstalled(architecture)
+                && (!runDesktop || IsDotNetDesktopInstalled(architecture)))
+            {
+                availableArchitecture = architecture;
+                break;
+            }
         }
 
-        if (runDesktop && !IsDotNetDesktopInstalled(architecture))
+        // Prompt the download link and terminate the program if no architectures are available
+        if (availableArchitecture is null)
         {
-            string missingComponent = $"'.NET Desktop Runtime' version {DotNetMajorVersion} for platform {architecture}";
-
-            ShowMissingComponentForm(missingComponent, DotNetDownloadLinks[(architecture, true)]);
+            string missingComponent = runDesktop
+                ? $"'.NET Desktop Runtime' version {DotNetMajorVersion} for platform {machineArchitecture}"
+                : $"'.NET Runtime' version {DotNetMajorVersion} for platform {machineArchitecture}";
+            ShowMissingComponentForm(missingComponent, DotNetDownloadLinks[(machineArchitecture, runDesktop)]);
+            return null;
+        }
+        else
+        {
+            FileInfo? dotnetHost = GetDotNetHost(availableArchitecture.GetValueOrDefault());
+            return dotnetHost!;
         }
 
-        FileInfo? dotnetHost = GetDotNetHost(architecture);
-
-        if (!(dotnetHost?.Exists ?? false))
-        {
-            string missingComponent = $"'.NET Runtime' version {DotNetMajorVersion} for platform {architecture}";
-
-            ShowMissingComponentForm(missingComponent, DotNetDownloadLinks[(architecture, false)]);
-        }
-
-        return dotnetHost!;
     }
 
     private static void ShowMissingComponentForm(string missingComponent, Uri downloadLink)
