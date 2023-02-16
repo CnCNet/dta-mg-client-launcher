@@ -199,7 +199,7 @@ internal sealed class Program
     {
         // Architectures to be searched for
         List<Architecture> architectures = new() { machineArchitecture };
-        if (automaticX86Fallback)
+        if (automaticX86Fallback && machineArchitecture != Architecture.X86)
             architectures.Add(Architecture.X86);
 
         // Search for installed dotnet architectures
