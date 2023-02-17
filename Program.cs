@@ -79,7 +79,7 @@ internal sealed class Program
         }
         catch (Exception ex)
         {
-            AdvancedMessageBoxHelper.ShowOkMessageBox(ex.ToString(), "Client Launcher Error");
+            AdvancedMessageBoxHelper.ShowOkMessageBox(ex.ToString(), "Client Launcher Error", okText: "Exit");
             Environment.Exit(1);
         }
     }
