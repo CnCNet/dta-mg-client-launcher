@@ -24,7 +24,7 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Button Margin="0,5,0,5" Content="{Binding Text}"
-                            Command = "{Binding Command}" />
+                            Command="{Binding Command}" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
