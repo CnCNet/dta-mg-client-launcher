@@ -88,8 +88,8 @@ internal sealed class Program
     {
         var msgbox = new AdvancedMessageBox();
         var model = msgbox.DataContext as AdvancedMessageBoxViewModel;
-        model.Title = "Message title here";
-        model.Message = "Message text here";
+        model.Title = "Client Launcher Dialog Test";
+        model.Message = "Click the buttons below.";
         model.Commands = new ObservableCollection<CommandViewModel>()
         {
             new CommandViewModel()
