@@ -10,7 +10,8 @@
     SizeToContent="WidthAndHeight"
     Height="200" MaxHeight="600"
     Width="350" MinWidth="300" MaxWidth="800"
-    WindowStartupLocation="CenterScreen">
+    WindowStartupLocation="CenterScreen"
+    ResizeMode="NoResize">
     <Window.DataContext>
         <local:AdvancedMessageBoxViewModel />
     </Window.DataContext>
