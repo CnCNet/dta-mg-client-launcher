@@ -2,11 +2,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Collections.ObjectModel;
 using Microsoft.Win32;
 
 internal sealed class Program
@@ -95,15 +95,17 @@ internal sealed class Program
             new CommandViewModel()
             {
                 Text = "Show incompatible GPU dialog",
-                Command = new RelayCommand(_ => {
-                    ShowIncompatibleGPUMessage(new[] { "Open link (All buttons here won't work)", "Launch XNA version", "Launch DirectX11 version", "Exit"});
+                Command = new RelayCommand(_ =>
+                {
+                    _ = ShowIncompatibleGPUMessage(new[] { "Open link (All buttons here won't work)", "Launch XNA version", "Launch DirectX11 version", "Exit" });
                 }),
             },
 
             new CommandViewModel()
             {
                 Text = "Show missing component dialog",
-                Command = new RelayCommand(_ => {
+                Command = new RelayCommand(_ =>
+                {
                     ShowMissingComponent("Component name here", new Uri("https://github.com/CnCNet/dta-mg-client-launcher"));
                 }),
             },
@@ -111,7 +113,8 @@ internal sealed class Program
             new CommandViewModel()
             {
                 Text = "Throw an exception",
-                Command = new RelayCommand(_ => {
+                Command = new RelayCommand(_ =>
+                {
                     throw new Exception("Exception message here");
                 }),
             },
@@ -119,12 +122,13 @@ internal sealed class Program
             new CommandViewModel()
             {
                 Text = "Exit",
-                Command = new RelayCommand(_ => {
+                Command = new RelayCommand(_ =>
+                {
                     msgbox.Close();
                 }),
             },
         };
-        msgbox.ShowDialog();
+        _ = msgbox.ShowDialog();
     }
 
     private static void RunXNA()
@@ -153,7 +157,8 @@ internal sealed class Program
     private static int? ShowIncompatibleGPUMessage(string[] selections)
     {
         return AdvancedMessageBoxHelper.ShowMessageBoxWithSelection(
-            string.Format("The client has detected an incompatibility between your graphics card and the DirectX11 and OpenGL versions of the CnCNet client.\n\n" +
+            string.Format(
+                "The client has detected an incompatibility between your graphics card and the DirectX11 and OpenGL versions of the CnCNet client.\n\n" +
                 "The XNA version of the client could still work on your system, but it needs\r\nMicrosoft XNA Framework 4.0 Refresh to be installed.\n\n" +
                 "You can download the installer from the following link:\n\n" +
                 "{0}\n\n" +
@@ -278,7 +283,8 @@ internal sealed class Program
 
     private static void ShowMissingComponent(string missingComponent, Uri downloadLink)
     {
-        bool dialogResult = AdvancedMessageBoxHelper.ShowYesNoMessageBox(string.Format(
+        bool dialogResult = AdvancedMessageBoxHelper.ShowYesNoMessageBox(
+            string.Format(
             "The component {0} is missing.\n\n" +
             "You can download the installer from the following link:\n\n{1}",
             missingComponent, downloadLink.ToString()), "Component Missing",
@@ -287,7 +293,6 @@ internal sealed class Program
         {
             OpenUri(downloadLink);
         }
-
     }
 
     private static bool IsXNAFramework4RefreshInstalled()

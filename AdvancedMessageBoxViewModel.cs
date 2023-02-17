@@ -4,13 +4,36 @@ using System.Collections.ObjectModel;
 
 public class AdvancedMessageBoxViewModel : NotifyPropertyChangedBase
 {
+    private ObservableCollection<CommandViewModel>? commands;
 
-    private ObservableCollection<CommandViewModel> _Commands;
-    public ObservableCollection<CommandViewModel> Commands { get => _Commands; set { _Commands = value; this.NotifyPropertyChanged(); } }
+    public ObservableCollection<CommandViewModel> Commands
+    {
+        get => commands; set
+        {
+            commands = value;
+            NotifyPropertyChanged();
+        }
+    }
 
-    private string _Title;
-    public string Title { get => _Title; set { _Title = value; this.NotifyPropertyChanged(); } }
+    private string? title;
 
-    private string _Message;
-    public string Message { get => _Message; set { _Message = value; this.NotifyPropertyChanged(); } }
+    public string Title
+    {
+        get => title; set
+        {
+            title = value;
+            NotifyPropertyChanged();
+        }
+    }
+
+    private string? message;
+
+    public string Message
+    {
+        get => message; set
+        {
+            message = value;
+            NotifyPropertyChanged();
+        }
+    }
 }

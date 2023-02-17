@@ -18,7 +18,11 @@ public static class AdvancedMessageBoxHelper
             commands.Add(new CommandViewModel()
             {
                 Text = selections[i],
-                Command = new RelayCommand(_ => { msgbox.Result = i_copy; msgbox.Close(); }),
+                Command = new RelayCommand(_ =>
+                {
+                    msgbox.Result = i_copy;
+                    msgbox.Close();
+                }),
             });
         }
 

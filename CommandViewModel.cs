@@ -4,9 +4,25 @@ using System.Windows.Input;
 
 public class CommandViewModel : NotifyPropertyChangedBase
 {
-    private string _Text;
-    public string Text { get => _Text; set { _Text = value; this.NotifyPropertyChanged(); } }
+    private string? text;
 
-    private ICommand _Command;
-    public ICommand Command { get => _Command; set { _Command = value; this.NotifyPropertyChanged(); } }
+    public string Text
+    {
+        get => text; set
+        {
+            text = value;
+            NotifyPropertyChanged();
+        }
+    }
+
+    private ICommand? command;
+
+    public ICommand Command
+    {
+        get => command; set
+        {
+            command = value;
+            NotifyPropertyChanged();
+        }
+    }
 }

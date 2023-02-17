@@ -3,11 +3,12 @@
 using System.Windows;
 
 /// <summary>
-/// Interaction logic for AdvancedMessageBox.xaml
+/// Interaction logic for AdvancedMessageBox.xaml.
 /// </summary>
 public partial class AdvancedMessageBox : Window
 {
-    public object Result = null;
+    public object? Result;
+
     public AdvancedMessageBox()
     {
         InitializeComponent();
