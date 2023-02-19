@@ -1,8 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
     <TargetFramework>net471</TargetFramework>
     <LangVersion>11.0</LangVersion>
     <OutputType>WinExe</OutputType>
+    <UseWPF>true</UseWPF>
     <Title>CnCNet Launcher</Title>
     <Description>Launcher for CnCNet Client</Description>
     <Company>CnCNet</Company>
@@ -35,12 +36,6 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-  </ItemGroup>  
-  <ItemGroup>
-    <Page Include="AdvancedMessageBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435">
