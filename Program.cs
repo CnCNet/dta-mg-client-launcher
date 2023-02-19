@@ -87,7 +87,7 @@ internal sealed class Program
     private static void RunDialogTest()
     {
         var msgbox = new AdvancedMessageBox();
-        var model = msgbox.DataContext as AdvancedMessageBoxViewModel;
+        var model = (AdvancedMessageBoxViewModel)msgbox.DataContext;
         model.Title = "Client Launcher Dialog Test";
         model.Message = "Click the buttons below.";
         model.Commands = new ObservableCollection<CommandViewModel>()
