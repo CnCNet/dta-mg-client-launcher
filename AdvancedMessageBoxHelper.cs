@@ -7,7 +7,7 @@ public static class AdvancedMessageBoxHelper
     public static int? ShowMessageBoxWithSelection(string message, string title, string[] selections)
     {
         var msgbox = new AdvancedMessageBox();
-        var model = msgbox.DataContext as AdvancedMessageBoxViewModel;
+        var model = (AdvancedMessageBoxViewModel)msgbox.DataContext;
         model.Title = title;
         model.Message = message;
 
