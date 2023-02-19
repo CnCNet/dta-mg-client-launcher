@@ -17,18 +17,28 @@
     </Window.DataContext>
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <DockPanel LastChildFill="True">
-            <TextBlock DockPanel.Dock="Top" Margin="10" Text="{Binding Message}" d:Text="Message text goes here."
-            TextWrapping="Wrap" />
-        <StackPanel DockPanel.Dock="Bottom" Margin="10,0,10,10">
-            <ItemsControl ItemsSource="{Binding Commands}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Button Margin="0,5,0,5" Content="{Binding Text}"
-                            Command="{Binding Command}" />
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </StackPanel>
+            <StackPanel DockPanel.Dock="Bottom" Margin="10,0,10,10">
+                <ItemsControl ItemsSource="{Binding Commands}">
+                    <!-- https://stackoverflow.com/a/68096372/7774607 -->
+                    <d:ItemsControl.ItemsSource>
+                        <x:Array Type="{x:Type local:CommandViewModel}">
+                            <local:CommandViewModel />
+                            <local:CommandViewModel />
+                            <local:CommandViewModel />
+                        </x:Array>
+                    </d:ItemsControl.ItemsSource>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button Margin="0,5,0,5" Content="{Binding Text}"
+                                d:Content="Button text here"
+                                Command="{Binding Command}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+            <TextBlock DockPanel.Dock="Top" Margin="10" Text="{Binding Message}"
+                d:Text="Message text goes here."
+                TextWrapping="Wrap" />
         </DockPanel>
     </ScrollViewer>
 </Window>
