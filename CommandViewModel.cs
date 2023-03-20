@@ -8,7 +8,8 @@ public class CommandViewModel : NotifyPropertyChangedBase
 
     public string Text
     {
-        get => text; set
+        get => text;
+        set
         {
             text = value;
             NotifyPropertyChanged();
@@ -19,7 +20,8 @@ public class CommandViewModel : NotifyPropertyChangedBase
 
     public ICommand Command
     {
-        get => command; set
+        get => command;
+        set
         {
             command = value;
             NotifyPropertyChanged();

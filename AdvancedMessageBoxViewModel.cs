@@ -8,7 +8,8 @@ public class AdvancedMessageBoxViewModel : NotifyPropertyChangedBase
 
     public ObservableCollection<CommandViewModel> Commands
     {
-        get => commands; set
+        get => commands;
+        set
         {
             commands = value;
             NotifyPropertyChanged();
@@ -19,7 +20,8 @@ public class AdvancedMessageBoxViewModel : NotifyPropertyChangedBase
 
     public string Title
     {
-        get => title; set
+        get => title;
+        set
         {
             title = value;
             NotifyPropertyChanged();
@@ -30,7 +32,8 @@ public class AdvancedMessageBoxViewModel : NotifyPropertyChangedBase
 
     public string Message
     {
-        get => message; set
+        get => message;
+        set
         {
             message = value;
             NotifyPropertyChanged();
