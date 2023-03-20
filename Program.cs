@@ -158,8 +158,8 @@ internal sealed class Program
     {
         return AdvancedMessageBoxHelper.ShowMessageBoxWithSelection(
             string.Format(
-                "The client has detected an incompatibility between your graphics card and the DirectX11 and OpenGL versions of the CnCNet client.\n\n" +
-                "The XNA version of the client could still work on your system, but it needs\r\nMicrosoft XNA Framework 4.0 Refresh to be installed.\n\n" +
+                "The client has detected an incompatibility between your graphics card\nand both the DirectX11 and OpenGL versions of the CnCNet client.\n\n" +
+                "The XNA version of the client could still work on your system, but it needs\nMicrosoft XNA Framework 4.0 Refresh to be installed.\n\n" +
                 "You can download the installer from the following link:\n\n" +
                 "{0}\n\n" +
                 "Alternatively, you can retry launching the DirectX11 version of the client.\n\n" +
