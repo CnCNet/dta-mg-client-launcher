@@ -14,13 +14,15 @@ public static class AdvancedMessageBoxHelper
         var commands = new ObservableCollection<CommandViewModel>();
         for (int i = 0; i < selections.Length; i++)
         {
-            int i_copy = i;
+            // passing just i to the lambda will not work as
+            // intended due to C# variable capture specifics
+            int iCaptured = i;
             commands.Add(new CommandViewModel()
             {
                 Text = selections[i],
                 Command = new RelayCommand(_ =>
                 {
-                    msgbox.Result = i_copy;
+                    msgbox.Result = iCaptured;
                     msgbox.Close();
                 }),
             });
