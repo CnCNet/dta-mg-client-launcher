@@ -283,7 +283,7 @@ dotnet_diagnostic.IDE0058.severity = suggestion
 dotnet_diagnostic.IDE0060.severity = warning
 dotnet_diagnostic.IDE0066.severity = warning
 dotnet_diagnostic.IDE0059.severity = warning
-dotnet_diagnostic.IDE0061.severity = suggestion
+dotnet_diagnostic.IDE0061.severity = warning
 dotnet_diagnostic.IDE0062.severity = warning
 dotnet_diagnostic.IDE0071.severity = warning
 dotnet_diagnostic.IDE0072.severity = warning
@@ -327,12 +327,6 @@ dotnet_diagnostic.SA0001.severity = none
 
 # SA1312: Variable names should begin with lower-case letter
 dotnet_diagnostic.SA1312.severity = none
-csharp_style_prefer_top_level_statements = true:silent
-csharp_style_prefer_utf8_string_literals = true:suggestion
-csharp_style_prefer_readonly_struct = true:suggestion
-csharp_style_allow_blank_line_after_token_in_conditional_expression_experimental = true:silent
-csharp_style_allow_blank_line_after_token_in_arrow_expression_clause_experimental = true:silent
-dotnet_diagnostic.IDE0053.severity = suggestion
 
 [*.{cs,vb}]
 dotnet_style_operator_placement_when_wrapping = beginning_of_line
