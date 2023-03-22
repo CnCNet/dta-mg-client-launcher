@@ -95,40 +95,28 @@ internal sealed class Program
             new CommandViewModel()
             {
                 Text = "Show incompatible GPU dialog",
-                Command = new RelayCommand(_ =>
-                {
-                    _ = ShowIncompatibleGPUMessage(new[] { "Open link (All buttons here won't work)", "Launch XNA version", "Launch DirectX11 version", "Exit" });
-                }),
+                Command = new RelayCommand(_ => ShowIncompatibleGPUMessage(new[] { "Open link (All buttons here won't work)", "Launch XNA version", "Launch DirectX11 version", "Exit" })),
             },
 
             new CommandViewModel()
             {
                 Text = "Show missing component dialog",
-                Command = new RelayCommand(_ =>
-                {
-                    ShowMissingComponent("Component name here", new Uri("https://github.com/CnCNet/dta-mg-client-launcher"));
-                }),
+                Command = new RelayCommand(_ => ShowMissingComponent("Component name here", new Uri("https://github.com/CnCNet/dta-mg-client-launcher"))),
             },
 
             new CommandViewModel()
             {
                 Text = "Throw an exception",
-                Command = new RelayCommand(_ =>
-                {
-                    throw new Exception("Exception message here");
-                }),
+                Command = new RelayCommand(_ => throw new Exception("Exception message here")),
             },
 
             new CommandViewModel()
             {
                 Text = "Exit",
-                Command = new RelayCommand(_ =>
-                {
-                    msgbox.Close();
-                }),
+                Command = new RelayCommand(_ => msgbox.Close()),
             },
         };
-        _ = msgbox.ShowDialog();
+        msgbox.ShowDialog();
     }
 
     private static void RunXNA()
@@ -269,7 +257,6 @@ internal sealed class Program
             FileInfo? dotnetHost = GetDotNetHost(availableArchitecture.GetValueOrDefault());
             return dotnetHost!;
         }
-
     }
 
     private static void OpenUri(Uri uri)
@@ -290,9 +277,7 @@ internal sealed class Program
             missingComponent, downloadLink.ToString()), "Component Missing",
             yesText: "Open link", noText: "Exit");
         if (dialogResult)
-        {
             OpenUri(downloadLink);
-        }
     }
 
     private static bool IsXNAFramework4RefreshInstalled()
