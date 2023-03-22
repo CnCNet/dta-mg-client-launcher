@@ -80,14 +80,14 @@ csharp_style_var_for_built_in_types = false:warning
 csharp_style_var_when_type_is_apparent = true:warning
 
 # Expression-bodied members
-csharp_style_expression_bodied_accessors = true:none
-csharp_style_expression_bodied_constructors = false:none
-csharp_style_expression_bodied_indexers = true:none
-csharp_style_expression_bodied_lambdas = true:none
-csharp_style_expression_bodied_local_functions = false:none
-csharp_style_expression_bodied_methods = false:none
-csharp_style_expression_bodied_operators = false:none
-csharp_style_expression_bodied_properties = true:none
+csharp_style_expression_bodied_accessors = true:suggestion
+csharp_style_expression_bodied_constructors = true:suggestion
+csharp_style_expression_bodied_indexers = true:suggestion
+csharp_style_expression_bodied_lambdas = true:suggestion
+csharp_style_expression_bodied_local_functions = true:suggestion
+csharp_style_expression_bodied_methods = true:suggestion
+csharp_style_expression_bodied_operators = true:suggestion
+csharp_style_expression_bodied_properties = true:suggestion
 
 # Pattern matching preferences
 csharp_style_pattern_matching_over_as_with_null_check = true:warning
@@ -252,13 +252,13 @@ dotnet_diagnostic.IDE0017.severity = warning
 dotnet_diagnostic.IDE0018.severity = warning
 dotnet_diagnostic.IDE0019.severity = warning
 dotnet_diagnostic.IDE0020.severity = warning
-dotnet_diagnostic.IDE0021.severity = none
-dotnet_diagnostic.IDE0022.severity = none
-dotnet_diagnostic.IDE0023.severity = none
-dotnet_diagnostic.IDE0024.severity = none
-dotnet_diagnostic.IDE0025.severity = none
-dotnet_diagnostic.IDE0026.severity = none
-dotnet_diagnostic.IDE0027.severity = none
+dotnet_diagnostic.IDE0021.severity = suggestion
+dotnet_diagnostic.IDE0022.severity = suggestion
+dotnet_diagnostic.IDE0023.severity = suggestion
+dotnet_diagnostic.IDE0024.severity = suggestion
+dotnet_diagnostic.IDE0025.severity = suggestion
+dotnet_diagnostic.IDE0026.severity = suggestion
+dotnet_diagnostic.IDE0027.severity = suggestion
 dotnet_diagnostic.IDE0028.severity = warning
 dotnet_diagnostic.IDE0029.severity = warning
 dotnet_diagnostic.IDE0030.severity = warning
@@ -283,7 +283,7 @@ dotnet_diagnostic.IDE0058.severity = suggestion
 dotnet_diagnostic.IDE0060.severity = warning
 dotnet_diagnostic.IDE0066.severity = warning
 dotnet_diagnostic.IDE0059.severity = warning
-dotnet_diagnostic.IDE0061.severity = warning
+dotnet_diagnostic.IDE0061.severity = suggestion
 dotnet_diagnostic.IDE0062.severity = warning
 dotnet_diagnostic.IDE0071.severity = warning
 dotnet_diagnostic.IDE0072.severity = warning
@@ -327,6 +327,12 @@ dotnet_diagnostic.SA0001.severity = none
 
 # SA1312: Variable names should begin with lower-case letter
 dotnet_diagnostic.SA1312.severity = none
+csharp_style_prefer_top_level_statements = true:silent
+csharp_style_prefer_utf8_string_literals = true:suggestion
+csharp_style_prefer_readonly_struct = true:suggestion
+csharp_style_allow_blank_line_after_token_in_conditional_expression_experimental = true:silent
+csharp_style_allow_blank_line_after_token_in_arrow_expression_clause_experimental = true:silent
+dotnet_diagnostic.IDE0053.severity = suggestion
 
 [*.{cs,vb}]
 dotnet_style_operator_placement_when_wrapping = beginning_of_line

@@ -142,9 +142,7 @@ internal sealed class Program
     private static string GetClientProcessPath(string directory, string file)
         => $"{Resources}\\{Binaries}\\{directory}\\{file}";
 
-    private static int? ShowIncompatibleGPUMessage(string[] selections)
-    {
-        return AdvancedMessageBoxHelper.ShowMessageBoxWithSelection(
+    private static int? ShowIncompatibleGPUMessage(string[] selections) => AdvancedMessageBoxHelper.ShowMessageBoxWithSelection(
             string.Format(
                 "The client has detected an incompatibility between your graphics card\nand both the DirectX11 and OpenGL versions of the CnCNet client.\n\n" +
                 "The XNA version of the client could still work on your system, but it needs\nMicrosoft XNA Framework 4.0 Refresh to be installed.\n\n" +
@@ -154,7 +152,6 @@ internal sealed class Program
                 "We apologize for the inconvenience.", XnaDownloadLink.ToString()),
             "Graphics Card Incompatibility Detected",
             selections);
-    }
 
     private static void AutoRun()
     {

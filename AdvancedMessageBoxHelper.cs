@@ -31,10 +31,7 @@ public static class AdvancedMessageBoxHelper
         return msgbox.Result as int?;
     }
 
-    public static void ShowOkMessageBox(string message, string title, string okText = "OK")
-    {
-        ShowMessageBoxWithSelection(message, title, new[] { okText });
-    }
+    public static void ShowOkMessageBox(string message, string title, string okText = "OK") => ShowMessageBoxWithSelection(message, title, new[] { okText });
 
     public static bool ShowYesNoMessageBox(string message, string title, string yesText = "Yes", string noText = "No")
     {

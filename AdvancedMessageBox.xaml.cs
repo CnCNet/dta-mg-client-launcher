@@ -7,10 +7,7 @@ using System.Windows;
 /// </summary>
 public partial class AdvancedMessageBox : Window
 {
-    public AdvancedMessageBox()
-    {
-        InitializeComponent();
-    }
+    public AdvancedMessageBox() => InitializeComponent();
 
     public object? Result { get; set; }
 }
