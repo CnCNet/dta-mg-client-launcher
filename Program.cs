@@ -261,7 +261,7 @@ internal sealed class Program
         using var _ = Process.Start(new ProcessStartInfo
         {
             FileName = uri.ToString(),
-            UseShellExecute = true
+            UseShellExecute = true,
         });
     }
 
