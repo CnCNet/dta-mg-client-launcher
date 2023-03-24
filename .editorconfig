@@ -80,14 +80,14 @@ csharp_style_var_for_built_in_types = false:warning
 csharp_style_var_when_type_is_apparent = true:warning
 
 # Expression-bodied members
-csharp_style_expression_bodied_accessors = true:none
-csharp_style_expression_bodied_constructors = false:none
-csharp_style_expression_bodied_indexers = true:none
-csharp_style_expression_bodied_lambdas = true:none
-csharp_style_expression_bodied_local_functions = false:none
-csharp_style_expression_bodied_methods = false:none
-csharp_style_expression_bodied_operators = false:none
-csharp_style_expression_bodied_properties = true:none
+csharp_style_expression_bodied_accessors = true:suggestion
+csharp_style_expression_bodied_constructors = true:suggestion
+csharp_style_expression_bodied_indexers = true:suggestion
+csharp_style_expression_bodied_lambdas = true:suggestion
+csharp_style_expression_bodied_local_functions = true:suggestion
+csharp_style_expression_bodied_methods = true:suggestion
+csharp_style_expression_bodied_operators = true:suggestion
+csharp_style_expression_bodied_properties = true:suggestion
 
 # Pattern matching preferences
 csharp_style_pattern_matching_over_as_with_null_check = true:warning
@@ -252,13 +252,13 @@ dotnet_diagnostic.IDE0017.severity = warning
 dotnet_diagnostic.IDE0018.severity = warning
 dotnet_diagnostic.IDE0019.severity = warning
 dotnet_diagnostic.IDE0020.severity = warning
-dotnet_diagnostic.IDE0021.severity = none
-dotnet_diagnostic.IDE0022.severity = none
-dotnet_diagnostic.IDE0023.severity = none
-dotnet_diagnostic.IDE0024.severity = none
-dotnet_diagnostic.IDE0025.severity = none
-dotnet_diagnostic.IDE0026.severity = none
-dotnet_diagnostic.IDE0027.severity = none
+dotnet_diagnostic.IDE0021.severity = suggestion
+dotnet_diagnostic.IDE0022.severity = suggestion
+dotnet_diagnostic.IDE0023.severity = suggestion
+dotnet_diagnostic.IDE0024.severity = suggestion
+dotnet_diagnostic.IDE0025.severity = suggestion
+dotnet_diagnostic.IDE0026.severity = suggestion
+dotnet_diagnostic.IDE0027.severity = suggestion
 dotnet_diagnostic.IDE0028.severity = warning
 dotnet_diagnostic.IDE0029.severity = warning
 dotnet_diagnostic.IDE0030.severity = warning

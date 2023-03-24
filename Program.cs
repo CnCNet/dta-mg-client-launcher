@@ -2,11 +2,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
 using Microsoft.Win32;
 
 internal sealed class Program
@@ -39,9 +39,9 @@ internal sealed class Program
     {
         try
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-
+#if DEBUG
+            RunDialogTest();
+#else
             automaticX86Fallback = !args.Any(q => q.Equals("-64Bit", StringComparison.OrdinalIgnoreCase));
 
             if (args.Any(q => q.Equals("-XNA", StringComparison.OrdinalIgnoreCase)))
@@ -75,35 +75,57 @@ internal sealed class Program
             }
 
             AutoRun();
+#endif
         }
         catch (Exception ex)
         {
-            MessageBox.Show(ex.ToString(), "Client Launcher Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            AdvancedMessageBoxHelper.ShowOkMessageBox(ex.ToString(), "Client Launcher Error", okText: "Exit");
             Environment.Exit(1);
         }
     }
 
     private static void RunDialogTest()
     {
-        MessageBox.Show(
-            "Message text here",
-            "Message caption here",
-            MessageBoxButtons.OK,
-            MessageBoxIcon.Error);
+        var msgbox = new AdvancedMessageBox();
+        var model = (AdvancedMessageBoxViewModel)msgbox.DataContext;
+        model.Title = "Client Launcher Dialog Test";
+        model.Message = "Click the buttons below.";
+        model.Commands = new ObservableCollection<CommandViewModel>()
+        {
+            new CommandViewModel()
+            {
+                Text = "Show incompatible GPU dialog",
+                Command = new RelayCommand(_ => ShowIncompatibleGPUMessage(new[] { "Open link (All buttons here won't work)", "Launch XNA version", "Launch DirectX11 version", "Exit" })),
+            },
 
-        using var incompatibleGpuForm = new IncompatibleGPUMessageForm();
-        SetLinkLabelUrl(incompatibleGpuForm.lblXNALink, new Uri("https://example.com"));
-        incompatibleGpuForm.ShowDialog();
+            new CommandViewModel()
+            {
+                Text = "Show missing component dialog",
+                Command = new RelayCommand(_ => ShowMissingComponent("Component name here", new Uri("https://github.com/CnCNet/dta-mg-client-launcher"))),
+            },
 
-        using var messageForm = new ComponentMissingMessageForm();
-        SetLinkLabelUrl(messageForm.lblLink, new Uri("https://example.com"));
-        messageForm.ShowDialog();
+            new CommandViewModel()
+            {
+                Text = "Throw an exception",
+                Command = new RelayCommand(_ => throw new Exception("Exception message here")),
+            },
+
+            new CommandViewModel()
+            {
+                Text = "Exit",
+                Command = new RelayCommand(_ => msgbox.Close()),
+            },
+        };
+        msgbox.ShowDialog();
     }
 
     private static void RunXNA()
     {
         if (!IsXNAFramework4RefreshInstalled())
-            ShowMissingComponentForm("'Microsoft XNA Framework 4.0 Refresh'", XnaDownloadLink);
+        {
+            ShowMissingComponent("'Microsoft XNA Framework 4.0 Refresh'", XnaDownloadLink);
+            Environment.Exit(2);
+        }
 
         StartProcess(GetClientProcessPath("XNA", "clientxna.dll"), true);
     }
@@ -119,6 +141,17 @@ internal sealed class Program
 
     private static string GetClientProcessPath(string directory, string file)
         => $"{Resources}\\{Binaries}\\{directory}\\{file}";
+
+    private static int? ShowIncompatibleGPUMessage(string[] selections) => AdvancedMessageBoxHelper.ShowMessageBoxWithSelection(
+            string.Format(
+                "The client has detected an incompatibility between your graphics card\nand both the DirectX11 and OpenGL versions of the CnCNet client.\n\n" +
+                "The XNA version of the client could still work on your system, but it needs\nMicrosoft XNA Framework 4.0 Refresh to be installed.\n\n" +
+                "You can download the installer from the following link:\n\n" +
+                "{0}\n\n" +
+                "Alternatively, you can retry launching the DirectX11 version of the client.\n\n" +
+                "We apologize for the inconvenience.", XnaDownloadLink.ToString()),
+            "Graphics Card Incompatibility Detected",
+            selections);
 
     private static void AutoRun()
     {
@@ -136,21 +169,23 @@ internal sealed class Program
                     return;
                 }
 
-                using var incompatibleGpuForm = new IncompatibleGPUMessageForm();
-
-                SetLinkLabelUrl(incompatibleGpuForm.lblXNALink, XnaDownloadLink);
-
-                switch (incompatibleGpuForm.ShowDialog())
+                int? result = ShowIncompatibleGPUMessage(new[] { "Open link", "Launch XNA version", "Launch DirectX11 version", "Exit" });
+                switch (result)
                 {
-                    case DialogResult.No:
+                    case 0:
+                        OpenUri(XnaDownloadLink);
+                        break;
+                    case 1:
+                        RunXNA();
+                        break;
+                    case 2:
                         dxFailFile.Delete();
                         oglFailFile.Delete();
                         AutoRun();
                         break;
-                    case DialogResult.Yes:
-                        RunXNA();
-                        break;
-                    case DialogResult.Cancel:
+                    case 3:
+                    default:
+                        Environment.Exit(4);
                         return;
                 }
             }
@@ -159,12 +194,6 @@ internal sealed class Program
         }
 
         RunDX();
-    }
-
-    private static void SetLinkLabelUrl(LinkLabel linkLabel, Uri uri)
-    {
-        linkLabel.Text = uri.ToString();
-        linkLabel.Links[0].LinkData = uri;
     }
 
     private static void StartProcess(string relativePath, bool run32Bit = false, bool runDesktop = true)
@@ -177,11 +206,7 @@ internal sealed class Program
 
         if (!File.Exists(absolutePath))
         {
-            MessageBox.Show(
-                $"Main client library ({relativePath}) not found!",
-                "Client Launcher Error",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Error);
+            AdvancedMessageBoxHelper.ShowOkMessageBox($"Main client library ({relativePath}) not found!", "Client Launcher Error", okText: "Exit");
 
             Environment.Exit(3);
         }
@@ -220,7 +245,8 @@ internal sealed class Program
             string missingComponent = runDesktop
                 ? $"'.NET Desktop Runtime' version {DotNetMajorVersion} for platform {machineArchitecture}"
                 : $"'.NET Runtime' version {DotNetMajorVersion} for platform {machineArchitecture}";
-            ShowMissingComponentForm(missingComponent, DotNetDownloadLinks[(machineArchitecture, runDesktop)]);
+            ShowMissingComponent(missingComponent, DotNetDownloadLinks[(machineArchitecture, runDesktop)]);
+            Environment.Exit(2);
             return null;
         }
         else
@@ -228,18 +254,27 @@ internal sealed class Program
             FileInfo? dotnetHost = GetDotNetHost(availableArchitecture.GetValueOrDefault());
             return dotnetHost!;
         }
-
     }
 
-    private static void ShowMissingComponentForm(string missingComponent, Uri downloadLink)
+    private static void OpenUri(Uri uri)
     {
-        using var messageForm = new ComponentMissingMessageForm();
+        using var _ = Process.Start(new ProcessStartInfo
+        {
+            FileName = uri.ToString(),
+            UseShellExecute = true,
+        });
+    }
 
-        messageForm.lblDescription.Text = $"The component {missingComponent} is missing.";
-
-        SetLinkLabelUrl(messageForm.lblLink, downloadLink);
-        Application.Run(messageForm);
-        Environment.Exit(2);
+    private static void ShowMissingComponent(string missingComponent, Uri downloadLink)
+    {
+        bool dialogResult = AdvancedMessageBoxHelper.ShowYesNoMessageBox(
+            string.Format(
+            "The component {0} is missing.\n\n" +
+            "You can download the installer from the following link:\n\n{1}",
+            missingComponent, downloadLink.ToString()), "Component Missing",
+            yesText: "Open link", noText: "Exit");
+        if (dialogResult)
+            OpenUri(downloadLink);
     }
 
     private static bool IsXNAFramework4RefreshInstalled()
