@@ -19,7 +19,3 @@ Do not autoselect a version, run the WinForms XNA client:
 ```
 -XNA
 ```
-Perform 64bit dotnet runtime check instead of automatically falling back to 32bit dotnet runtime:
-```
--64Bit
-```
