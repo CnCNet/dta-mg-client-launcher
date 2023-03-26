@@ -32,8 +32,6 @@ internal sealed class Program
         { (Architecture.Arm64, true), DotNetArm64DesktopRuntimeDownloadLink }
     };
 
-    private static bool automaticX86Fallback;
-
     [STAThread]
     private static void Main(string[] args)
     {
@@ -42,7 +40,6 @@ internal sealed class Program
 #if DEBUG
             RunDialogTest();
 #else
-            automaticX86Fallback = !args.Any(q => q.Equals("-64Bit", StringComparison.OrdinalIgnoreCase));
 
             if (args.Any(q => q.Equals("-XNA", StringComparison.OrdinalIgnoreCase)))
             {
@@ -174,16 +171,15 @@ internal sealed class Program
                 {
                     case 0:
                         OpenUri(XnaDownloadLink);
-                        break;
+                        return;
                     case 1:
                         RunXNA();
-                        break;
+                        return;
                     case 2:
                         dxFailFile.Delete();
                         oglFailFile.Delete();
                         AutoRun();
-                        break;
-                    case 3:
+                        return;
                     default:
                         Environment.Exit(4);
                         return;
@@ -191,6 +187,7 @@ internal sealed class Program
             }
 
             RunOGL();
+            return;
         }
 
         RunDX();
@@ -224,8 +221,6 @@ internal sealed class Program
     {
         // Architectures to be searched for
         List<Architecture> architectures = new() { machineArchitecture };
-        if (automaticX86Fallback && machineArchitecture != Architecture.X86)
-            architectures.Add(Architecture.X86);
 
         // Search for installed dotnet architectures
         Architecture? availableArchitecture = null;
