@@ -171,16 +171,15 @@ internal sealed class Program
                 {
                     case 0:
                         OpenUri(XnaDownloadLink);
-                        break;
+                        return;
                     case 1:
                         RunXNA();
-                        break;
+                        return;
                     case 2:
                         dxFailFile.Delete();
                         oglFailFile.Delete();
                         AutoRun();
-                        break;
-                    case 3:
+                        return;
                     default:
                         Environment.Exit(4);
                         return;
@@ -188,6 +187,7 @@ internal sealed class Program
             }
 
             RunOGL();
+            return;
         }
 
         RunDX();
