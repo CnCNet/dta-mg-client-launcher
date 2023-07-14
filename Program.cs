@@ -208,6 +208,12 @@ internal sealed class Program
             Environment.Exit(3);
         }
 
+        OperatingSystem os = Environment.OSVersion;
+
+        // Required on Win7 due to W^X causing issues there.
+        if (os.Platform == PlatformID.Win32NT && os.Version.Major == 6 && os.Version.Minor == 1)
+            Environment.SetEnvironmentVariable("DOTNET_EnableWriteXorExecute", "0");
+
         using var _ = Process.Start(new ProcessStartInfo
         {
             FileName = dotnetHost.FullName,
