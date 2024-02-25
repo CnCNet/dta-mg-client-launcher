@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
-    <TargetFramework>net471</TargetFramework>
+    <TargetFrameworks>net40; net471</TargetFrameworks>
     <LangVersion>12.0</LangVersion>
     <OutputType>WinExe</OutputType>
     <UseWPF>true</UseWPF>
@@ -24,8 +24,5 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="mainclienticon.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
   </ItemGroup>
 </Project>

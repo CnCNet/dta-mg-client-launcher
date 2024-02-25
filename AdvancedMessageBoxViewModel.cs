@@ -12,7 +12,7 @@ public class AdvancedMessageBoxViewModel : NotifyPropertyChangedBase
         set
         {
             commands = value;
-            NotifyPropertyChanged();
+            NotifyPropertyChanged("Commands");
         }
     }
 
@@ -24,7 +24,7 @@ public class AdvancedMessageBoxViewModel : NotifyPropertyChangedBase
         set
         {
             title = value;
-            NotifyPropertyChanged();
+            NotifyPropertyChanged("Title");
         }
     }
 
@@ -36,7 +36,7 @@ public class AdvancedMessageBoxViewModel : NotifyPropertyChangedBase
         set
         {
             message = value;
-            NotifyPropertyChanged();
+            NotifyPropertyChanged("Message");
         }
     }
 }

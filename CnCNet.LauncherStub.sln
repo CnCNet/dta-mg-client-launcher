@@ -8,7 +8,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{31CF936D-B0E9-4B0B-9D87-255E3514164A}"
 	ProjectSection(SolutionItems) = preProject
 		.github\workflows\publish.yml = .github\workflows\publish.yml
-		.github\workflows\publishcustomicon.yml = .github\workflows\publishcustomicon.yml
 	EndProjectSection
 EndProject
 Global

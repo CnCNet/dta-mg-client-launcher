@@ -12,7 +12,7 @@ public class CommandViewModel : NotifyPropertyChangedBase
         set
         {
             text = value;
-            NotifyPropertyChanged();
+            NotifyPropertyChanged("Text");
         }
     }
 
@@ -24,7 +24,7 @@ public class CommandViewModel : NotifyPropertyChangedBase
         set
         {
             command = value;
-            NotifyPropertyChanged();
+            NotifyPropertyChanged("Command");
         }
     }
 }
