@@ -8,7 +8,7 @@
     <Description>Launcher for CnCNet Client</Description>
     <Company>CnCNet</Company>
     <Product>CnCNet Client Launcher</Product>
-    <Copyright>Copyright © CnCNet, Rampastring 2011-2023</Copyright>
+    <Copyright>Copyright © CnCNet, Rampastring 2011-2024</Copyright>
     <Trademark></Trademark>
     <AssemblyName>CnCNet.LauncherStub</AssemblyName>
     <RootNamespace>CnCNet.LauncherStub</RootNamespace>
