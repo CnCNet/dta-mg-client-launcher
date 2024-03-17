@@ -5,6 +5,8 @@ Also checks and notifies about any needed client runtimes.
 
 The launcher itself relies on .NET Framework 4.0.
 
+You can find the [dedicated project development chat](https://discord.gg/M5gGdBYG5m) at C&C Mod Haven Discord server.
+
 ## Optional arguments
 
 ### Flag arguments
