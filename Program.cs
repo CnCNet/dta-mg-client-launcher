@@ -173,7 +173,7 @@ internal sealed class Program
         msgbox.ShowDialog();
     }
 
-    private static void RemoveZoneIdentifer(string directory)
+    private static void RemoveZoneIdentifer(string directory, int stopOnErrorCount = 10)
     {
         // https://stackoverflow.com/a/6375373
 
@@ -197,6 +197,9 @@ internal sealed class Program
                 string errorMessage = new Win32Exception(error).Message;
 
                 failedMessages.Add($"{file} - {errorMessage}");
+
+                if (failedMessages.Count >= stopOnErrorCount)
+                    break;
             }
         }
 
