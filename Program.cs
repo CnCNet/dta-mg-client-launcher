@@ -89,6 +89,15 @@ internal sealed class Program
     {
         try
         {
+            RemoveZoneIdentifer(CurrentDirectory);
+        }
+        catch (Exception ex)
+        {
+            AdvancedMessageBoxHelper.ShowOkMessageBox("An error occured when the launcher tries to unlock files downloaded from Internet. Re-run the launcher with administrator privileges might help.\n" + ex.ToString(), "Client Launcher Warning", okText: "Continue");
+        }
+
+        try
+        {
             foreach (string arg in args)
             {
                 switch (arg.ToUpperInvariant())
@@ -161,6 +170,33 @@ internal sealed class Program
             },
         };
         msgbox.ShowDialog();
+    }
+
+    private static void RemoveZoneIdentifer(string directory)
+    {
+        List<string> failedFiles = [];
+
+        // Enumerate all files recursively
+        string[] files = Directory.GetFiles(directory, "*", SearchOption.AllDirectories);
+        string[] directories = Directory.GetDirectories(directory, "*", SearchOption.AllDirectories);
+
+        // For each file or directory, remove the Zone.Identifier alternate data stream
+        foreach (string file in files.Concat(directories))
+        {
+            string zoneIdentifier = file + ":Zone.Identifier";
+            bool success = NativeMethods.DeleteFile(zoneIdentifier);
+            if (!success)
+            {
+                uint err = NativeMethods.GetLastError();
+                if (err == NativeConstants.ERROR_FILE_NOT_FOUND)
+                    continue;
+
+                failedFiles.Add(file);
+            }
+        }
+
+        if (failedFiles.Count > 0)
+            throw new Exception("Failed to remove Zone.Identifier from the following files:\n" + string.Join("\n", failedFiles));
     }
 
     private static void RunXNA()
