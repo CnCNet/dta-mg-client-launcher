@@ -94,7 +94,12 @@ internal sealed class Program
         }
         catch (Exception ex)
         {
-            AdvancedMessageBoxHelper.ShowOkMessageBox("An error occured when the launcher tries to unblock files. Re-run the launcher with administrator privileges might help.\n" + ex.ToString(), "Client Launcher Warning", okText: "Continue");
+            bool ignoreUnblocking = AdvancedMessageBoxHelper.ShowYesNoMessageBox(
+                   "An error occured when the launcher tries to unblock files. Re-run the launcher with administrator privileges might help.\n" + ex.ToString(),
+                   "Client Launcher Warning",
+                   yesText: "Continue", noText: "Exit");
+            if (!ignoreUnblocking)
+                Environment.Exit(1);
         }
 
         try
