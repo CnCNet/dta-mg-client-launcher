@@ -93,7 +93,7 @@ internal sealed class Program
         }
         catch (Exception ex)
         {
-            AdvancedMessageBoxHelper.ShowOkMessageBox("An error occured when the launcher tries to unlock files downloaded from Internet. Re-run the launcher with administrator privileges might help.\n" + ex.ToString(), "Client Launcher Warning", okText: "Continue");
+            AdvancedMessageBoxHelper.ShowOkMessageBox("An error occured when the launcher tries to unblock files downloaded from Internet. Re-run the launcher with administrator privileges might help.\n" + ex.ToString(), "Client Launcher Warning", okText: "Continue");
         }
 
         try
