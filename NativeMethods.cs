@@ -10,10 +10,4 @@ internal static class NativeMethods
 #endif
     [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool DeleteFile(string name);
-
-    [DllImport("kernel32.dll", EntryPoint = "GetLastError")]
-#if NET45_OR_GREATER
-    [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
-#endif
-    public static extern uint GetLastError();
 }

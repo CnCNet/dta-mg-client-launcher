@@ -3,8 +3,8 @@
 internal static class NativeConstants
 {
     /// ERROR_FILE_NOT_FOUND -> 2L
-    public const uint ERROR_FILE_NOT_FOUND = 2;
+    public const int ERROR_FILE_NOT_FOUND = 2;
 
     /// ERROR_ACCESS_DENIED -> 5L
-    public const uint ERROR_ACCESS_DENIED = 5;
+    public const int ERROR_ACCESS_DENIED = 5;
 }

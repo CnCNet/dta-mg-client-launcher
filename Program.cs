@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using Microsoft.Win32;
 
 internal sealed class Program
@@ -176,7 +177,7 @@ internal sealed class Program
     {
         // https://stackoverflow.com/a/6375373
 
-        List<string> failedFiles = [];
+        List<string> failedMessages = [];
 
         // Enumerate all files recursively
         string[] files = Directory.GetFiles(directory, "*", SearchOption.AllDirectories);
@@ -189,16 +190,18 @@ internal sealed class Program
             bool success = NativeMethods.DeleteFile(zoneIdentifier);
             if (!success)
             {
-                uint err = NativeMethods.GetLastError();
-                if (err == NativeConstants.ERROR_FILE_NOT_FOUND)
+                int error = Marshal.GetLastWin32Error();
+                if (error == NativeConstants.ERROR_FILE_NOT_FOUND)
                     continue;
 
-                failedFiles.Add(file);
+                string errorMessage = new Win32Exception(error).Message;
+
+                failedMessages.Add($"{file} - {errorMessage}");
             }
         }
 
-        if (failedFiles.Count > 0)
-            throw new Exception("Failed to remove Zone.Identifier from the following files:\n" + string.Join("\n", failedFiles));
+        if (failedMessages.Count > 0)
+            throw new Exception("Failed to remove Zone.Identifier from the following files:\n" + string.Join("\n", failedMessages));
     }
 
     private static void RunXNA()
