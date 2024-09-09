@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using Microsoft.Win32;
 
 internal sealed class Program
@@ -89,6 +90,21 @@ internal sealed class Program
     {
         try
         {
+            RemoveZoneIdentifer(CurrentDirectory);
+        }
+        catch (Exception ex)
+        {
+            bool ignoreUnblocking = AdvancedMessageBoxHelper.ShowYesNoMessageBox(
+                   "An error occured when the launcher tried to unblock files. Re-running the launcher with administrator privileges might help.\n\n" + ex.ToString(),
+                   "Client Launcher Warning",
+                   yesText: "Continue", noText: "Exit");
+
+            if (!ignoreUnblocking)
+                Environment.Exit(1);
+        }
+
+        try
+        {
             foreach (string arg in args)
             {
                 switch (arg.ToUpperInvariant())
@@ -161,6 +177,37 @@ internal sealed class Program
             },
         };
         msgbox.ShowDialog();
+    }
+
+    private static void RemoveZoneIdentifer(string directory)
+    {
+        // https://stackoverflow.com/a/6375373
+
+        List<string> failedMessages = [];
+
+        // Enumerate all files recursively
+        string[] files = Directory.GetFiles(directory, "*", SearchOption.AllDirectories);
+        string[] directories = Directory.GetDirectories(directory, "*", SearchOption.AllDirectories);
+
+        // For each file or directory, remove the Zone.Identifier alternate data stream
+        foreach (string file in files.Concat(directories))
+        {
+            string zoneIdentifier = file + ":Zone.Identifier";
+            bool success = NativeMethods.DeleteFile(zoneIdentifier);
+            if (!success)
+            {
+                int error = Marshal.GetLastWin32Error();
+                if (error == NativeConstants.ERROR_FILE_NOT_FOUND)
+                    continue;
+
+                string errorMessage = new Win32Exception(error).Message;
+
+                failedMessages.Add($"{file}: {errorMessage}");
+            }
+        }
+
+        if (failedMessages.Count > 0)
+            throw new Exception("Failed to remove Zone.Identifier from the following files:\n" + string.Join("\n", failedMessages));
     }
 
     private static void RunXNA()
