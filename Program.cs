@@ -174,6 +174,8 @@ internal sealed class Program
 
     private static void RemoveZoneIdentifer(string directory)
     {
+        // https://stackoverflow.com/a/6375373
+
         List<string> failedFiles = [];
 
         // Enumerate all files recursively
