@@ -179,6 +179,17 @@ internal sealed class Program
         msgbox.ShowDialog();
     }
 
+    private static int RemoveZoneIdentifer_Win32(string filepath)
+    {
+        string zoneIdentifier = filepath + ":Zone.Identifier";
+        bool success = NativeMethods.DeleteFile(zoneIdentifier);
+        if (success)
+            return 0;
+
+        int error = Marshal.GetLastWin32Error();
+        return error;
+    }
+
     private static void RemoveZoneIdentifer(string directory)
     {
         // https://stackoverflow.com/a/6375373
@@ -187,29 +198,34 @@ internal sealed class Program
 
         // Enumerate all files recursively
         string[] files = Directory.GetFiles(directory, "*", SearchOption.AllDirectories);
-        string[] directories = Directory.GetDirectories(directory, "*", SearchOption.AllDirectories);
 
-        // For each file or directory, remove the Zone.Identifier alternate data stream
-        foreach (string file in files.Concat(directories))
+        // For each file, remove the Zone.Identifier alternate data stream
+        foreach (string file in files)
         {
-            FileInfo info = new FileInfo(file);
-            bool statusBackUp = info.IsReadOnly;
-            info.IsReadOnly = false;
+            int ret = RemoveZoneIdentifer_Win32(file);
+            if (ret == 0)
+                continue;
 
-            string zoneIdentifier = file + ":Zone.Identifier";
-            bool success = NativeMethods.DeleteFile(zoneIdentifier);
-            if (!success)
+            // If the file doesn't exist, ignore it
+            if (ret == NativeConstants.ERROR_FILE_NOT_FOUND)
+                continue;
+
+            // Try again, but temporarily remove the read-only attribute
+            if (ret == NativeConstants.ERROR_ACCESS_DENIED)
             {
-                int error = Marshal.GetLastWin32Error();
-                if (error == NativeConstants.ERROR_FILE_NOT_FOUND)
-                    continue;
-
-                string errorMessage = new Win32Exception(error).Message;
-
-                failedMessages.Add($"{file}: {errorMessage}");
+                FileInfo info = new(file);
+                if (info.IsReadOnly)
+                {
+                    info.IsReadOnly = false;
+                    ret = RemoveZoneIdentifer_Win32(file);
+                    info.IsReadOnly = true;
+                    if (ret == 0)
+                        continue;
+                }
             }
 
-            info.IsReadOnly = statusBackUp;
+            string errorMessage = new Win32Exception(ret).Message;
+            failedMessages.Add($"{file}: {errorMessage}");
         }
 
         if (failedMessages.Count > 0)
