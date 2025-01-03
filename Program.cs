@@ -192,8 +192,11 @@ internal sealed class Program
         // For each file or directory, remove the Zone.Identifier alternate data stream
         foreach (string file in files.Concat(directories))
         {
+            FileInfo info = new FileInfo(file);
+            bool statusBackUp = info.IsReadOnly;
+            info.IsReadOnly = false;
+
             string zoneIdentifier = file + ":Zone.Identifier";
-             new FileInfo(file).IsReadOnly = false;
             bool success = NativeMethods.DeleteFile(zoneIdentifier);
             if (!success)
             {
@@ -205,6 +208,8 @@ internal sealed class Program
 
                 failedMessages.Add($"{file}: {errorMessage}");
             }
+
+            info.IsReadOnly = statusBackUp;
         }
 
         if (failedMessages.Count > 0)
