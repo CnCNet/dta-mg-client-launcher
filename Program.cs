@@ -193,6 +193,7 @@ internal sealed class Program
         foreach (string file in files.Concat(directories))
         {
             string zoneIdentifier = file + ":Zone.Identifier";
+             new FileInfo(file).IsReadOnly = false;
             bool success = NativeMethods.DeleteFile(zoneIdentifier);
             if (!success)
             {
