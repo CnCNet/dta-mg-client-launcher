@@ -210,6 +210,10 @@ internal sealed class Program
             if (ret == NativeConstants.ERROR_FILE_NOT_FOUND)
                 continue;
 
+            // If the file system does not support alternate data streams (e.g., exFAT), ignore it
+            if (ret == NativeConstants.ERROR_INVALID_NAME)
+                continue;
+
             // Try again, but temporarily remove the read-only attribute
             if (ret == NativeConstants.ERROR_ACCESS_DENIED)
             {
@@ -225,7 +229,7 @@ internal sealed class Program
             }
 
             string errorMessage = new Win32Exception(ret).Message;
-            failedMessages.Add($"{file}: {errorMessage}");
+            failedMessages.Add($"{file}: {errorMessage} ({ret})");
         }
 
         if (failedMessages.Count > 0)

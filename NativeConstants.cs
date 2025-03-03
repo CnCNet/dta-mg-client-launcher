@@ -7,4 +7,7 @@ internal static class NativeConstants
 
     /// ERROR_ACCESS_DENIED -> 5L
     public const int ERROR_ACCESS_DENIED = 5;
+
+    /// ERROR_INVALID_NAME -> 123L
+    public const int ERROR_INVALID_NAME = 123;
 }
