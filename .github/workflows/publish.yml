@@ -25,6 +25,14 @@ jobs:
     - name: Determine Version
       uses: gittools/actions/gitversion/execute@v0
 
+    - name: Development Build Check
+      shell: pwsh
+      run: |
+        if ($env:GitVersion_CommitsSinceVersionSource -ne "0") {
+          Write-Output "::error:: This is a development build and should not be released. Did you forget to create a new tag for the release?"
+          exit 1
+        }
+
     - name: Publish
       run: dotnet publish --framework net40 --configuration Release -p:DebugType=embedded -p:AssemblyVersion=$env:GitVersion_AssemblySemVer -p:FileVersion=$env:GitVersion_AssemblySemFileVer -p:InformationalVersion=$env:GitVersion_InformationalVersion
 
