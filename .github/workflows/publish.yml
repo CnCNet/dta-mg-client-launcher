@@ -20,11 +20,12 @@ jobs:
     - name: Check if commit is tagged
       shell: pwsh
       run: |
-        $tag = git describe --exact-match --tags HEAD 2>$null
-        if (-not $tag) {
+        $tag = git describe --exact-match --tags HEAD 2>&1 | Out-Null
+        if ($LASTEXITCODE -ne 0) {
           Write-Output "::error:: This is a development build and should not be released. Did you forget to create a new tag for the release?"
           exit 1
         }
+        $tag = git describe --exact-match --tags HEAD
         Write-Output "Current commit is tagged with: $tag"
         # Extract version from tag (remove 'v' prefix if present)
         $version = $tag -replace '^v', ''
