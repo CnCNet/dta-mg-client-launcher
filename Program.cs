@@ -96,6 +96,8 @@ internal sealed class Program
         catch (Exception ex)
         {
             // RemoveZoneIdentifer_ErrorMessage: An error occurred when the launcher tried to unblock files. Re-running the launcher with administrator privileges might help.
+            // Continue: Continue
+            // Exit: Exit
             bool ignoreUnblocking = AdvancedMessageBoxHelper.ShowYesNoMessageBox(
                    TextResource.RemoveZoneIdentifer_ErrorMessage + "\n\n" + ex.ToString(),
                    // ClientLauncher_WarningTitle: Client Launcher Warning
@@ -143,8 +145,9 @@ internal sealed class Program
         }
         catch (Exception ex)
         {
+            // ClientLauncher_ErrorTitle: Client Launcher Error
+            // Exit: Exit
             AdvancedMessageBoxHelper.ShowOkMessageBox(ex.ToString(),
-                // ClientLauncher_ErrorTitle: Client Launcher Error
                 TextResource.ClientLauncher_ErrorTitle,
                 okText: TextResource.Exit);
             Environment.Exit(1);
@@ -169,6 +172,10 @@ internal sealed class Program
             new CommandViewModel()
             {
                 // Command_ShowIncompatibleGPU: Show incompatible GPU dialog
+                // Button_OpenLink_AllButtonsWonTWork: Open link (All buttons here won't work)
+                // Button_LaunchXNA: Launch XNA version
+                // Button_LaunchDX: Launch DirectX11 version
+                // Exit: Exit
                 Text = TextResource.Command_ShowIncompatibleGPU,
                 Command = new RelayCommand(_ => ShowIncompatibleGPUMessage([TextResource.Button_OpenLink_AllButtonsWonTWork, TextResource.Button_LaunchXNA, TextResource.Button_LaunchDX, TextResource.Exit])),
             },
@@ -176,6 +183,7 @@ internal sealed class Program
             new CommandViewModel()
             {
                 // Command_ShowMissingComponent: Show missing component dialog
+                // Command_ShowMissingComponent_ComponentNamePlaceholder: Component name here
                 Text = TextResource.Command_ShowMissingComponent,
                 Command = new RelayCommand(_ => ShowMissingComponent(TextResource.Command_ShowMissingComponent_ComponentNamePlaceholder, new Uri("https://github.com/CnCNet/xna-cncnet-client-launcher"))),
             },
@@ -183,6 +191,7 @@ internal sealed class Program
             new CommandViewModel()
             {
                 // Command_ThrowException: Throw an exception
+                // Command_ThrowException_Message: Exception message here
                 Text = TextResource.Command_ThrowException,
                 Command = new RelayCommand(_ => throw new Exception(TextResource.Command_ThrowException_Message)),
             },
@@ -395,6 +404,9 @@ internal sealed class Program
                 }
 
                 // IncompatibleGPU_Selection_OpenLink: Open link
+                // Button_LaunchXNA: Launch XNA version
+                // Button_LaunchDX: Launch DirectX11 version
+                // Exit: Exit
                 int? result = ShowIncompatibleGPUMessage(new string[] { TextResource.Button_OpenLink, TextResource.Button_LaunchXNA, TextResource.Button_LaunchDX, TextResource.Exit });
                 switch (result)
                 {
@@ -433,6 +445,8 @@ internal sealed class Program
         if (!File.Exists(absolutePath))
         {
             // MainClientLibrary_NotFound: Main client library ({0}) not found!
+            // ClientLauncher_ErrorTitle: Client Launcher Error
+            // Exit: Exit
             AdvancedMessageBoxHelper.ShowOkMessageBox(string.Format(TextResource.MainClientLibrary_NotFound, relativePath), TextResource.ClientLauncher_ErrorTitle, okText: TextResource.Exit);
 
             Environment.Exit(3);
@@ -563,9 +577,10 @@ internal sealed class Program
         bool dialogResult = AdvancedMessageBoxHelper.ShowYesNoMessageBox(
             // MissingComponent_Message_Line1: The component {0} is missing.
             // MissingComponent_Message_Line2: You can download the installer from the following link:
+            // MissingComponent_Title: Component Missing
+            // Button_OpenLink: Open link
             string.Format(TextResource.MissingComponent_Message_Line1, missingComponent) + "\n\n"
                 + TextResource.MissingComponent_Message_Line2 + "\n\n" + downloadLink.ToString(),
-            // MissingComponent_Title: Component Missing
             TextResource.MissingComponent_Title,
             yesText: TextResource.Button_OpenLink,
             noText: TextResource.Exit);
