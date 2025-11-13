@@ -212,7 +212,7 @@ internal sealed class Program
     {
         // https://stackoverflow.com/a/6375373
 
-        List<string> failedMessages = new List<string>();
+        List<string> failedMessages = [];
 
         // Enumerate all files recursively
         string[] files = Directory.GetFiles(directory, "*", SearchOption.AllDirectories);
@@ -395,7 +395,7 @@ internal sealed class Program
                 }
 
                 // IncompatibleGPU_Selection_OpenLink: Open link
-                int? result = ShowIncompatibleGPUMessage(new[] { TextResource.Button_OpenLink, TextResource.Button_LaunchXNA, TextResource.Button_LaunchDX, TextResource.Exit });
+                int? result = ShowIncompatibleGPUMessage(new string[] { TextResource.Button_OpenLink, TextResource.Button_LaunchXNA, TextResource.Button_LaunchDX, TextResource.Exit });
                 switch (result)
                 {
                     case 0:
@@ -456,7 +456,7 @@ internal sealed class Program
     private static string CheckAndRetrieveDotNetHost(string machineArchitecture, bool runDesktop)
     {
         // Architectures to be searched for
-        List<string> architectures = new List<string>() { machineArchitecture };
+        List<string> architectures = [machineArchitecture];
 
         // Search for installed dotnet architectures
         string? availableArchitecture = null;
@@ -615,7 +615,7 @@ internal sealed class Program
 
     private static bool IsDotNet4Installed(int version = NET_FRAMEWORK_4_8_RELEASE_KEY)
     {
-        using RegistryKey key = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\NET Framework Setup\\NDP\\v4\\Full", false);
+        using RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full", false);
         object? installValue = key?.GetValue("Release");
         int installValueInt = installValue != null ? (int)installValue : 0;
 
