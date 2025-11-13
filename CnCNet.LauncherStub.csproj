@@ -37,8 +37,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- Do not upgrade Resource.Embedder to v2.x since it has dropped .NET Framework 4.0
-    support -->
+    <!-- Do not upgrade Resource.Embedder to v2.x since it has dropped .NET Framework 4.0 support -->
     <PackageReference Include="Resource.Embedder" Version="1.2.8">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
