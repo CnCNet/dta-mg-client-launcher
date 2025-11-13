@@ -184,7 +184,7 @@
     <value>不支持的操作系统</value>
   </data>
   <data name="DialogTest_Message_Debug" xml:space="preserve">
-    <value>点击下方按钮运行对话框测试。注意：若不希望看到此信息，请确保已在 Release 配置下构建可执行文件。</value>
+    <value>点击下方按钮运行对话框测试。注意：若不希望看到此信息，请确保在 Release 配置下构建可执行文件。</value>
   </data>
   <data name="IncompatibleGPU_Message_Line1" xml:space="preserve">
     <value>客户端检测到您的显卡与 CnCNet 客户端的 DirectX11 和 OpenGL 版本均不兼容。</value>
@@ -193,7 +193,7 @@
     <value>客户端的 XNA 版本或许能在您的系统上运行，但需要安装 Microsoft XNA Framework 4.0 Refresh。</value>
   </data>
   <data name="IncompatibleGPU_Message_Line3" xml:space="preserve">
-    <value>您可从以下链接下载安装程序：</value>
+    <value>您可以从以下链接下载安装程序：</value>
   </data>
   <data name="IncompatibleGPU_Message_Line4" xml:space="preserve">
     <value>或者，您也可以重试启动客户端的 DirectX11 版本。</value>
@@ -211,7 +211,7 @@
     <value>如果客户端仍无法运行，请联系 Mod 作者获取支持。</value>
   </data>
   <data name="UnsupportedOS_Message_Line1" xml:space="preserve">
-    <value>客户端运行至少需要 .NET Framework 4.8，但您的操作系统不支持。</value>
+    <value>客户端至少需要 .NET Framework 4.8 才能运行，但您的操作系统不支持。</value>
   </data>
   <data name="UnsupportedOS_Message_Line2" xml:space="preserve">
     <value>请考虑升级到更新版本的 Windows。</value>
@@ -220,6 +220,6 @@
     <value>组件 {0} 缺失。</value>
   </data>
   <data name="MissingComponent_Message_Line2" xml:space="preserve">
-    <value>您可从以下链接下载安装程序：</value>
+    <value>您可以从以下链接下载安装程序：</value>
   </data>
 </root>
