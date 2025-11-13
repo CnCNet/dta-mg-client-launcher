@@ -562,7 +562,7 @@ internal sealed class Program
     {
         bool dialogResult = AdvancedMessageBoxHelper.ShowYesNoMessageBox(
             // MissingComponent_Message_Line1: The component {0} is missing.
-            // MissingComponent_Message_Line2: You can download the installer from the following link:\n\n{1}
+            // MissingComponent_Message_Line2: You can download the installer from the following link:
             string.Format(TextResource.MissingComponent_Message_Line1, missingComponent) + "\n\n"
                 + TextResource.MissingComponent_Message_Line2 + "\n\n" + downloadLink.ToString(),
             // MissingComponent_Title: Component Missing
