@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using CnCNet.LauncherStub.LocalizationResources;
 using Microsoft.Win32;
 
 internal sealed class Program
@@ -94,10 +95,13 @@ internal sealed class Program
         }
         catch (Exception ex)
         {
+            // RemoveZoneIdentifer_ErrorMessage: An error occured when the launcher tried to unblock files. Re-running the launcher with administrator privileges might help.
             bool ignoreUnblocking = AdvancedMessageBoxHelper.ShowYesNoMessageBox(
-                   "An error occured when the launcher tried to unblock files. Re-running the launcher with administrator privileges might help.\n\n" + ex.ToString(),
-                   "Client Launcher Warning",
-                   yesText: "Continue", noText: "Exit");
+                   TextResource.RemoveZoneIdentifer_ErrorMessage + "\n\n" + ex.ToString(),
+                   // ClientLauncher_WarningTitle: Client Launcher Warning
+                   TextResource.ClientLauncher_WarningTitle,
+                   yesText: TextResource.Continue,
+                   noText: TextResource.Exit);
 
             if (!ignoreUnblocking)
                 Environment.Exit(1);
@@ -139,7 +143,10 @@ internal sealed class Program
         }
         catch (Exception ex)
         {
-            AdvancedMessageBoxHelper.ShowOkMessageBox(ex.ToString(), "Client Launcher Error", okText: "Exit");
+            AdvancedMessageBoxHelper.ShowOkMessageBox(ex.ToString(),
+                // ClientLauncher_ErrorTitle: Client Launcher Error
+                TextResource.ClientLauncher_ErrorTitle,
+                okText: TextResource.Exit);
             Environment.Exit(1);
         }
     }
@@ -148,31 +155,42 @@ internal sealed class Program
     {
         var msgbox = new AdvancedMessageBox();
         var model = (AdvancedMessageBoxViewModel)msgbox.DataContext;
-        model.Title = "Client Launcher Dialog Test";
-        model.Message = "Click the buttons below.";
+        // DialogTest_Title: Client Launcher Dialog Test
+        model.Title = TextResource.DialogTest_Title;
+#if DEBUG
+        // DialogTest_Message_Debug: Click the buttons below to run dialog test. Note: if you did not expect this, please make sure you have built the executable in Release configuration.
+        model.Message = TextResource.DialogTest_Message_Debug;
+#else
+        // DialogTest_Message: Click the buttons below to run dialog test.
+        model.Message = TextResource.DialogTest_Message;
+#endif
         model.Commands = new ObservableCollection<CommandViewModel>()
         {
             new CommandViewModel()
             {
-                Text = "Show incompatible GPU dialog",
-                Command = new RelayCommand(_ => ShowIncompatibleGPUMessage(new[] { "Open link (All buttons here won't work)", "Launch XNA version", "Launch DirectX11 version", "Exit" })),
+                // Command_ShowIncompatibleGPU: Show incompatible GPU dialog
+                Text = TextResource.Command_ShowIncompatibleGPU,
+                Command = new RelayCommand(_ => ShowIncompatibleGPUMessage(new[] { TextResource.Button_OpenLink_AllButtonsWonTWork, TextResource.Button_LaunchXNA, TextResource.Button_LaunchDX, TextResource.Exit })),
             },
 
             new CommandViewModel()
             {
-                Text = "Show missing component dialog",
-                Command = new RelayCommand(_ => ShowMissingComponent("Component name here", new Uri("https://github.com/CnCNet/dta-mg-client-launcher"))),
+                // Command_ShowMissingComponent: Show missing component dialog
+                Text = TextResource.Command_ShowMissingComponent,
+                Command = new RelayCommand(_ => ShowMissingComponent(TextResource.Command_ShowMissingComponent_ComponentNamePlaceholder, new Uri("https://github.com/CnCNet/xna-cncnet-client-launcher"))),
             },
 
             new CommandViewModel()
             {
-                Text = "Throw an exception",
-                Command = new RelayCommand(_ => throw new Exception("Exception message here")),
+                // Command_ThrowException: Throw an exception
+                Text = TextResource.Command_ThrowException,
+                Command = new RelayCommand(_ => throw new Exception(TextResource.Command_ThrowException_Message)),
             },
 
             new CommandViewModel()
             {
-                Text = "Exit",
+                // Exit: Exit
+                Text = TextResource.Exit,
                 Command = new RelayCommand(_ => msgbox.Close()),
             },
         };
@@ -194,7 +212,7 @@ internal sealed class Program
     {
         // https://stackoverflow.com/a/6375373
 
-        List<string> failedMessages = [];
+        List<string> failedMessages = new List<string>();
 
         // Enumerate all files recursively
         string[] files = Directory.GetFiles(directory, "*", SearchOption.AllDirectories);
@@ -233,7 +251,8 @@ internal sealed class Program
         }
 
         if (failedMessages.Count > 0)
-            throw new Exception("Failed to remove Zone.Identifier from the following files:\n" + string.Join("\n", failedMessages));
+            // RemoveZoneIdentifer_FailedList: Failed to remove Zone.Identifier from the following files:
+            throw new Exception(TextResource.RemoveZoneIdentifer_FailedList + "\n" + string.Join("\n", failedMessages));
     }
 
     private static void RunXNA()
@@ -324,14 +343,16 @@ internal sealed class Program
     }
 
     private static int? ShowIncompatibleGPUMessage(string[] selections) => AdvancedMessageBoxHelper.ShowMessageBoxWithSelection(
-            string.Format(
-                "The client has detected an incompatibility between your graphics card\nand both the DirectX11 and OpenGL versions of the CnCNet client.\n\n" +
-                "The XNA version of the client could still work on your system, but it needs\nMicrosoft XNA Framework 4.0 Refresh to be installed.\n\n" +
-                "You can download the installer from the following link:\n\n" +
-                "{0}\n\n" +
-                "Alternatively, you can retry launching the DirectX11 version of the client.\n\n" +
-                "We apologize for the inconvenience.", XnaDownloadLink.ToString()),
-            "Graphics Card Incompatibility Detected",
+            // IncompatibleGPU_Message_Line1: The client has detected an incompatibility between your graphics card and both the DirectX11 and OpenGL versions of the CnCNet client.
+            // IncompatibleGPU_Message_Line2: The XNA version of the client could still work on your system, but it needs Microsoft XNA Framework 4.0 Refresh to be installed.
+            // IncompatibleGPU_Message_Line3: You can download the installer from the following link:
+            // IncompatibleGPU_Message_Line4: Alternatively, you can retry launching the DirectX11 version of the client.
+            // IncompatibleGPU_Message_Line5: We apologize for the inconvenience.
+
+            TextResource.IncompatibleGPU_Message_Line1 + "\n\n" + TextResource.IncompatibleGPU_Message_Line2 + "\n\n" +
+                TextResource.IncompatibleGPU_Message_Line3 + "\n\n" + XnaDownloadLink.ToString() + "\n\n" + TextResource.IncompatibleGPU_Message_Line4 + "\n\n" + TextResource.IncompatibleGPU_Message_Line5,
+            // IncompatibleGPU_Title: Graphics Card Incompatibility Detected
+            TextResource.IncompatibleGPU_Title,
             selections);
 
     private static void AutoRun()
@@ -373,7 +394,8 @@ internal sealed class Program
                     return;
                 }
 
-                int? result = ShowIncompatibleGPUMessage(["Open link", "Launch XNA version", "Launch DirectX11 version", "Exit"]);
+                // IncompatibleGPU_Selection_OpenLink: Open link
+                int? result = ShowIncompatibleGPUMessage(new[] { TextResource.Button_OpenLink, TextResource.Button_LaunchXNA, TextResource.Button_LaunchDX, TextResource.Exit });
                 switch (result)
                 {
                     case 0:
@@ -410,7 +432,8 @@ internal sealed class Program
 
         if (!File.Exists(absolutePath))
         {
-            AdvancedMessageBoxHelper.ShowOkMessageBox($"Main client library ({relativePath}) not found!", "Client Launcher Error", okText: "Exit");
+            // MainClientLibrary_NotFound: Main client library ({0}) not found!
+            AdvancedMessageBoxHelper.ShowOkMessageBox(string.Format(TextResource.MainClientLibrary_NotFound, relativePath), TextResource.ClientLauncher_ErrorTitle, okText: TextResource.Exit);
 
             Environment.Exit(3);
         }
@@ -433,7 +456,7 @@ internal sealed class Program
     private static string CheckAndRetrieveDotNetHost(string machineArchitecture, bool runDesktop)
     {
         // Architectures to be searched for
-        List<string> architectures = [machineArchitecture];
+        List<string> architectures = new List<string>() { machineArchitecture };
 
         // Search for installed dotnet architectures
         string? availableArchitecture = null;
@@ -504,7 +527,8 @@ internal sealed class Program
 
         if (!File.Exists(completeFilePath))
         {
-            throw new Exception("Main client executable (" + relativePath + ") not found!");
+            // MainClientExecutable_NotFound: Main client executable ({0}) not found!
+            throw new Exception(string.Format(TextResource.MainClientExecutable_NotFound, relativePath));
         }
 
         try
@@ -515,11 +539,10 @@ internal sealed class Program
         {
             if (ex.NativeErrorCode == ERROR_CANCELLED_CODE)
             {
-                throw new Exception("Unable to launch the main client. It could be blocked by Windows SmartScreen."
-                    + Environment.NewLine + Environment.NewLine +
-                    "Please try to launch the following file manually: " + relativePath
-                    + Environment.NewLine + Environment.NewLine +
-                    "If the client still doesn't run, please contact the mod's authors for support.");
+                // SmartScreen_Blocked_Line1: Unable to launch the main client. It could be blocked by Windows SmartScreen.
+                // SmartScreen_Blocked_Line2: Please try to launch the following file manually:
+                // SmartScreen_Blocked_Line3: If the client still doesn't run, please contact the mod's authors for support.
+                throw new Exception(TextResource.SmartScreen_Blocked_Line1 + "\n\n" + TextResource.SmartScreen_Blocked_Line2 + "\n\n" + relativePath + "\n\n" + TextResource.SmartScreen_Blocked_Line3);
             }
 
             throw ex;
@@ -538,13 +561,14 @@ internal sealed class Program
     private static void ShowMissingComponent(string missingComponent, Uri downloadLink)
     {
         bool dialogResult = AdvancedMessageBoxHelper.ShowYesNoMessageBox(
-            string.Format(
-            "The component {0} is missing.\n\n" +
-            "You can download the installer from the following link:\n\n{1}",
-            missingComponent,
-            downloadLink.ToString()),
-            "Component Missing",
-            yesText: "Open link", noText: "Exit");
+            // MissingComponent_Message_Line1: The component {0} is missing.
+            // MissingComponent_Message_Line2: You can download the installer from the following link:\n\n{1}
+            string.Format(TextResource.MissingComponent_Message_Line1, missingComponent) + "\n\n"
+                + TextResource.MissingComponent_Message_Line2 + "\n\n" + downloadLink.ToString(),
+            // MissingComponent_Title: Component Missing
+            TextResource.MissingComponent_Title,
+            yesText: TextResource.Button_OpenLink,
+            noText: TextResource.Exit);
         if (dialogResult)
             OpenUri(downloadLink);
     }
@@ -591,7 +615,7 @@ internal sealed class Program
 
     private static bool IsDotNet4Installed(int version = NET_FRAMEWORK_4_8_RELEASE_KEY)
     {
-        using RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full", false);
+        using RegistryKey key = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\NET Framework Setup\\NDP\\v4\\Full", false);
         object? installValue = key?.GetValue("Release");
         int installValueInt = installValue != null ? (int)installValue : 0;
 
@@ -601,9 +625,11 @@ internal sealed class Program
     private static void ShowUnsupportedOSMessage()
     {
         AdvancedMessageBoxHelper.ShowOkMessageBox(
-            "The client requires at least .NET Framework 4.8 to run, but it is not supported on your operating system." +
-            "Please consider upgrading to a newer version of Windows.",
-            "Unsupported Operating System",
-            okText: "Exit");
+            // UnsupportedOS_Message_Line1: The client requires at least .NET Framework 4.8 to run, but it is not supported on your operating system.
+            // UnsupportedOS_Message_Line2: Please consider upgrading to a newer version of Windows.
+            TextResource.UnsupportedOS_Message_Line1 + "\n" + TextResource.UnsupportedOS_Message_Line2,
+            // UnsupportedOS_Title: Unsupported Operating System
+            TextResource.UnsupportedOS_Title,
+            okText: TextResource.Exit);
     }
 }

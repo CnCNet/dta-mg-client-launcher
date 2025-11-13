@@ -1,0 +1,225 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Exit" xml:space="preserve">
+    <value>退出</value>
+  </data>
+  <data name="ClientLauncher_WarningTitle" xml:space="preserve">
+    <value>客户端启动器警告</value>
+  </data>
+  <data name="Continue" xml:space="preserve">
+    <value>继续</value>
+  </data>
+  <data name="ClientLauncher_ErrorTitle" xml:space="preserve">
+    <value>客户端启动器错误</value>
+  </data>
+  <data name="DialogTest_Title" xml:space="preserve">
+    <value>客户端启动器对话框测试</value>
+  </data>
+  <data name="DialogTest_Message" xml:space="preserve">
+    <value>点击下方按钮运行对话框测试。</value>
+  </data>
+  <data name="Command_ShowIncompatibleGPU" xml:space="preserve">
+    <value>显示显卡不兼容对话框</value>
+  </data>
+  <data name="Button_OpenLink_AllButtonsWonTWork" xml:space="preserve">
+    <value>打开链接（此处所有按钮均无效）</value>
+  </data>
+  <data name="Button_LaunchXNA" xml:space="preserve">
+    <value>启动 XNA 版本</value>
+  </data>
+  <data name="Button_LaunchDX" xml:space="preserve">
+    <value>启动 DirectX11 版本</value>
+  </data>
+  <data name="Command_ShowMissingComponent" xml:space="preserve">
+    <value>显示组件缺失对话框</value>
+  </data>
+  <data name="Command_ShowMissingComponent_ComponentNamePlaceholder" xml:space="preserve">
+    <value>此处为组件名称</value>
+  </data>
+  <data name="Command_ThrowException" xml:space="preserve">
+    <value>抛出异常</value>
+  </data>
+  <data name="Command_ThrowException_Message" xml:space="preserve">
+    <value>此处为异常信息</value>
+  </data>
+  <data name="RemoveZoneIdentifer_ErrorMessage" xml:space="preserve">
+    <value>启动器尝试解除文件锁定时发生错误。以管理员权限重新运行启动器或许能解决问题。</value>
+  </data>
+  <data name="RemoveZoneIdentifer_FailedList" xml:space="preserve">
+    <value>未能从以下文件移除 Zone.Identifier：</value>
+  </data>
+  <data name="IncompatibleGPU_Title" xml:space="preserve">
+    <value>检测到显卡不兼容</value>
+  </data>
+  <data name="Button_OpenLink" xml:space="preserve">
+    <value>打开链接</value>
+  </data>
+  <data name="MainClientLibrary_NotFound" xml:space="preserve">
+    <value>未找到主客户端库 ({0})！</value>
+  </data>
+  <data name="MainClientExecutable_NotFound" xml:space="preserve">
+    <value>未找到主客户端可执行文件 ({0})！</value>
+  </data>
+  <data name="MissingComponent_Title" xml:space="preserve">
+    <value>组件缺失</value>
+  </data>
+  <data name="UnsupportedOS_Title" xml:space="preserve">
+    <value>不支持的操作系统</value>
+  </data>
+  <data name="DialogTest_Message_Debug" xml:space="preserve">
+    <value>点击下方按钮运行对话框测试。注意：若不希望看到此信息，请确保已在 Release 配置下构建可执行文件。</value>
+  </data>
+  <data name="IncompatibleGPU_Message_Line1" xml:space="preserve">
+    <value>客户端检测到您的显卡与 CnCNet 客户端的 DirectX11 和 OpenGL 版本均不兼容。</value>
+  </data>
+  <data name="IncompatibleGPU_Message_Line2" xml:space="preserve">
+    <value>客户端的 XNA 版本或许能在您的系统上运行，但需要安装 Microsoft XNA Framework 4.0 Refresh。</value>
+  </data>
+  <data name="IncompatibleGPU_Message_Line3" xml:space="preserve">
+    <value>您可从以下链接下载安装程序：</value>
+  </data>
+  <data name="IncompatibleGPU_Message_Line4" xml:space="preserve">
+    <value>或者，您也可以重试启动客户端的 DirectX11 版本。</value>
+  </data>
+  <data name="IncompatibleGPU_Message_Line5" xml:space="preserve">
+    <value>对于给您带来的不便，我们深表歉意。</value>
+  </data>
+  <data name="SmartScreen_Blocked_Line1" xml:space="preserve">
+    <value>无法启动主客户端，可能是被 Windows SmartScreen 阻止了。</value>
+  </data>
+  <data name="SmartScreen_Blocked_Line2" xml:space="preserve">
+    <value>请尝试手动启动以下文件：</value>
+  </data>
+  <data name="SmartScreen_Blocked_Line3" xml:space="preserve">
+    <value>如果客户端仍无法运行，请联系 Mod 作者获取支持。</value>
+  </data>
+  <data name="UnsupportedOS_Message_Line1" xml:space="preserve">
+    <value>客户端运行至少需要 .NET Framework 4.8，但您的操作系统不支持。</value>
+  </data>
+  <data name="UnsupportedOS_Message_Line2" xml:space="preserve">
+    <value>请考虑升级到更新版本的 Windows。</value>
+  </data>
+  <data name="MissingComponent_Message_Line1" xml:space="preserve">
+    <value>组件 {0} 缺失。</value>
+  </data>
+  <data name="MissingComponent_Message_Line2" xml:space="preserve">
+    <value>您可从以下链接下载安装程序：</value>
+  </data>
+</root>
