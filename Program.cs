@@ -627,7 +627,7 @@ internal sealed class Program
         AdvancedMessageBoxHelper.ShowOkMessageBox(
             // UnsupportedOS_Message_Line1: The client requires at least .NET Framework 4.8 to run, but it is not supported on your operating system.
             // UnsupportedOS_Message_Line2: Please consider upgrading to a newer version of Windows.
-            TextResource.UnsupportedOS_Message_Line1 + "\n" + TextResource.UnsupportedOS_Message_Line2,
+            TextResource.UnsupportedOS_Message_Line1 + TextResource.UnsupportedOS_Message_Line2,
             // UnsupportedOS_Title: Unsupported Operating System
             TextResource.UnsupportedOS_Title,
             okText: TextResource.Exit);
