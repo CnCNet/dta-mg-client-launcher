@@ -170,7 +170,7 @@ internal sealed class Program
             {
                 // Command_ShowIncompatibleGPU: Show incompatible GPU dialog
                 Text = TextResource.Command_ShowIncompatibleGPU,
-                Command = new RelayCommand(_ => ShowIncompatibleGPUMessage(new[] { TextResource.Button_OpenLink_AllButtonsWonTWork, TextResource.Button_LaunchXNA, TextResource.Button_LaunchDX, TextResource.Exit })),
+                Command = new RelayCommand(_ => ShowIncompatibleGPUMessage([TextResource.Button_OpenLink_AllButtonsWonTWork, TextResource.Button_LaunchXNA, TextResource.Button_LaunchDX, TextResource.Exit])),
             },
 
             new CommandViewModel()
