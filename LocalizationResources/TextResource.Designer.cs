@@ -304,7 +304,7 @@ namespace CnCNet.LauncherStub.LocalizationResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An error occured when the launcher tried to unblock files. Re-running the launcher with administrator privileges might help..
+        ///   Looks up a localized string similar to An error occurred when the launcher tried to unblock files. Re-running the launcher with administrator privileges might help..
         /// </summary>
         public static string RemoveZoneIdentifer_ErrorMessage {
             get {

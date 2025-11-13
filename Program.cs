@@ -95,7 +95,7 @@ internal sealed class Program
         }
         catch (Exception ex)
         {
-            // RemoveZoneIdentifer_ErrorMessage: An error occured when the launcher tried to unblock files. Re-running the launcher with administrator privileges might help.
+            // RemoveZoneIdentifer_ErrorMessage: An error occurred when the launcher tried to unblock files. Re-running the launcher with administrator privileges might help.
             bool ignoreUnblocking = AdvancedMessageBoxHelper.ShowYesNoMessageBox(
                    TextResource.RemoveZoneIdentifer_ErrorMessage + "\n\n" + ex.ToString(),
                    // ClientLauncher_WarningTitle: Client Launcher Warning

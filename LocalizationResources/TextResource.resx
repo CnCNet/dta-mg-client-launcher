@@ -160,7 +160,7 @@
     <value>Exception message here</value>
   </data>
   <data name="RemoveZoneIdentifer_ErrorMessage" xml:space="preserve">
-    <value>An error occured when the launcher tried to unblock files. Re-running the launcher with administrator privileges might help.</value>
+    <value>An error occurred when the launcher tried to unblock files. Re-running the launcher with administrator privileges might help.</value>
   </data>
   <data name="RemoveZoneIdentifer_FailedList" xml:space="preserve">
     <value>Failed to remove Zone.Identifier from the following files:</value>
