@@ -190,7 +190,7 @@
     <value>客户端检测到您的显卡与 CnCNet 客户端的 DirectX11 和 OpenGL 版本均不兼容。</value>
   </data>
   <data name="IncompatibleGPU_Message_Line2" xml:space="preserve">
-    <value>客户端的 XNA 版本或许能在您的系统上运行，但需要安装 Microsoft XNA Framework 4.0 Refresh。</value>
+    <value>客户端的 XNA 版本或许能在您的系统上运行，但需要先安装 Microsoft XNA Framework 4.0 Refresh。</value>
   </data>
   <data name="IncompatibleGPU_Message_Line3" xml:space="preserve">
     <value>您可以从以下链接下载安装程序：</value>

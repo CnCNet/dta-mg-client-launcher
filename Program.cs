@@ -353,7 +353,7 @@ internal sealed class Program
 
     private static int? ShowIncompatibleGPUMessage(string[] selections) => AdvancedMessageBoxHelper.ShowMessageBoxWithSelection(
             // IncompatibleGPU_Message_Line1: The client has detected an incompatibility between your graphics card and both the DirectX11 and OpenGL versions of the CnCNet client.
-            // IncompatibleGPU_Message_Line2: The XNA version of the client could still work on your system, but it needs Microsoft XNA Framework 4.0 Refresh to be installed.
+            // IncompatibleGPU_Message_Line2: The XNA version of the client could still work on your system, but it needs Microsoft XNA Framework 4.0 Refresh to be installed first.
             // IncompatibleGPU_Message_Line3: You can download the installer from the following link:
             // IncompatibleGPU_Message_Line4: Alternatively, you can retry launching the DirectX11 version of the client.
             // IncompatibleGPU_Message_Line5: We apologize for the inconvenience.
@@ -575,7 +575,7 @@ internal sealed class Program
     private static void ShowMissingComponent(string missingComponent, Uri downloadLink)
     {
         bool dialogResult = AdvancedMessageBoxHelper.ShowYesNoMessageBox(
-            // MissingComponent_Message_Line1: The component {0} is missing.
+            // MissingComponent_Message_Line1: The required component {0} is missing.
             // MissingComponent_Message_Line2: You can download the installer from the following link:
             // MissingComponent_Title: Component Missing
             // Button_OpenLink: Open link

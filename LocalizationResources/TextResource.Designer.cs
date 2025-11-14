@@ -214,7 +214,7 @@ namespace CnCNet.LauncherStub.LocalizationResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The XNA version of the client could still work on your system, but it needs Microsoft XNA Framework 4.0 Refresh to be installed..
+        ///   Looks up a localized string similar to The XNA version of the client could still work on your system, but it needs Microsoft XNA Framework 4.0 Refresh to be installed first..
         /// </summary>
         public static string IncompatibleGPU_Message_Line2 {
             get {
@@ -277,7 +277,7 @@ namespace CnCNet.LauncherStub.LocalizationResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The component {0} is missing..
+        ///   Looks up a localized string similar to The required component {0} is missing..
         /// </summary>
         public static string MissingComponent_Message_Line1 {
             get {
