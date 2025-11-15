@@ -217,7 +217,7 @@
     <value>请考虑升级到更新版本的 Windows。</value>
   </data>
   <data name="MissingComponent_Message_Line1" xml:space="preserve">
-    <value>组件 {0} 缺失。</value>
+    <value>缺失必要的组件：{0}。</value>
   </data>
   <data name="MissingComponent_Message_Line2" xml:space="preserve">
     <value>您可以从以下链接下载安装程序：</value>
