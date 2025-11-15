@@ -1,0 +1,225 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Exit" xml:space="preserve">
+    <value>Выход</value>
+  </data>
+  <data name="ClientLauncher_WarningTitle" xml:space="preserve">
+    <value>Предупреждение лаунчера клиента</value>
+  </data>
+  <data name="Continue" xml:space="preserve">
+    <value>Продолжить</value>
+  </data>
+  <data name="ClientLauncher_ErrorTitle" xml:space="preserve">
+    <value>Ошибка лаунчера клиента</value>
+  </data>
+  <data name="DialogTest_Title" xml:space="preserve">
+    <value>Тест диалогов лаунчера клиента</value>
+  </data>
+  <data name="DialogTest_Message" xml:space="preserve">
+    <value>Нажмите кнопки ниже для запуска теста диалогов.</value>
+  </data>
+  <data name="Command_ShowIncompatibleGPU" xml:space="preserve">
+    <value>Показать диалог о несовместимости GPU</value>
+  </data>
+  <data name="Button_OpenLink_AllButtonsWonTWork" xml:space="preserve">
+    <value>Открыть ссылку (все кнопки не будут работать)</value>
+  </data>
+  <data name="Button_LaunchXNA" xml:space="preserve">
+    <value>Запустить версию на XNA</value>
+  </data>
+  <data name="Button_LaunchDX" xml:space="preserve">
+    <value>Запустить версию на DirectX11</value>
+  </data>
+  <data name="Command_ShowMissingComponent" xml:space="preserve">
+    <value>Показать диалог об отсутствии компонента</value>
+  </data>
+  <data name="Command_ShowMissingComponent_ComponentNamePlaceholder" xml:space="preserve">
+    <value>Название компонента</value>
+  </data>
+  <data name="Command_ThrowException" xml:space="preserve">
+    <value>Выдать ошибку</value>
+  </data>
+  <data name="Command_ThrowException_Message" xml:space="preserve">
+    <value>Сообщение об ошибке</value>
+  </data>
+  <data name="RemoveZoneIdentifer_ErrorMessage" xml:space="preserve">
+    <value>Произошла ошибка во время попытки лаунчера разблокировать файлы. Попробуйте перезапустить лаунчер с правами администратора.</value>
+  </data>
+  <data name="RemoveZoneIdentifer_FailedList" xml:space="preserve">
+    <value>Не удалось удалить Zone.Identifier у следующих файлов:</value>
+  </data>
+  <data name="IncompatibleGPU_Title" xml:space="preserve">
+    <value>Обнаружена несовместимость с видеокартой</value>
+  </data>
+  <data name="Button_OpenLink" xml:space="preserve">
+    <value>Открыть ссылку</value>
+  </data>
+  <data name="MainClientLibrary_NotFound" xml:space="preserve">
+    <value>Библиотека основного клиента ({0}) не найдена!</value>
+  </data>
+  <data name="MainClientExecutable_NotFound" xml:space="preserve">
+    <value>Исполняемый файл основного клиента ({0}) не найден!</value>
+  </data>
+  <data name="MissingComponent_Title" xml:space="preserve">
+    <value>Отсутствует компонент</value>
+  </data>
+  <data name="UnsupportedOS_Title" xml:space="preserve">
+    <value>Неподдерживаемая операционная система</value>
+  </data>
+  <data name="DialogTest_Message_Debug" xml:space="preserve">
+    <value>Нажмите кнопки ниже для запуска теста диалогов. Примечение: если вы не ожидали этого увидеть, убедитесь, что вы собрали клиент в конфигурации Release.</value>
+  </data>
+  <data name="IncompatibleGPU_Message_Line1" xml:space="preserve">
+    <value>Клиент обнаружил несовместимость между вашей видеокартой и версиями клиента CnCNet на DirectX11 и OpenGL.</value>
+  </data>
+  <data name="IncompatibleGPU_Message_Line2" xml:space="preserve">
+    <value>Версия клиента на XNA могла бы работать на вашей системе, но сначала нужно установить Microsoft XNA Framework 4.0 Refresh.</value>
+  </data>
+  <data name="IncompatibleGPU_Message_Line3" xml:space="preserve">
+    <value>Установщик можно скачать по следующей ссылке:</value>
+  </data>
+  <data name="IncompatibleGPU_Message_Line4" xml:space="preserve">
+    <value>В качестве альтернативы можно еще раз попробовать запустить версию клиента на DirectX11.</value>
+  </data>
+  <data name="IncompatibleGPU_Message_Line5" xml:space="preserve">
+    <value>Приносим извинения за неудобства.</value>
+  </data>
+  <data name="SmartScreen_Blocked_Line1" xml:space="preserve">
+    <value>Не получается запустить основной клиент. Возможно, его заблокировал Windows SmartScreen.</value>
+  </data>
+  <data name="SmartScreen_Blocked_Line2" xml:space="preserve">
+    <value>Пожалуйста, попробуйте запустить данный файл вручную:</value>
+  </data>
+  <data name="SmartScreen_Blocked_Line3" xml:space="preserve">
+    <value>Если клиент все равно не запускается, свяжитесь с авторами мода и сообщите об ошибке.</value>
+  </data>
+  <data name="UnsupportedOS_Message_Line1" xml:space="preserve">
+    <value>Для работы клиента требуется как минимум .NET Framework 4.8, но эта версия не поддерживается вашей ОС.</value>
+  </data>
+  <data name="UnsupportedOS_Message_Line2" xml:space="preserve">
+    <value>Если это возможно, перейдите на более новую версию Windows.</value>
+  </data>
+  <data name="MissingComponent_Message_Line1" xml:space="preserve">
+    <value>Отсутствует необходимый компонент {0}.</value>
+  </data>
+  <data name="MissingComponent_Message_Line2" xml:space="preserve">
+    <value>Вы можете скачать установщик по следующей ссылке:</value>
+  </data>
+</root>
