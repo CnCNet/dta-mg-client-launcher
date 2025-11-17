@@ -127,10 +127,10 @@
     <value>متابعة</value>
 </data>
 <data name="ClientLauncher_ErrorTitle" xml:space="preserve">
-    <value>خطأ فى مشغل الوسيط</value>
+    <value>خطأ في مشغل الوسيط</value>
 </data>
 <data name="DialogTest_Title" xml:space="preserve">
-    <value>ااختبار مربع الحوار</value>
+    <value>اختبار مربع الحوار</value>
 </data>
 <data name="DialogTest_Message" xml:space="preserve">
     <value>اختبار مربع حوار الرسالة</value>
@@ -142,10 +142,10 @@
     <value>فتح الرابط (جميع الأزرار هنا لن تعمل)</value>
 </data>
 <data name="Button_LaunchXNA" xml:space="preserve">
-    <value>زر تشغيل XNA</value>
+    <value>XNA زر تشغيل</value>
 </data>
 <data name="Button_LaunchDX" xml:space="preserve">
-    <value>زر تشغيل DirectX11</value>
+    <value>DirectX11 زر تشغيل</value>
 </data>
 <data name="Command_ShowMissingComponent" xml:space="preserve">
     <value>أمر عرض المكون المفقود</value>
@@ -154,10 +154,10 @@
     <value>عرض اسم المكون هنا</value>
 </data>
 <data name="Command_ThrowException" xml:space="preserve">
-    <value>خطأ استثنائى</value>
+    <value>خطأ استثنائي</value>
 </data>
 <data name="Command_ThrowException_Message" xml:space="preserve">
-    <value>رسالة الخطأ الاستثنائى</value>
+    <value>رسالة الخطأ الاستثنائي</value>
 </data>
 <data name="RemoveZoneIdentifer_ErrorMessage" xml:space="preserve">
     <value>لم يستطع البرنامج التعرف على الملفات. حاول التشغيل كمسؤول</value>
