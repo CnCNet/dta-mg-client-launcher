@@ -160,7 +160,7 @@
     <value>此處為異常資訊</value>
   </data>
   <data name="RemoveZoneIdentifer_ErrorMessage" xml:space="preserve">
-    <value>啟動器嘗試解除檔案鎖定時發生錯誤。以管理員許可權重新執行啟動器或許能解決問題。</value>
+    <value>啟動器嘗試解除檔案鎖定時發生錯誤。以系統管理員身分重新執行啟動器或許能解決問題。</value>
   </data>
   <data name="RemoveZoneIdentifer_FailedList" xml:space="preserve">
     <value>未能從以下檔案移除 Zone.Identifier：</value>
