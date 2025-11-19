@@ -43,10 +43,10 @@ jobs:
       run: nuget restore
 
     - name: Build
-      run: msbuild /t:Clean,Build,Publish /p:platform="Any CPU" /p:Configuration=Release /p:TargetFramework=net40
+      run: msbuild /t:Clean,Build /p:platform="Any CPU" /p:Configuration=Release /p:TargetFramework=net40
 
     - name: Zip
-      run: 7z a -r ${{ format('CnCNet.LauncherStub-v{0}-net40.zip', env.GitVersion_SemVer) }} ./bin/Release/net40/publish/*.*
+      run: 7z a -r ${{ format('CnCNet.LauncherStub-v{0}-net40.zip', env.GitVersion_SemVer) }} ./bin/Release/net40/*.*
 
     - name: Upload Final Artifact to the Release
       uses: softprops/action-gh-release@v2

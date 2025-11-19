@@ -35,10 +35,10 @@ jobs:
       run: nuget restore
 
     - name: Build
-      run: msbuild /t:Clean,Build,Publish /p:platform="Any CPU" /p:Configuration=Release /p:TargetFramework=net40
+      run: msbuild /t:Clean,Build /p:platform="Any CPU" /p:Configuration=Release /p:TargetFramework=net40
 
     - uses: actions/upload-artifact@v4
       name: Upload Artifacts
       with:
         name: ${{ format('CnCNet.LauncherStub-net40', env.GitVersion_SemVer) }}
-        path: ./bin/Release/net40/publish/*.*
+        path: ./bin/Release/net40/*.*
