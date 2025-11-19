@@ -184,7 +184,7 @@
     <value>نظام تشغيل غير مدعوم</value>
 </data>
 <data name="DialogTest_Message_Debug" xml:space="preserve">
-    <value>أنقر على الأزرار أدناه لتشغيل اختبار الحوار. ملاحظة: إذا لم يكن هذا متوقعًا، فـتأكد من أنك قمت ببناء الملف التنفيذي (executable) في وضع الإصدار (Release).</value>
+    <value>أنقر على الأزرار أدناه لتشغيل اختبار الحوار. ملاحظة: إذا لم يكن هذا متوقعًا، يرجى التأكد من انك بنيت الملف التنفيذي في إعدادات الإصدار.</value>
 </data>
 <data name="IncompatibleGPU_Message_Line1" xml:space="preserve">
     <value>اكتشف الوسيط عدم توافق بين كارت الشاشة وكلا من OpenGL و DirectX11 لوسيط CnCNet</value>
