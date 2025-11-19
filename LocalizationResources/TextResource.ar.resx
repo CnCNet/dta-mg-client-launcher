@@ -136,7 +136,7 @@
     <value>أنقر على الأزرار أدناه لتشغيل اختبار الحوار.</value>
 </data>
 <data name="Command_ShowIncompatibleGPU" xml:space="preserve">
-    <value>أمر عرض الوحدة الرسومية للمعالج (GPU) غير متوافق</value>
+    <value>عرض الوحدة الرسومية للمعالج (GPU) غير متوافق</value>
 </data>
 <data name="Button_OpenLink_AllButtonsWonTWork" xml:space="preserve">
     <value>فتح الرابط (جميع الأزرار هنا لن تعمل)</value>
@@ -148,7 +148,7 @@
     <value>DirectX11 تشغيل اصدار</value>
 </data>
 <data name="Command_ShowMissingComponent" xml:space="preserve">
-    <value>أمر عرض المكون المفقود</value>
+    <value>عرض المكون المفقود</value>
 </data>
 <data name="Command_ShowMissingComponent_ComponentNamePlaceholder" xml:space="preserve">
     <value>عرض اسم المكون هنا</value>
