@@ -175,7 +175,7 @@
     <value>مكتبة الوسيط الرئيسية ({0}) غير موجودة!</value>
 </data>
 <data name="MainClientExecutable_NotFound" xml:space="preserve">
-    <value>الملف التنفيذي الوسيط الرئيسي ({0}) غير موجود!</value>
+    <value>الملف التنفيذي الرئيسي للوسيط ({0}) غير موجود!</value>
 </data>
 <data name="MissingComponent_Title" xml:space="preserve">
     <value>مكون مفقود</value>
