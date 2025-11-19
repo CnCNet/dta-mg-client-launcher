@@ -1,21 +1,27 @@
-name: Publish
+name: release build
+
 on:
-  workflow_dispatch:
+  release:
+    types: [published]
+
 permissions:
   contents: write
+
 jobs:
-  publish:
+  build:
     runs-on: windows-2022
     steps:
     - name: Checkout
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
+        submodules: recursive
 
-    - name: Setup .NET Core SDK
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: '8.x.x'
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v2
 
     - name: Install GitVersion
       uses: gittools/actions/gitversion/setup@v0
@@ -33,20 +39,17 @@ jobs:
           exit 1
         }
 
-    - name: Publish
-      run: dotnet publish --framework net40 --configuration Release -p:DebugType=embedded -p:AssemblyVersion=$env:GitVersion_AssemblySemVer -p:FileVersion=$env:GitVersion_AssemblySemFileVer -p:InformationalVersion=$env:GitVersion_InformationalVersion
+    - name: Restore Packages
+      run: nuget restore
+
+    - name: Build
+      run: msbuild /t:Clean,Build,Publish /p:platform="Any CPU" /p:Configuration=Release /p:TargetFramework=net40
 
     - name: Zip
       run: 7z a -r ${{ format('CnCNet.LauncherStub-v{0}-net40.zip', env.GitVersion_SemVer) }} ./bin/Release/net40/publish/*.*
 
-    - name: Prerelease
-      if: ${{ env.GitVersion_PreReleaseTag != '' }}
-      run: gh release create ${{ format('v{0}', env.GitVersion_SemVer) }} (get-item *.zip) --generate-notes --target ${{ github.sha }} --prerelease
-      env:
-        GH_TOKEN: ${{ github.token }}
-
-    - name: Release
-      if: ${{ env.GitVersion_PreReleaseTag == '' }}
-      run: gh release create ${{ format('v{0}', env.GitVersion_SemVer) }} (get-item *.zip) --generate-notes --target ${{ github.sha }}
-      env:
-        GH_TOKEN: ${{ github.token }}
+    - name: Upload Final Artifact to the Release
+      uses: softprops/action-gh-release@v2
+      with:
+        append_body: true
+        files: ${{ format('CnCNet.LauncherStub-v{0}-net40.zip', env.GitVersion_SemVer) }}

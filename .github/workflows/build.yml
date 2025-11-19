@@ -1,0 +1,44 @@
+name: build
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-2022
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        submodules: recursive
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1.0.5
+
+    - name: Install GitVersion
+      uses: gittools/actions/gitversion/setup@v0
+      with:
+        versionSpec: '5.x'
+
+    - name: Determine Version
+      uses: gittools/actions/gitversion/execute@v0
+
+    - name: Restore Packages
+      run: nuget restore
+
+    - name: Build
+      run: msbuild /t:Clean,Build,Publish /p:platform="Any CPU" /p:Configuration=Release /p:TargetFramework=net40
+
+    - uses: actions/upload-artifact@v4
+      name: Upload Artifacts
+      with:
+        name: ${{ format('CnCNet.LauncherStub-net40', env.GitVersion_SemVer) }}
+        path: ./bin/Release/net40/publish/*.*
