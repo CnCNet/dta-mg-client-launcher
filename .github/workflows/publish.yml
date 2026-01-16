@@ -32,6 +32,7 @@ jobs:
       uses: gittools/actions/gitversion/execute@v0
 
     - name: Development Build Check
+      if: "!github.event.release.prerelease"
       shell: pwsh
       run: |
         if ($env:GitVersion_CommitsSinceVersionSource -ne "0") {
